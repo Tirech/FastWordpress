@@ -1,0 +1,1485 @@
+Arquivo ./wp-mail.php
+Arquivo ./wp-activate.php
+Arquivo ./xmlrpc.php
+Arquivo ./wp-admin/edit-form-advanced.php
+Arquivo ./wp-admin/options-reading.php
+Arquivo ./wp-admin/edit-tag-form.php
+Arquivo ./wp-admin/ms-users.php
+Arquivo ./wp-admin/async-upload.php
+Arquivo ./wp-admin/post.php
+Arquivo ./wp-admin/plugins.php
+Arquivo ./wp-admin/freedoms.php
+Arquivo ./wp-admin/user-new.php
+			wpmu_signup_user( $new_user_login, $_REQUEST[ 'email' ], array( 'add_to_blog' => $wpdbpg->blogid, 'new_role' => $_REQUEST[ 'role' ] ) );
+				$key = $wpdbpg->get_var( $wpdbpg->prepare( "SELECT activation_key FROM {$wpdbpg->signups} WHERE user_login = %s AND user_email = %s", $new_user_login, $_REQUEST[ 'email' ] ) );
+Arquivo ./wp-admin/network.php
+foreach ( $wpdbpg->tables( 'ms_global' ) as $table => $prefixed_table )
+	$wpdbpg->$table = $prefixed_table;
+	if ( $wpdbpg->get_var( "SHOW TABLES LIKE '$wpdbpg->site'" ) )
+		return $wpdbpg->get_var( "SELECT domain FROM $wpdbpg->site ORDER BY id ASC LIMIT 1" );
+	$post = $wpdbpg->get_row( "SELECT ID FROM $wpdbpg->posts WHERE post_date < DATE_SUB(NOW(), INTERVAL 1 MONTH) AND post_status = 'publish'" );
+			$subdomain_install = (bool) $wpdbpg->get_var( "SELECT meta_value FROM $wpdbpg->sitemeta WHERE site_id = 1 AND meta_key = 'subdomain_install'" );
+Arquivo ./wp-admin/edit-comments.php
+		$comment_ids = $wpdbpg->get_col( $wpdbpg->prepare( "SELECT comment_ID FROM $wpdbpg->comments WHERE comment_approved = %s AND %s > comment_date_gmt", $comment_status, $delete_time ) );
+Arquivo ./wp-admin/options-discussion.php
+Arquivo ./wp-admin/custom-header.php
+Arquivo ./wp-admin/post-new.php
+Arquivo ./wp-admin/media-new.php
+Arquivo ./wp-admin/upload.php
+		$post_ids = $wpdbpg->get_col( "SELECT ID FROM $wpdbpg->posts WHERE post_type='attachment' AND post_status = 'trash'" );
+			$lost = $wpdbpg->get_col( "
+				SELECT ID FROM $wpdbpg->posts
+					SELECT ID FROM $wpdbpg->posts
+				$attached = $wpdbpg->query( $wpdbpg->prepare( "UPDATE $wpdbpg->posts SET post_parent = %d WHERE post_type = 'attachment' AND ID IN ( $attach_string )", $parent_id ) );
+Arquivo ./wp-admin/options-permalink.php
+Arquivo ./wp-admin/admin-ajax.php
+Arquivo ./wp-admin/media.php
+Arquivo ./wp-admin/link-add.php
+Arquivo ./wp-admin/moderation.php
+Arquivo ./wp-admin/admin-header.php
+Arquivo ./wp-admin/profile.php
+Arquivo ./wp-admin/upgrade-functions.php
+Arquivo ./wp-admin/credits.php
+Arquivo ./wp-admin/link-manager.php
+Arquivo ./wp-admin/export.php
+	$months = $wpdbpg->get_results( $wpdbpg->prepare( "
+		FROM $wpdbpg->posts
+		$authors = $wpdbpg->get_col( "SELECT DISTINCT post_author FROM {$wpdbpg->posts} WHERE post_type = 'post'" );
+		$authors = $wpdbpg->get_col( "SELECT DISTINCT post_author FROM {$wpdbpg->posts} WHERE post_type = 'page'" );
+Arquivo ./wp-admin/network/site-themes.php
+Arquivo ./wp-admin/network/plugins.php
+Arquivo ./wp-admin/network/freedoms.php
+Arquivo ./wp-admin/network/user-new.php
+Arquivo ./wp-admin/network/profile.php
+Arquivo ./wp-admin/network/site-info.php
+Arquivo ./wp-admin/network/credits.php
+Arquivo ./wp-admin/network/theme-install.php
+Arquivo ./wp-admin/network/site-users.php
+Arquivo ./wp-admin/network/plugin-install.php
+Arquivo ./wp-admin/network/theme-editor.php
+Arquivo ./wp-admin/network/setup.php
+Arquivo ./wp-admin/network/upgrade.php
+		$blogs = $wpdbpg->get_results( "SELECT * FROM {$wpdbpg->blogs} WHERE site_id = '{$wpdbpg->siteid}' AND spam = '0' AND deleted = '0' AND archived = '0' ORDER BY registered DESC LIMIT {$n}, 5", ARRAY_A );
+Arquivo ./wp-admin/network/menu.php
+Arquivo ./wp-admin/network/update-core.php
+Arquivo ./wp-admin/network/plugin-editor.php
+Arquivo ./wp-admin/network/users.php
+Arquivo ./wp-admin/network/edit.php
+Arquivo ./wp-admin/network/update.php
+Arquivo ./wp-admin/network/sites.php
+Arquivo ./wp-admin/network/about.php
+Arquivo ./wp-admin/network/themes.php
+Arquivo ./wp-admin/network/user-edit.php
+Arquivo ./wp-admin/network/admin.php
+Arquivo ./wp-admin/network/site-settings.php
+		$blog_prefix = $wpdbpg->get_blog_prefix( $id );
+		$options = $wpdbpg->get_results( "SELECT * FROM {$blog_prefix}options WHERE option_name NOT LIKE '\_%' AND option_name NOT LIKE '%user_roles'" );
+Arquivo ./wp-admin/network/index.php
+Arquivo ./wp-admin/network/settings.php
+Arquivo ./wp-admin/network/site-new.php
+	$wpdbpg->hide_errors();
+	$wpdbpg->show_errors();
+Arquivo ./wp-admin/load-styles.php
+Arquivo ./wp-admin/theme-install.php
+Arquivo ./wp-admin/press-this.php
+Arquivo ./wp-admin/install.php
+	$user_table = ( $wpdbpg->get_var("SHOW TABLES LIKE '$wpdbpg->users'") != null );
+$mysql_version  = $wpdbpg->db_version();
+if ( ! is_string( $wpdbpg->base_prefix ) || '' === $wpdbpg->base_prefix ) {
+		if ( ! empty( $wpdbpg->error ) )
+			wp_die( $wpdbpg->error->get_error_message() );
+			$wpdbpg->show_errors();
+Arquivo ./wp-admin/includes/class-wp-ms-themes-list-table.php
+Arquivo ./wp-admin/includes/class-wp-filesystem-ftpext.php
+Arquivo ./wp-admin/includes/ms.php
+		$tables = $wpdbpg->tables( 'blog' );
+			$wpdbpg->query( "DROP TABLE IF EXISTS `$table`" );
+		$wpdbpg->delete( $wpdbpg->blogs, array( 'blog_id' => $blog_id ) );
+			$post_ids = $wpdbpg->get_col( $wpdbpg->prepare( "SELECT ID FROM $wpdbpg->posts WHERE post_author = %d", $id ) );
+			$link_ids = $wpdbpg->get_col( $wpdbpg->prepare( "SELECT link_id FROM $wpdbpg->links WHERE link_owner = %d", $id ) );
+	$meta = $wpdbpg->get_col( $wpdbpg->prepare( "SELECT umeta_id FROM $wpdbpg->usermeta WHERE user_id = %d", $id ) );
+	$wpdbpg->delete( $wpdbpg->users, array( 'ID' => $id ) );
+		if ( $wpdbpg->get_var( $wpdbpg->prepare( "SELECT user_email FROM {$wpdbpg->users} WHERE user_email=%s", $_POST['email'] ) ) ) {
+	$wpdbpg->update( $wpdbpg->users, array( sanitize_key( $pref ) => $value ), array( 'ID' => $id ) );
+	if ( $site_id == $wpdbpg->siteid )
+Arquivo ./wp-admin/includes/class-ftp-pure.php
+Arquivo ./wp-admin/includes/user.php
+	$query = $wpdbpg->prepare("SELECT ID, post_title FROM $wpdbpg->posts WHERE post_type = 'post' AND post_status = 'draft' AND post_author = %d ORDER BY post_modified DESC", $user_id);
+	return $wpdbpg->get_results( $query );
+		$post_ids = $wpdbpg->get_col( $wpdbpg->prepare( "SELECT ID FROM $wpdbpg->posts WHERE post_author = %d AND post_type IN ('$post_types_to_delete')", $id ) );
+		$link_ids = $wpdbpg->get_col( $wpdbpg->prepare("SELECT link_id FROM $wpdbpg->links WHERE link_owner = %d", $id) );
+		$post_ids = $wpdbpg->get_col( $wpdbpg->prepare( "SELECT ID FROM $wpdbpg->posts WHERE post_author = %d", $id ) );
+		$wpdbpg->update( $wpdbpg->posts, array('post_author' => $reassign), array('post_author' => $id) );
+		$link_ids = $wpdbpg->get_col( $wpdbpg->prepare("SELECT link_id FROM $wpdbpg->links WHERE link_owner = %d", $id) );
+		$wpdbpg->update( $wpdbpg->links, array('link_owner' => $reassign), array('link_owner' => $id) );
+		$meta = $wpdbpg->get_col( $wpdbpg->prepare( "SELECT umeta_id FROM $wpdbpg->usermeta WHERE user_id = %d", $id ) );
+		$wpdbpg->delete( $wpdbpg->users, array( 'ID' => $id ) );
+Arquivo ./wp-admin/includes/post.php
+		$pages = $wpdbpg->get_results("SELECT ID, post_parent FROM $wpdbpg->posts WHERE post_type = 'page'");
+	$query = "SELECT ID FROM $wpdbpg->posts WHERE 1=1";
+		return (int) $wpdbpg->get_var( $wpdbpg->prepare($query, $args) );
+	$keys = $wpdbpg->get_col( "
+			FROM $wpdbpg->postmeta
+	return $wpdbpg->get_results( $wpdbpg->prepare("SELECT meta_key, meta_value, meta_id, post_id
+			FROM $wpdbpg->postmeta WHERE post_id = %d
+	$children = $wpdbpg->get_col( $wpdbpg->prepare("
+		FROM $wpdbpg->postmeta
+		$wpdbpg->update($wpdbpg->posts, array('post_parent' => $new_ID), array('ID' => $child_id) );
+	$types = $wpdbpg->get_col($wpdbpg->prepare("SELECT DISTINCT post_mime_type FROM $wpdbpg->posts WHERE post_type = %s", $type));
+	return $where .= " AND {$wpdbpg->posts}.post_parent < 1";
+Arquivo ./wp-admin/includes/class-wp-themes-list-table.php
+Arquivo ./wp-admin/includes/class-wp-list-table.php
+		$months = $wpdbpg->get_results( $wpdbpg->prepare( "
+			FROM $wpdbpg->posts
+Arquivo ./wp-admin/includes/ms-deprecated.php
+Arquivo ./wp-admin/includes/plugin.php
+Arquivo ./wp-admin/includes/class-wp-ms-users-list-table.php
+			$args['include'] = $wpdbpg->get_col( "SELECT ID FROM $wpdbpg->users WHERE user_login IN ('$logins')" );
+Arquivo ./wp-admin/includes/class-wp-plugin-install-list-table.php
+Arquivo ./wp-admin/includes/nav-menu.php
+	$menu_items_to_delete = $wpdbpg->get_col($wpdbpg->prepare("SELECT ID FROM $wpdbpg->posts AS p LEFT JOIN $wpdbpg->postmeta AS m ON p.ID = m.post_id WHERE post_type = 'nav_menu_item' AND post_status = 'draft' AND meta_key = '_menu_item_orphaned' AND meta_value < '%d'", $delete_timestamp ) );
+Arquivo ./wp-admin/includes/media.php
+		$attachments = intval( $wpdbpg->get_var( $wpdbpg->prepare( "SELECT count(*) FROM $wpdbpg->posts WHERE post_type = 'attachment' AND post_status != 'trash' AND post_parent = %d", $post_id ) ) );
+$arc_query = "SELECT DISTINCT YEAR(post_date) AS yyear, MONTH(post_date) AS mmonth FROM $wpdbpg->posts WHERE post_type = 'attachment' ORDER BY post_date DESC";
+$arc_result = $wpdbpg->get_results( $arc_query );
+Arquivo ./wp-admin/includes/class-wp-filesystem-base.php
+Arquivo ./wp-admin/includes/meta-boxes.php
+Arquivo ./wp-admin/includes/class-wp-upgrader-skins.php
+Arquivo ./wp-admin/includes/class-ftp.php
+Arquivo ./wp-admin/includes/export.php
+		$where = $wpdbpg->prepare( "{$wpdbpg->posts}.post_type = %s", $args['content'] );
+		$where = $wpdbpg->prepare( "{$wpdbpg->posts}.post_type IN (" . implode( ',', $esses ) . ')', $post_types );
+		$where .= $wpdbpg->prepare( " AND {$wpdbpg->posts}.post_status = %s", $args['status'] );
+		$where .= " AND {$wpdbpg->posts}.post_status != 'auto-draft'";
+			$join = "INNER JOIN {$wpdbpg->term_relationships} ON ({$wpdbpg->posts}.ID = {$wpdbpg->term_relationships}.object_id)";
+			$where .= $wpdbpg->prepare( " AND {$wpdbpg->term_relationships}.term_taxonomy_id = %d", $term['term_taxonomy_id'] );
+			$where .= $wpdbpg->prepare( " AND {$wpdbpg->posts}.post_author = %d", $args['author'] );
+			$where .= $wpdbpg->prepare( " AND {$wpdbpg->posts}.post_date >= %s", date( 'Y-m-d', strtotime($args['start_date']) ) );
+			$where .= $wpdbpg->prepare( " AND {$wpdbpg->posts}.post_date < %s", date( 'Y-m-d', strtotime('+1 month', strtotime($args['end_date'])) ) );
+	$post_ids = $wpdbpg->get_col( "SELECT ID FROM {$wpdbpg->posts} $join WHERE $where" );
+		$results = $wpdbpg->get_results( "SELECT DISTINCT post_author FROM $wpdbpg->posts WHERE post_status != 'auto-draft'" );
+	$posts = $wpdbpg->get_results( "SELECT * FROM {$wpdbpg->posts} $where" );
+<?php	$postmeta = $wpdbpg->get_results( $wpdbpg->prepare( "SELECT * FROM $wpdbpg->postmeta WHERE post_id = %d", $post->ID ) );
+<?php	$comments = $wpdbpg->get_results( $wpdbpg->prepare( "SELECT * FROM $wpdbpg->comments WHERE comment_post_ID = %d AND comment_approved <> 'spam'", $post->ID ) );
+<?php		$c_meta = $wpdbpg->get_results( $wpdbpg->prepare( "SELECT * FROM $wpdbpg->commentmeta WHERE comment_id = %d", $c->comment_ID ) );
+Arquivo ./wp-admin/includes/class-wp-users-list-table.php
+Arquivo ./wp-admin/includes/class-wp-ms-sites-list-table.php
+		$query = "SELECT * FROM {$wpdbpg->blogs} WHERE site_id = '{$wpdbpg->siteid}' ";
+			$reg_blog_ids = $wpdbpg->get_col( "SELECT blog_id FROM {$wpdbpg->registration_log} WHERE {$wpdbpg->registration_log}.IP LIKE ( '{$like_s}$wild' )" );
+				FROM {$wpdbpg->blogs}
+				WHERE site_id = '{$wpdbpg->siteid}'
+				AND {$wpdbpg->blogs}.blog_id IN (" . implode( ', ', $reg_blog_ids ) . ")";
+				$query .= " AND ( {$wpdbpg->blogs}.blog_id = '{$like_s}' )";
+				$query .= " AND ( {$wpdbpg->blogs}.domain LIKE '$blog_s' ) ";
+				$query .= " AND  ( {$wpdbpg->blogs}.path LIKE '$blog_s' )";
+			$total = $wpdbpg->get_var( str_replace( 'SELECT *', 'SELECT COUNT( blog_id )', $query ) );
+		$this->items = $wpdbpg->get_results( $query, ARRAY_A );
+Arquivo ./wp-admin/includes/theme-install.php
+Arquivo ./wp-admin/includes/class-wp-filesystem-direct.php
+Arquivo ./wp-admin/includes/class-wp-comments-list-table.php
+Arquivo ./wp-admin/includes/plugin-install.php
+Arquivo ./wp-admin/includes/ajax-actions.php
+Arquivo ./wp-admin/includes/class-wp-posts-list-table.php
+			$this->user_posts_count = $wpdbpg->get_var( $wpdbpg->prepare( "
+				SELECT COUNT( 1 ) FROM $wpdbpg->posts
+			$this->sticky_posts_count = $wpdbpg->get_var( $wpdbpg->prepare( "SELECT COUNT( 1 ) FROM $wpdbpg->posts WHERE post_type = %s AND post_status NOT IN ('trash', 'auto-draft') AND ID IN ($sticky_posts)", $post_type ) );
+					$wpdbpg->update( $wpdbpg->posts, array( 'post_parent' => 0 ), array( 'ID' => $page->ID ) );
+Arquivo ./wp-admin/includes/template.php
+	$keys = $wpdbpg->get_col( "
+		FROM $wpdbpg->postmeta
+	$items = $wpdbpg->get_results( $wpdbpg->prepare("SELECT ID, post_parent, post_title FROM $wpdbpg->posts WHERE post_parent = %d AND post_type = 'page' ORDER BY menu_order", $parent) );
+Arquivo ./wp-admin/includes/dashboard.php
+Arquivo ./wp-admin/includes/class-ftp-sockets.php
+Arquivo ./wp-admin/includes/image.php
+Arquivo ./wp-admin/includes/schema.php
+$charset_collate = $wpdbpg->get_charset_collate();
+	if ( ! empty($wpdbpg->charset) )
+		$charset_collate = "DEFAULT CHARACTER SET $wpdbpg->charset";
+	if ( ! empty($wpdbpg->collate) )
+		$charset_collate .= " COLLATE $wpdbpg->collate";
+	if ( $blog_id && $blog_id != $wpdbpg->blogid )
+		$old_blog_id = $wpdbpg->set_blog_id( $blog_id );
+	$blog_tables = "CREATE TABLE $wpdbpg->terms (
+CREATE TABLE $wpdbpg->term_taxonomy (
+CREATE TABLE $wpdbpg->term_relationships (
+CREATE TABLE $wpdbpg->commentmeta (
+CREATE TABLE $wpdbpg->comments (
+CREATE TABLE $wpdbpg->links (
+CREATE TABLE $wpdbpg->options (
+CREATE TABLE $wpdbpg->postmeta (
+CREATE TABLE $wpdbpg->posts (
+	$users_single_table = "CREATE TABLE $wpdbpg->users (
+	$users_multi_table = "CREATE TABLE $wpdbpg->users (
+	$usermeta_table = "CREATE TABLE $wpdbpg->usermeta (
+	$ms_global_tables = "CREATE TABLE $wpdbpg->blogs (
+CREATE TABLE $wpdbpg->blog_versions (
+CREATE TABLE $wpdbpg->registration_log (
+CREATE TABLE $wpdbpg->site (
+CREATE TABLE $wpdbpg->sitemeta (
+CREATE TABLE $wpdbpg->signups (
+		$wpdbpg->set_blog_id( $old_blog_id );
+	$existing_options = $wpdbpg->get_col( "SELECT option_name FROM $wpdbpg->options WHERE option_name in ( $keys )" );
+		$insert .= $wpdbpg->prepare( "(%s, %s, %s)", $option, $value, $autoload );
+		$wpdbpg->query("INSERT INTO $wpdbpg->options (option_name, option_value, autoload) VALUES " . $insert);
+	$wpdbpg->query("DELETE FROM $wpdbpg->options WHERE option_name REGEXP '^rss_[0-9a-f]{32}(_ts)?$'");
+	$wpdbpg->query("DELETE a, b FROM $wpdbpg->options a, $wpdbpg->options b WHERE
+		$wpdbpg->query("DELETE a, b FROM $wpdbpg->options a, $wpdbpg->options b WHERE
+	if ( $network_id == $wpdbpg->get_var( $wpdbpg->prepare( "SELECT id FROM $wpdbpg->site WHERE id = %d", $network_id ) ) )
+		$wpdbpg->insert( $wpdbpg->site, array( 'domain' => $domain, 'path' => $path ) );
+		$network_id = $wpdbpg->insert_id;
+		$wpdbpg->insert( $wpdbpg->site, array( 'domain' => $domain, 'path' => $path, 'id' => $network_id ) );
+		$insert .= $wpdbpg->prepare( "( %d, %s, %s)", $network_id, $meta_key, $meta_value );
+	$wpdbpg->query( "INSERT INTO $wpdbpg->sitemeta ( site_id, meta_key, meta_value ) VALUES " . $insert );
+		$wpdbpg->insert( $wpdbpg->blogs, array( 'site_id' => $network_id, 'blog_id' => 1, 'domain' => $domain, 'path' => $path, 'registered' => current_time( 'mysql' ) ) );
+		$current_site->blog_id = $blog_id = $wpdbpg->insert_id;
+Arquivo ./wp-admin/includes/class-wp-filesystem-ssh2.php
+Arquivo ./wp-admin/includes/theme.php
+Arquivo ./wp-admin/includes/class-pclzip.php
+Arquivo ./wp-admin/includes/upgrade.php
+		$cat_id = $wpdbpg->get_var( $wpdbpg->prepare( "SELECT cat_ID FROM {$wpdbpg->sitecategories} WHERE category_nicename = %s", $cat_slug ) );
+			$wpdbpg->insert( $wpdbpg->sitecategories, array('cat_ID' => 0, 'cat_name' => $cat_name, 'category_nicename' => $cat_slug, 'last_updated' => current_time('mysql', true)) );
+			$cat_id = $wpdbpg->insert_id;
+	$wpdbpg->insert( $wpdbpg->terms, array('term_id' => $cat_id, 'name' => $cat_name, 'slug' => $cat_slug, 'term_group' => 0) );
+	$wpdbpg->insert( $wpdbpg->term_taxonomy, array('term_id' => $cat_id, 'taxonomy' => 'category', 'description' => '', 'parent' => 0, 'count' => 1));
+	$cat_tt_id = $wpdbpg->insert_id;
+	$wpdbpg->insert( $wpdbpg->posts, array(
+	$wpdbpg->insert( $wpdbpg->term_relationships, array('term_taxonomy_id' => $cat_tt_id, 'object_id' => 1) );
+	$wpdbpg->insert( $wpdbpg->comments, array(
+	$wpdbpg->insert( $wpdbpg->posts, array(
+	$wpdbpg->insert( $wpdbpg->postmeta, array( 'post_id' => 2, 'meta_key' => '_wp_page_template', 'meta_value' => 'default' ) );
+		$wpdbpg->update( $wpdbpg->options, array('option_value' => $user->user_email), array('option_name' => 'admin_email') );
+		$wpdbpg->query( $wpdbpg->prepare("DELETE FROM $wpdbpg->usermeta WHERE user_id != %d AND meta_key = %s", $user_id, $table_prefix.'user_level') );
+		$wpdbpg->query( $wpdbpg->prepare("DELETE FROM $wpdbpg->usermeta WHERE user_id != %d AND meta_key = %s", $user_id, $table_prefix.'capabilities') );
+			$wpdbpg->delete( $wpdbpg->usermeta, array( 'user_id' => $user_id , 'meta_key' => $wpdbpg->base_prefix.'1_capabilities' ) );
+		if ( $wpdbpg->get_row( "SELECT blog_id FROM {$wpdbpg->blog_versions} WHERE blog_id = '{$wpdbpg->blogid}'" ) )
+			$wpdbpg->query( "UPDATE {$wpdbpg->blog_versions} SET db_version = '{$wp_db_version}' WHERE blog_id = '{$wpdbpg->blogid}'" );
+			$wpdbpg->query( "INSERT INTO {$wpdbpg->blog_versions} ( `blog_id` , `db_version` , `last_updated` ) VALUES ( '{$wpdbpg->blogid}', '{$wp_db_version}', NOW());" );
+	$posts = $wpdbpg->get_results("SELECT ID, post_title, post_name FROM $wpdbpg->posts WHERE post_name = ''");
+				$wpdbpg->query( $wpdbpg->prepare("UPDATE $wpdbpg->posts SET post_name = %s WHERE ID = %d", $newtitle, $post->ID) );
+	$categories = $wpdbpg->get_results("SELECT cat_ID, cat_name, category_nicename FROM $wpdbpg->categories");
+			$wpdbpg->update( $wpdbpg->categories, array('category_nicename' => $newtitle), array('cat_ID' => $category->cat_ID) );
+	$wpdbpg->query("UPDATE $wpdbpg->options SET option_value = REPLACE(option_value, 'wp-links/links-images/', 'wp-images/links/')
+	$done_ids = $wpdbpg->get_results("SELECT DISTINCT post_id FROM $wpdbpg->post2cat");
+	$allposts = $wpdbpg->get_results("SELECT ID, post_category FROM $wpdbpg->posts WHERE post_category != '0' $catwhere");
+			$cat = $wpdbpg->get_row( $wpdbpg->prepare("SELECT * FROM $wpdbpg->post2cat WHERE post_id = %d AND category_id = %d", $post->ID, $post->post_category) );
+				$wpdbpg->insert( $wpdbpg->post2cat, array('post_id' => $post->ID, 'category_id' => $post->post_category) );
+	add_clean_index($wpdbpg->posts, 'post_name');
+	add_clean_index($wpdbpg->posts, 'post_status');
+	add_clean_index($wpdbpg->categories, 'category_nicename');
+	add_clean_index($wpdbpg->comments, 'comment_approved');
+	add_clean_index($wpdbpg->comments, 'comment_post_ID');
+	add_clean_index($wpdbpg->links , 'link_category');
+	add_clean_index($wpdbpg->links , 'link_visible');
+	$users = $wpdbpg->get_results("SELECT ID, user_nickname, user_nicename FROM $wpdbpg->users");
+			$wpdbpg->update( $wpdbpg->users, array('user_nicename' => $newname), array('ID' => $user->ID) );
+	$users = $wpdbpg->get_results("SELECT ID, user_pass from $wpdbpg->users");
+			$wpdbpg->update( $wpdbpg->users, array('user_pass' => md5($row->user_pass)), array('ID' => $row->ID) );
+	$got_gmt_fields = ! ($wpdbpg->get_var("SELECT MAX(post_date_gmt) FROM $wpdbpg->posts") == '0000-00-00 00:00:00');
+		$wpdbpg->query("UPDATE $wpdbpg->posts SET post_date_gmt = DATE_ADD(post_date, INTERVAL '$add_hours:$add_minutes' HOUR_MINUTE)");
+		$wpdbpg->query("UPDATE $wpdbpg->posts SET post_modified = post_date");
+		$wpdbpg->query("UPDATE $wpdbpg->posts SET post_modified_gmt = DATE_ADD(post_modified, INTERVAL '$add_hours:$add_minutes' HOUR_MINUTE) WHERE post_modified != '0000-00-00 00:00:00'");
+		$wpdbpg->query("UPDATE $wpdbpg->comments SET comment_date_gmt = DATE_ADD(comment_date, INTERVAL '$add_hours:$add_minutes' HOUR_MINUTE)");
+		$wpdbpg->query("UPDATE $wpdbpg->users SET user_registered = DATE_ADD(user_registered, INTERVAL '$add_hours:$add_minutes' HOUR_MINUTE)");
+	$posts = $wpdbpg->get_results("SELECT ID, post_title, post_content, post_excerpt, guid, post_date, post_name, post_status, post_author FROM $wpdbpg->posts");
+			$wpdbpg->update( $wpdbpg->posts, compact('post_title', 'post_content', 'post_excerpt', 'guid'), array('ID' => $post->ID) );
+	$comments = $wpdbpg->get_results("SELECT comment_ID, comment_author, comment_content FROM $wpdbpg->comments");
+			$wpdbpg->update($wpdbpg->comments, compact('comment_content', 'comment_author'), array('comment_ID' => $comment->comment_ID) );
+	$links = $wpdbpg->get_results("SELECT link_id, link_name, link_description FROM $wpdbpg->links");
+			$wpdbpg->update( $wpdbpg->links, compact('link_name', 'link_description'), array('link_id' => $link->link_id) );
+	$wpdbpg->query('DROP TABLE IF EXISTS ' . $wpdbpg->prefix . 'optionvalues');
+	$wpdbpg->query('DROP TABLE IF EXISTS ' . $wpdbpg->prefix . 'optiontypes');
+	$wpdbpg->query('DROP TABLE IF EXISTS ' . $wpdbpg->prefix . 'optiongroups');
+	$wpdbpg->query('DROP TABLE IF EXISTS ' . $wpdbpg->prefix . 'optiongroup_options');
+	$wpdbpg->query("UPDATE $wpdbpg->comments SET comment_type='trackback', comment_content = REPLACE(comment_content, '<trackback />', '') WHERE comment_content LIKE '<trackback />%'");
+	$wpdbpg->query("UPDATE $wpdbpg->comments SET comment_type='pingback', comment_content = REPLACE(comment_content, '<pingback />', '') WHERE comment_content LIKE '<pingback />%'");
+	$options = $wpdbpg->get_results("SELECT option_name, COUNT(option_name) AS dupes FROM `$wpdbpg->options` GROUP BY option_name");
+			$dupe_ids = $wpdbpg->get_col( $wpdbpg->prepare("SELECT option_id FROM $wpdbpg->options WHERE option_name = %s LIMIT %d", $option->option_name, $limit) );
+				$wpdbpg->query("DELETE FROM $wpdbpg->options WHERE option_id IN ($dupe_ids)");
+	$users = $wpdbpg->get_results("SELECT * FROM $wpdbpg->users");
+			update_user_meta( $user->ID, $wpdbpg->prefix . 'user_level', $user->user_level );
+			$wpdbpg->update( $wpdbpg->users, array('display_name' => $id), array('ID' => $user->ID) );
+		$caps = get_user_meta( $user->ID, $wpdbpg->prefix . 'capabilities');
+			$level = get_user_meta($user->ID, $wpdbpg->prefix . 'user_level', true);
+			update_user_meta( $user->ID, $wpdbpg->prefix . 'capabilities', array($role => true) );
+	$wpdbpg->hide_errors();
+		$wpdbpg->query("ALTER TABLE $wpdbpg->users DROP $old");
+	$wpdbpg->show_errors();
+	$comments = $wpdbpg->get_results( "SELECT comment_post_ID, COUNT(*) as c FROM $wpdbpg->comments WHERE comment_approved = '1' GROUP BY comment_post_ID" );
+			$wpdbpg->update( $wpdbpg->posts, array('comment_count' => $comment->c), array('ID' => $comment->comment_post_ID) );
+		$objects = $wpdbpg->get_results("SELECT ID, post_type FROM $wpdbpg->posts WHERE post_status = 'object'");
+			$wpdbpg->update( $wpdbpg->posts, array(	'post_status' => 'attachment',
+		$posts = $wpdbpg->get_results("SELECT ID, post_status FROM $wpdbpg->posts");
+			$wpdbpg->query( $wpdbpg->prepare("UPDATE $wpdbpg->posts SET post_status = %s, post_type = %s WHERE ID = %d", $status, $type, $post->ID) );
+		$wpdbpg->query ("UPDATE $wpdbpg->posts SET post_status = 'future' WHERE post_status = 'publish' AND post_date_gmt > '$now'");
+		$posts = $wpdbpg->get_results("SELECT ID, post_date FROM $wpdbpg->posts WHERE post_status ='future'");
+	$categories = $wpdbpg->get_results("SELECT * FROM $wpdbpg->categories ORDER BY cat_ID");
+		if ( $exists = $wpdbpg->get_results( $wpdbpg->prepare("SELECT term_id, term_group FROM $wpdbpg->terms WHERE slug = %s", $slug) ) ) {
+				$slug_check = $wpdbpg->get_var( $wpdbpg->prepare("SELECT slug FROM $wpdbpg->terms WHERE slug = %s", $alt_slug) );
+				$term_group = $wpdbpg->get_var("SELECT MAX(term_group) FROM $wpdbpg->terms GROUP BY term_group") + 1;
+				$wpdbpg->query( $wpdbpg->prepare("UPDATE $wpdbpg->terms SET term_group = %d WHERE term_id = %d", $term_group, $id) );
+		$wpdbpg->query( $wpdbpg->prepare("INSERT INTO $wpdbpg->terms (term_id, name, slug, term_group) VALUES
+			$wpdbpg->query( $wpdbpg->prepare("INSERT INTO $wpdbpg->term_taxonomy (term_id, taxonomy, description, parent, count) VALUES ( %d, %s, %s, %d, %d)", $term_id, $taxonomy, $description, $parent, $count) );
+			$tt_ids[$term_id][$taxonomy] = (int) $wpdbpg->insert_id;
+			$wpdbpg->query( $wpdbpg->prepare("INSERT INTO $wpdbpg->term_taxonomy (term_id, taxonomy, description, parent, count) VALUES ( %d, %s, %s, %d, %d)", $term_id, $taxonomy, $description, $parent, $count) );
+			$tt_ids[$term_id][$taxonomy] = (int) $wpdbpg->insert_id;
+			$wpdbpg->insert( $wpdbpg->term_taxonomy, compact('term_id', 'taxonomy', 'description', 'parent', 'count') );
+			$tt_ids[$term_id][$taxonomy] = (int) $wpdbpg->insert_id;
+			$wpdbpg->insert( $wpdbpg->term_taxonomy, compact('term_id', 'taxonomy', 'description', 'parent', 'count') );
+			$tt_ids[$term_id][$taxonomy] = (int) $wpdbpg->insert_id;
+	$posts = $wpdbpg->get_results("SELECT $select FROM $wpdbpg->post2cat GROUP BY post_id, category_id");
+		$wpdbpg->insert( $wpdbpg->term_relationships, array('object_id' => $post_id, 'term_taxonomy_id' => $tt_id) );
+		$link_cats = $wpdbpg->get_results("SELECT cat_id, cat_name FROM " . $wpdbpg->prefix . 'linkcategories');
+			if ( $exists = $wpdbpg->get_results( $wpdbpg->prepare("SELECT term_id, term_group FROM $wpdbpg->terms WHERE slug = %s", $slug) ) ) {
+				$wpdbpg->insert( $wpdbpg->terms, compact('name', 'slug', 'term_group') );
+				$term_id = (int) $wpdbpg->insert_id;
+			$wpdbpg->insert( $wpdbpg->term_taxonomy, array('term_id' => $term_id, 'taxonomy' => 'link_category', 'description' => '', 'parent' => 0, 'count' => 0) );
+			$tt_ids[$term_id] = (int) $wpdbpg->insert_id;
+		$links = $wpdbpg->get_results("SELECT link_id, link_category FROM $wpdbpg->links");
+			$wpdbpg->insert( $wpdbpg->term_relationships, array('object_id' => $link->link_id, 'term_taxonomy_id' => $tt_id) );
+		$links = $wpdbpg->get_results("SELECT link_id, category_id FROM $wpdbpg->link2cat GROUP BY link_id, category_id");
+			$wpdbpg->insert( $wpdbpg->term_relationships, array('object_id' => $link_id, 'term_taxonomy_id' => $tt_id) );
+		$wpdbpg->query('DROP TABLE IF EXISTS ' . $wpdbpg->prefix . 'linkcategories');
+	$terms = $wpdbpg->get_results("SELECT term_taxonomy_id, taxonomy FROM $wpdbpg->term_taxonomy");
+			$count = $wpdbpg->get_var( $wpdbpg->prepare("SELECT COUNT(*) FROM $wpdbpg->term_relationships, $wpdbpg->posts WHERE $wpdbpg->posts.ID = $wpdbpg->term_relationships.object_id AND post_status = 'publish' AND post_type = 'post' AND term_taxonomy_id = %d", $term->term_taxonomy_id) );
+			$count = $wpdbpg->get_var( $wpdbpg->prepare("SELECT COUNT(*) FROM $wpdbpg->term_relationships WHERE term_taxonomy_id = %d", $term->term_taxonomy_id) );
+		$wpdbpg->update( $wpdbpg->term_taxonomy, array('count' => $count), array('term_taxonomy_id' => $term->term_taxonomy_id) );
+	$wpdbpg->hide_errors();
+		$wpdbpg->query("ALTER TABLE $wpdbpg->options DROP $old");
+	$wpdbpg->show_errors();
+	$wpdbpg->query('DROP TABLE IF EXISTS ' . $wpdbpg->prefix . 'categories');
+	$wpdbpg->query('DROP TABLE IF EXISTS ' . $wpdbpg->prefix . 'link2cat');
+	$wpdbpg->query('DROP TABLE IF EXISTS ' . $wpdbpg->prefix . 'post2cat');
+	$wpdbpg->query("UPDATE $wpdbpg->postmeta SET meta_key = '_wp_old_slug' WHERE meta_key = 'old_slug'");
+	$wpdbpg->query("UPDATE $wpdbpg->users SET user_activation_key = ''");
+		$wpdbpg->query( "UPDATE $wpdbpg->posts SET post_date = post_modified WHERE post_date = '0000-00-00 00:00:00'" );
+		while( $rows = $wpdbpg->get_results( "SELECT option_name, option_value FROM $wpdbpg->options ORDER BY option_id LIMIT $start, 20" ) ) {
+		refresh_blog_details( $wpdbpg->blogid );
+		$prefix = like_escape($wpdbpg->base_prefix);
+		$wpdbpg->query( "DELETE FROM $wpdbpg->usermeta WHERE meta_key LIKE '{$prefix}%meta-box-hidden%' OR meta_key LIKE '{$prefix}%closedpostboxes%' OR meta_key LIKE '{$prefix}%manage-%-columns-hidden%' OR meta_key LIKE '{$prefix}%meta-box-order%' OR meta_key LIKE '{$prefix}%metaboxorder%' OR meta_key LIKE '{$prefix}%screen_layout%'
+		$wpdbpg->query( "DELETE FROM $wpdbpg->usermeta WHERE meta_key IN ('show_admin_bar_admin', 'plugins_last_view')" );
+		$wpdbpg->hide_errors();
+		$wpdbpg->query( "ALTER TABLE $wpdbpg->options DROP COLUMN blog_id" );
+		$wpdbpg->show_errors();
+		$wpdbpg->hide_errors();
+		$wpdbpg->query("ALTER TABLE $wpdbpg->comments DROP INDEX comment_approved");
+		$wpdbpg->show_errors();
+		$wpdbpg->query( "DELETE FROM $wpdbpg->usermeta WHERE meta_key = 'themes_last_view'" );
+		if ( 'yes' == $wpdbpg->get_var( "SELECT autoload FROM $wpdbpg->options WHERE option_name = 'uninstall_plugins'" ) ) {
+	if ( $wp_current_db_version < 22006 && $wpdbpg->get_var( "SELECT link_id FROM $wpdbpg->links LIMIT 1" ) )
+			$wpdbpg->query( "DELETE FROM $wpdbpg->usermeta WHERE meta_key IN ('$meta_keys')" );
+		$wpdbpg->query("DELETE a, b FROM $wpdbpg->sitemeta a, $wpdbpg->sitemeta b WHERE
+		while( $rows = $wpdbpg->get_results( "SELECT meta_key, meta_value FROM {$wpdbpg->sitemeta} ORDER BY meta_id LIMIT $start, 20" ) ) {
+	if ( $wpdbpg->get_var("SHOW TABLES LIKE '$table_name'") == $table_name )
+	$q = $wpdbpg->query($create_ddl);
+	if ( $wpdbpg->get_var("SHOW TABLES LIKE '$table_name'") == $table_name )
+	$wpdbpg->hide_errors();
+	$wpdbpg->query("ALTER TABLE `$table` DROP INDEX `$index`");
+		$wpdbpg->query("ALTER TABLE `$table` DROP INDEX `{$index}_$i`");
+	$wpdbpg->show_errors();
+	$wpdbpg->query("ALTER TABLE `$table` ADD INDEX ( `$index` )");
+	foreach ($wpdbpg->get_col("DESC $table_name", 0) as $column ) {
+	$q = $wpdbpg->query($create_ddl);
+	foreach ($wpdbpg->get_col("DESC $table_name", 0) as $column ) {
+	if ( $options = $wpdbpg->get_results( "SELECT option_name, option_value FROM $wpdbpg->options" ) ) {
+	$option = $wpdbpg->get_var( $wpdbpg->prepare("SELECT option_value FROM $wpdbpg->options WHERE option_name = %s", $setting ) );
+	$global_tables = $wpdbpg->tables( 'global' );
+		$suppress = $wpdbpg->suppress_errors();
+		$tablefields = $wpdbpg->get_results("DESCRIBE {$table};");
+		$wpdbpg->suppress_errors( $suppress );
+		$tableindices = $wpdbpg->get_results("SHOW INDEX FROM {$table};");
+			$wpdbpg->query($query);
+	$result = $wpdbpg->check_database_version();
+	if ( $wp_current_db_version >= 22006 && get_option( 'link_manager_enabled' ) && ! $wpdbpg->get_var( "SELECT link_id FROM $wpdbpg->links LIMIT 1" ) )
+		$wpdbpg->query("DELETE o1 FROM $wpdbpg->options AS o1 JOIN $wpdbpg->options AS o2 USING (`option_name`) WHERE o2.option_id > o1.option_id");
+		$wpdbpg->query("ALTER TABLE $wpdbpg->options DROP PRIMARY KEY, ADD PRIMARY KEY(option_id)");
+		$wpdbpg->query("ALTER TABLE $wpdbpg->options DROP INDEX option_name");
+			$wpdbpg->query( "ALTER TABLE $wpdbpg->signups ADD signup_id BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST" );
+			$wpdbpg->query( "ALTER TABLE $wpdbpg->signups DROP INDEX domain" );
+			$wpdbpg->query( "ALTER TABLE $wpdbpg->blogs CHANGE COLUMN archived archived varchar(1) NOT NULL default '0'" );
+			$wpdbpg->query( "ALTER TABLE $wpdbpg->blogs CHANGE COLUMN archived archived tinyint(2) NOT NULL default 0" );
+CREATE TABLE $wpdbpg->sitecategories (
+Arquivo ./wp-admin/includes/deprecated.php
+		$level_key = $wpdbpg->get_blog_prefix() . 'user_level';
+		$level_key = $wpdbpg->get_blog_prefix() . 'capabilities'; // wpmu site admins don't have user_levels
+	return $wpdbpg->get_col( $wpdbpg->prepare("SELECT user_id FROM $wpdbpg->usermeta WHERE meta_key = %s AND meta_value != '0'", $level_key) );
+		$authors = $wpdbpg->get_results( "SELECT * FROM $wpdbpg->users WHERE ID IN ($editable) ORDER BY display_name" );
+		$level_key = $wpdbpg->get_blog_prefix() . 'user_level';
+		$level_key = $wpdbpg->get_blog_prefix() . 'capabilities'; // wpmu site admins don't have user_levels
+	$query = $wpdbpg->prepare("SELECT user_id FROM $wpdbpg->usermeta WHERE meta_key = %s", $level_key);
+	return $wpdbpg->get_col( $query );
+		$level_key = $wpdbpg->get_blog_prefix() . 'user_level';
+		$level_key = $wpdbpg->get_blog_prefix() . 'capabilities'; // wpmu site admins don't have user_levels
+	return $wpdbpg->get_col( $wpdbpg->prepare("SELECT user_id FROM $wpdbpg->usermeta WHERE meta_key = %s AND meta_value = '0'", $level_key) );
+		$this->query_limit = $wpdbpg->prepare(" LIMIT %d, %d", $this->first_user, $this->users_per_page);
+				$searches[] = $wpdbpg->prepare( $col . ' LIKE %s', '%' . like_escape($this->search_term) . '%' );
+		$this->query_from = " FROM $wpdbpg->users";
+			$this->query_from .= " INNER JOIN $wpdbpg->usermeta ON $wpdbpg->users.ID = $wpdbpg->usermeta.user_id";
+			$this->query_where .= $wpdbpg->prepare(" AND $wpdbpg->usermeta.meta_key = '{$wpdbpg->prefix}capabilities' AND $wpdbpg->usermeta.meta_value LIKE %s", '%' . $this->role . '%');
+			$level_key = $wpdbpg->prefix . 'capabilities'; // wpmu site admins don't have user_levels
+			$this->query_from .= ", $wpdbpg->usermeta";
+			$this->query_where .= " AND $wpdbpg->users.ID = $wpdbpg->usermeta.user_id AND meta_key = '{$level_key}'";
+		$this->results = $wpdbpg->get_col("SELECT DISTINCT($wpdbpg->users.ID)" . $this->query_from . $this->query_where . $this->query_orderby . $this->query_limit);
+			$this->total_users_for_query = $wpdbpg->get_var("SELECT COUNT(DISTINCT($wpdbpg->users.ID))" . $this->query_from . $this->query_where); // no limit
+		$other_unpubs = $wpdbpg->get_results( $wpdbpg->prepare("SELECT ID, post_title, post_author FROM $wpdbpg->posts WHERE post_type = 'post' AND $type_sql AND post_author IN ($editable) AND post_author != %d ORDER BY post_modified $dir", $user_id) );
+Arquivo ./wp-admin/includes/menu.php
+Arquivo ./wp-admin/includes/revision.php
+Arquivo ./wp-admin/includes/update-core.php
+	$mysql_version  = $wpdbpg->db_version();
+	if ( file_exists( WP_CONTENT_DIR . '/db.php' ) && empty( $wpdbpg->is_mysql ) )
+Arquivo ./wp-admin/includes/import.php
+Arquivo ./wp-admin/includes/comment.php
+	return $wpdbpg->get_var( $wpdbpg->prepare("SELECT comment_post_ID FROM $wpdbpg->comments
+	$pending = $wpdbpg->get_results( "SELECT comment_post_ID, COUNT(comment_ID) as num_comments FROM $wpdbpg->comments WHERE comment_post_ID IN ( $post_id_in ) AND comment_approved = '0' GROUP BY comment_post_ID", ARRAY_A );
+Arquivo ./wp-admin/includes/image-edit.php
+Arquivo ./wp-admin/includes/screen.php
+Arquivo ./wp-admin/includes/class-wp-importer.php
+			$sql = $wpdbpg->prepare( "SELECT post_id, meta_value FROM $wpdbpg->postmeta WHERE meta_key = '%s' LIMIT %d,%d", $meta_key, $offset, $limit );
+			$results = $wpdbpg->get_results( $sql );
+		$sql = $wpdbpg->prepare( "SELECT COUNT( post_id ) AS cnt FROM $wpdbpg->postmeta WHERE meta_key = '%s'", $meta_key );
+		$result = $wpdbpg->get_results( $sql );
+			$sql = $wpdbpg->prepare( "SELECT comment_ID, comment_agent FROM $wpdbpg->comments LIMIT %d,%d", $offset, $limit );
+			$results = $wpdbpg->get_results( $sql );
+		$wpdbpg->queries = array();
+Arquivo ./wp-admin/includes/update.php
+Arquivo ./wp-admin/includes/class-wp-filesystem-ftpsockets.php
+Arquivo ./wp-admin/includes/continents-cities.php
+Arquivo ./wp-admin/includes/file.php
+Arquivo ./wp-admin/includes/class-wp-plugins-list-table.php
+Arquivo ./wp-admin/includes/misc.php
+Arquivo ./wp-admin/includes/class-wp-theme-install-list-table.php
+Arquivo ./wp-admin/includes/admin.php
+Arquivo ./wp-admin/includes/taxonomy.php
+Arquivo ./wp-admin/includes/class-wp-media-list-table.php
+		$total_orphans = $wpdbpg->get_var( "SELECT COUNT( * ) FROM $wpdbpg->posts WHERE post_type = 'attachment' AND post_status != 'trash' AND post_parent < 1" );
+Arquivo ./wp-admin/includes/class-wp-terms-list-table.php
+Arquivo ./wp-admin/includes/class-wp-upgrader.php
+			if ( file_exists( WP_CONTENT_DIR . '/db.php' ) && empty( $wpdbpg->is_mysql ) )
+				$mysql_compat = version_compare( $wpdbpg->db_version(), $item->mysql_version, '>=' );
+		$lock_result = $wpdbpg->query( $wpdbpg->prepare( "INSERT IGNORE INTO `$wpdbpg->options` ( `option_name`, `option_value`, `autoload` ) VALUES (%s, %s, 'no') /* LOCK */", $lock_name, time() ) );
+Arquivo ./wp-admin/includes/list-table.php
+Arquivo ./wp-admin/includes/bookmark.php
+	$wpdbpg->delete( $wpdbpg->links, array( 'link_id' => $link_id ) );
+		if ( false === $wpdbpg->update( $wpdbpg->links, compact('link_url', 'link_name', 'link_image', 'link_target', 'link_description', 'link_visible', 'link_rating', 'link_rel', 'link_notes', 'link_rss'), compact('link_id') ) ) {
+				return new WP_Error( 'db_update_error', __( 'Could not update link in the database' ), $wpdbpg->last_error );
+		if ( false === $wpdbpg->insert( $wpdbpg->links, compact('link_url', 'link_name', 'link_image', 'link_target', 'link_description', 'link_visible', 'link_owner', 'link_rating', 'link_rel', 'link_notes', 'link_rss') ) ) {
+				return new WP_Error( 'db_insert_error', __( 'Could not insert link into the database' ), $wpdbpg->last_error );
+		$link_id = (int) $wpdbpg->insert_id;
+Arquivo ./wp-admin/includes/widgets.php
+Arquivo ./wp-admin/includes/class-wp-links-list-table.php
+Arquivo ./wp-admin/menu-header.php
+Arquivo ./wp-admin/plugin-install.php
+Arquivo ./wp-admin/user/freedoms.php
+Arquivo ./wp-admin/user/profile.php
+Arquivo ./wp-admin/user/credits.php
+Arquivo ./wp-admin/user/menu.php
+Arquivo ./wp-admin/user/about.php
+Arquivo ./wp-admin/user/user-edit.php
+Arquivo ./wp-admin/user/admin.php
+Arquivo ./wp-admin/user/index.php
+Arquivo ./wp-admin/admin-post.php
+Arquivo ./wp-admin/theme-editor.php
+Arquivo ./wp-admin/options-writing.php
+Arquivo ./wp-admin/options.php
+$options = $wpdbpg->get_results( "SELECT * FROM $wpdbpg->options ORDER BY option_name" );
+Arquivo ./wp-admin/nav-menus.php
+Arquivo ./wp-admin/admin-footer.php
+Arquivo ./wp-admin/ms-options.php
+Arquivo ./wp-admin/options-media.php
+Arquivo ./wp-admin/ms-themes.php
+Arquivo ./wp-admin/media-upload.php
+Arquivo ./wp-admin/upgrade.php
+$mysql_version  = $wpdbpg->db_version();
+if ( file_exists( WP_CONTENT_DIR . '/db.php' ) && empty( $wpdbpg->is_mysql ) )
+<?php printf( __( '%s queries' ), $wpdbpg->num_queries ); ?>
+Arquivo ./wp-admin/menu.php
+Arquivo ./wp-admin/edit-form-comment.php
+Arquivo ./wp-admin/revision.php
+Arquivo ./wp-admin/update-core.php
+	$mysql_version  = $wpdbpg->db_version();
+			if ( file_exists( WP_CONTENT_DIR . '/db.php' ) && empty( $wpdbpg->is_mysql ) )
+Arquivo ./wp-admin/import.php
+Arquivo ./wp-admin/plugin-editor.php
+Arquivo ./wp-admin/users.php
+Arquivo ./wp-admin/install-helper.php
+ * if (check_column($wpdbpg->comments, 'comment_author', 'tinytext'))
+ * $tablename = $wpdbpg->links;
+ * if (!check_column($wpdbpg->links, 'link_description', 'varchar(255)')) {
+ *     $ddl = "ALTER TABLE $wpdbpg->links MODIFY COLUMN link_description varchar(255) NOT NULL DEFAULT '' ";
+ *     $q = $wpdbpg->query($ddl);
+ * if (check_column($wpdbpg->links, 'link_description', 'varchar(255)')) {
+	foreach ($wpdbpg->get_col("SHOW TABLES",0) as $table ) {
+	$wpdbpg->query($create_ddl);
+	foreach ($wpdbpg->get_col("SHOW TABLES",0) as $table ) {
+	foreach ($wpdbpg->get_col("DESC $table_name",0) as $column ) {
+	$wpdbpg->query($create_ddl);
+	foreach ($wpdbpg->get_col("DESC $table_name",0) as $column ) {
+	foreach ($wpdbpg->get_col("DESC $table_name",0) as $column ) {
+			$wpdbpg->query($drop_ddl);
+			foreach ($wpdbpg->get_col("DESC $table_name",0) as $column ) {
+	$results = $wpdbpg->get_results("DESC $table_name");
+Arquivo ./wp-admin/comment.php
+Arquivo ./wp-admin/ms-sites.php
+Arquivo ./wp-admin/edit.php
+			$post_ids = $wpdbpg->get_col( $wpdbpg->prepare( "SELECT ID FROM $wpdbpg->posts WHERE post_type=%s AND post_status = %s", $post_type, $post_status ) );
+Arquivo ./wp-admin/ms-admin.php
+Arquivo ./wp-admin/update.php
+Arquivo ./wp-admin/load-scripts.php
+Arquivo ./wp-admin/tools.php
+Arquivo ./wp-admin/setup-config.php
+	if ( ! empty( $wpdbpg->error ) )
+		wp_die( $wpdbpg->error->get_error_message() . $tryagain_link );
+Arquivo ./wp-admin/ms-upgrade-network.php
+Arquivo ./wp-admin/my-sites.php
+Arquivo ./wp-admin/customize.php
+Arquivo ./wp-admin/about.php
+Arquivo ./wp-admin/themes.php
+Arquivo ./wp-admin/options-general.php
+Arquivo ./wp-admin/custom-background.php
+Arquivo ./wp-admin/options-head.php
+Arquivo ./wp-admin/maint/repair.php
+	$tables = $wpdbpg->tables();
+	if ( is_multisite() && ! $wpdbpg->get_var( "SHOW TABLES LIKE '$wpdbpg->sitecategories'" ) )
+		$check = $wpdbpg->get_row( "CHECK TABLE $table" );
+			$repair = $wpdbpg->get_row( "REPAIR TABLE $table" );
+			$check = $wpdbpg->get_row( "ANALYZE TABLE $table" );
+				$check = $wpdbpg->get_row( "OPTIMIZE TABLE $table" );
+Arquivo ./wp-admin/user-edit.php
+		if ( $wpdbpg->get_var( $wpdbpg->prepare( "SELECT user_login FROM {$wpdbpg->signups} WHERE user_login = %s", $current_user->user_login ) ) )
+			$wpdbpg->query( $wpdbpg->prepare( "UPDATE {$wpdbpg->signups} SET user_email = %s WHERE user_login = %s", $user->user_email, $current_user->user_login ) );
+	if ( $user->user_login && isset( $_POST[ 'email' ] ) && is_email( $_POST[ 'email' ] ) && $wpdbpg->get_var( $wpdbpg->prepare( "SELECT user_login FROM {$wpdbpg->signups} WHERE user_login = %s", $user->user_login ) ) )
+		$wpdbpg->query( $wpdbpg->prepare( "UPDATE {$wpdbpg->signups} SET user_email = %s WHERE user_login = %s", $_POST[ 'email' ], $user_login ) );
+	$blog_prefix = $wpdbpg->get_blog_prefix();
+		$cap = $wpdbpg->get_var( "SELECT meta_value FROM {$wpdbpg->usermeta} WHERE user_id = '{$user_id}' AND meta_key = '{$blog_prefix}capabilities' AND meta_value = 'a:0:{}'" );
+Arquivo ./wp-admin/link-parse-opml.php
+Arquivo ./wp-admin/admin.php
+Arquivo ./wp-admin/link.php
+		//$q = $wpdbpg->query("update $wpdbpg->links SET link_category='$category' WHERE link_id IN ($all_links)");
+Arquivo ./wp-admin/ms-edit.php
+Arquivo ./wp-admin/ms-delete-site.php
+		wpmu_delete_blog( $wpdbpg->blogid );
+Arquivo ./wp-admin/edit-tags.php
+Arquivo ./wp-admin/admin-functions.php
+Arquivo ./wp-admin/edit-link-form.php
+Arquivo ./wp-admin/widgets.php
+Arquivo ./wp-admin/index.php
+Arquivo ./wp-comments-post.php
+Arquivo ./wp-config-sample.php
+Arquivo ./wp-links-opml.php
+Arquivo ./wp-settings.php
+Arquivo ./wp-signup.php
+	wpmu_create_blog( $domain, $path, $blog_title, $current_user->ID, $meta, $wpdbpg->siteid );
+Arquivo ./wp-content/themes/twentyfourteen/content-none.php
+Arquivo ./wp-content/themes/twentyfourteen/footer.php
+Arquivo ./wp-content/themes/twentyfourteen/content-link.php
+Arquivo ./wp-content/themes/twentyfourteen/page.php
+Arquivo ./wp-content/themes/twentyfourteen/search.php
+Arquivo ./wp-content/themes/twentyfourteen/inc/custom-header.php
+Arquivo ./wp-content/themes/twentyfourteen/inc/back-compat.php
+Arquivo ./wp-content/themes/twentyfourteen/inc/featured-content.php
+Arquivo ./wp-content/themes/twentyfourteen/inc/customizer.php
+Arquivo ./wp-content/themes/twentyfourteen/inc/widgets.php
+Arquivo ./wp-content/themes/twentyfourteen/inc/template-tags.php
+Arquivo ./wp-content/themes/twentyfourteen/tag.php
+Arquivo ./wp-content/themes/twentyfourteen/featured-content.php
+Arquivo ./wp-content/themes/twentyfourteen/header.php
+Arquivo ./wp-content/themes/twentyfourteen/content.php
+Arquivo ./wp-content/themes/twentyfourteen/content-audio.php
+Arquivo ./wp-content/themes/twentyfourteen/single.php
+Arquivo ./wp-content/themes/twentyfourteen/sidebar.php
+Arquivo ./wp-content/themes/twentyfourteen/sidebar-footer.php
+Arquivo ./wp-content/themes/twentyfourteen/image.php
+Arquivo ./wp-content/themes/twentyfourteen/404.php
+Arquivo ./wp-content/themes/twentyfourteen/content-video.php
+Arquivo ./wp-content/themes/twentyfourteen/taxonomy-post_format.php
+Arquivo ./wp-content/themes/twentyfourteen/functions.php
+Arquivo ./wp-content/themes/twentyfourteen/content-page.php
+Arquivo ./wp-content/themes/twentyfourteen/sidebar-content.php
+Arquivo ./wp-content/themes/twentyfourteen/content-featured-post.php
+Arquivo ./wp-content/themes/twentyfourteen/archive.php
+Arquivo ./wp-content/themes/twentyfourteen/author.php
+Arquivo ./wp-content/themes/twentyfourteen/content-aside.php
+Arquivo ./wp-content/themes/twentyfourteen/category.php
+Arquivo ./wp-content/themes/twentyfourteen/comments.php
+Arquivo ./wp-content/themes/twentyfourteen/content-gallery.php
+Arquivo ./wp-content/themes/twentyfourteen/content-image.php
+Arquivo ./wp-content/themes/twentyfourteen/page-templates/full-width.php
+Arquivo ./wp-content/themes/twentyfourteen/page-templates/contributors.php
+Arquivo ./wp-content/themes/twentyfourteen/index.php
+Arquivo ./wp-content/themes/twentyfourteen/content-quote.php
+Arquivo ./wp-content/themes/twentytwelve/content-none.php
+Arquivo ./wp-content/themes/twentytwelve/footer.php
+Arquivo ./wp-content/themes/twentytwelve/content-link.php
+Arquivo ./wp-content/themes/twentytwelve/page.php
+Arquivo ./wp-content/themes/twentytwelve/search.php
+Arquivo ./wp-content/themes/twentytwelve/inc/custom-header.php
+Arquivo ./wp-content/themes/twentytwelve/tag.php
+Arquivo ./wp-content/themes/twentytwelve/header.php
+Arquivo ./wp-content/themes/twentytwelve/content.php
+Arquivo ./wp-content/themes/twentytwelve/single.php
+Arquivo ./wp-content/themes/twentytwelve/sidebar.php
+Arquivo ./wp-content/themes/twentytwelve/image.php
+Arquivo ./wp-content/themes/twentytwelve/404.php
+Arquivo ./wp-content/themes/twentytwelve/functions.php
+Arquivo ./wp-content/themes/twentytwelve/content-page.php
+Arquivo ./wp-content/themes/twentytwelve/archive.php
+Arquivo ./wp-content/themes/twentytwelve/author.php
+Arquivo ./wp-content/themes/twentytwelve/content-status.php
+Arquivo ./wp-content/themes/twentytwelve/content-aside.php
+Arquivo ./wp-content/themes/twentytwelve/category.php
+Arquivo ./wp-content/themes/twentytwelve/comments.php
+Arquivo ./wp-content/themes/twentytwelve/content-image.php
+Arquivo ./wp-content/themes/twentytwelve/sidebar-front.php
+Arquivo ./wp-content/themes/twentytwelve/page-templates/full-width.php
+Arquivo ./wp-content/themes/twentytwelve/page-templates/front-page.php
+Arquivo ./wp-content/themes/twentytwelve/index.php
+Arquivo ./wp-content/themes/twentytwelve/content-quote.php
+Arquivo ./wp-content/themes/twentythirteen/content-none.php
+Arquivo ./wp-content/themes/twentythirteen/footer.php
+Arquivo ./wp-content/themes/twentythirteen/content-link.php
+Arquivo ./wp-content/themes/twentythirteen/page.php
+Arquivo ./wp-content/themes/twentythirteen/search.php
+Arquivo ./wp-content/themes/twentythirteen/inc/custom-header.php
+Arquivo ./wp-content/themes/twentythirteen/inc/back-compat.php
+Arquivo ./wp-content/themes/twentythirteen/author-bio.php
+Arquivo ./wp-content/themes/twentythirteen/tag.php
+Arquivo ./wp-content/themes/twentythirteen/header.php
+Arquivo ./wp-content/themes/twentythirteen/content.php
+Arquivo ./wp-content/themes/twentythirteen/content-audio.php
+Arquivo ./wp-content/themes/twentythirteen/single.php
+Arquivo ./wp-content/themes/twentythirteen/sidebar.php
+Arquivo ./wp-content/themes/twentythirteen/image.php
+Arquivo ./wp-content/themes/twentythirteen/404.php
+Arquivo ./wp-content/themes/twentythirteen/content-chat.php
+Arquivo ./wp-content/themes/twentythirteen/content-video.php
+Arquivo ./wp-content/themes/twentythirteen/taxonomy-post_format.php
+Arquivo ./wp-content/themes/twentythirteen/functions.php
+Arquivo ./wp-content/themes/twentythirteen/archive.php
+Arquivo ./wp-content/themes/twentythirteen/author.php
+Arquivo ./wp-content/themes/twentythirteen/content-status.php
+Arquivo ./wp-content/themes/twentythirteen/content-aside.php
+Arquivo ./wp-content/themes/twentythirteen/category.php
+Arquivo ./wp-content/themes/twentythirteen/sidebar-main.php
+Arquivo ./wp-content/themes/twentythirteen/comments.php
+Arquivo ./wp-content/themes/twentythirteen/content-gallery.php
+Arquivo ./wp-content/themes/twentythirteen/content-image.php
+Arquivo ./wp-content/themes/twentythirteen/index.php
+Arquivo ./wp-content/themes/twentythirteen/content-quote.php
+Arquivo ./wp-content/themes/index.php
+Arquivo ./wp-content/index.php
+Arquivo ./wp-content/plugins/hello.php
+Arquivo ./wp-content/plugins/akismet/legacy.php
+			$type = $wpdbpg->escape( $type );
+		return $wpdbpg->get_results( "SELECT * FROM $wpdbpg->comments WHERE comment_approved = 'spam' AND comment_type='$type' ORDER BY comment_date DESC LIMIT $start, $end");
+	return $wpdbpg->get_results( "SELECT * FROM $wpdbpg->comments WHERE comment_approved = 'spam' ORDER BY comment_date DESC LIMIT $start, $end");
+	$totals = $wpdbpg->get_results( "SELECT comment_type, COUNT(*) AS cc FROM $wpdbpg->comments WHERE comment_approved = 'spam' GROUP BY comment_type" );
+				$wpdbpg->query("UPDATE $wpdbpg->comments SET comment_approved = '1' WHERE comment_ID = '$comment'");
+		$delete_time = $wpdbpg->escape( $_POST['display_time'] );
+		$comment_ids = $wpdbpg->get_col( "SELECT comment_id FROM $wpdbpg->comments WHERE comment_approved = 'spam' AND '$delete_time' > comment_date_gmt" );
+			$wpdbpg->query( "DELETE FROM $wpdbpg->comments WHERE comment_id IN ( " . implode( ', ', $comment_ids ) . " )");
+	$s = $wpdbpg->escape($_POST['s']);
+	$comments = $wpdbpg->get_results("SELECT * FROM $wpdbpg->comments  WHERE
+	if ( $wpdbpg->get_var( "SELECT COUNT(*) FROM $wpdbpg->comments WHERE comment_approved = '0'" ) )
+Arquivo ./wp-content/plugins/akismet/widget.php
+Arquivo ./wp-content/plugins/akismet/akismet.php
+		return $wpdbpg->get_var( $wpdbpg->prepare( "SELECT COUNT(*) FROM $wpdbpg->comments WHERE user_id = %d AND comment_approved = 1", $user_id ) );
+		return $wpdbpg->get_var( $wpdbpg->prepare( "SELECT COUNT(*) FROM $wpdbpg->comments WHERE comment_author_email = %s AND comment_author = %s AND comment_author_url = %s AND comment_approved = 1", $comment_author_email, $comment_author, $comment_author_url ) );
+	$comment_ids = $wpdbpg->get_col("SELECT comment_id FROM $wpdbpg->comments WHERE DATE_SUB('$now_gmt', INTERVAL 15 DAY) > comment_date_gmt AND comment_approved = 'spam'");
+	$wpdbpg->query("DELETE FROM $wpdbpg->comments WHERE comment_id IN ( $comma_comment_ids )");
+	$wpdbpg->query("DELETE FROM $wpdbpg->commentmeta WHERE comment_id IN ( $comma_comment_ids )");
+		$wpdbpg->query("OPTIMIZE TABLE $wpdbpg->comments");
+		$comment_ids = $wpdbpg->get_col( "SELECT $wpdbpg->comments.comment_id FROM $wpdbpg->commentmeta INNER JOIN $wpdbpg->comments USING(comment_id) WHERE meta_key = 'akismet_as_submitted' AND DATE_SUB('$now_gmt', INTERVAL {$interval} DAY) > comment_date_gmt LIMIT 10000" ); 
+		$wpdbpg->query( "OPTIMIZE TABLE $wpdbpg->commentmeta" ); 
+    $c = $wpdbpg->get_row( "SELECT * FROM $wpdbpg->comments WHERE comment_ID = '$id'", ARRAY_A );
+	$comment_errors = $wpdbpg->get_col( "
+		FROM {$wpdbpg->prefix}commentmeta
+	$remaining = $wpdbpg->get_var( "SELECT COUNT(*) FROM $wpdbpg->commentmeta WHERE meta_key = 'akismet_error'" );
+Arquivo ./wp-content/plugins/akismet/admin.php
+				$waiting = $wpdbpg->get_var( "SELECT COUNT(*) FROM $wpdbpg->commentmeta WHERE meta_key = 'akismet_error'" );
+	$comment = $wpdbpg->get_row("SELECT * FROM $wpdbpg->comments WHERE comment_ID = '$comment_id'");
+	$comment = $wpdbpg->get_row("SELECT * FROM $wpdbpg->comments WHERE comment_ID = '$comment_id'");
+				$count = (int) $wpdbpg->get_var("SELECT COUNT(comment_ID) FROM $wpdbpg->comments WHERE comment_approved = 'spam'");
+		$type  = $wpdbpg->escape( $type );
+	return (int) $wpdbpg->get_var("SELECT COUNT(comment_ID) FROM $wpdbpg->comments WHERE comment_approved = 'spam' AND comment_type='$type'");
+	$moderation = $wpdbpg->get_results( "SELECT * FROM $wpdbpg->comments WHERE comment_approved = '0'", ARRAY_A );
+Arquivo ./wp-content/plugins/akismet/index.php
+Arquivo ./wp-content/plugins/index.php
+Arquivo ./wp-load.php
+Arquivo ./wp-includes/script-loader.php
+Arquivo ./wp-includes/class-wp-image-editor.php
+Arquivo ./wp-includes/class-wp-error.php
+Arquivo ./wp-includes/rss-functions.php
+Arquivo ./wp-includes/class-wp-embed.php
+Arquivo ./wp-includes/formatting.php
+	return $wpdbpg->_escape( $data );
+Arquivo ./wp-includes/l10n.php
+Arquivo ./wp-includes/rss.php
+Arquivo ./wp-includes/pluggable-deprecated.php
+Arquivo ./wp-includes/class-wp-theme.php
+Arquivo ./wp-includes/user.php
+	$count = $wpdbpg->get_var( "SELECT COUNT(*) FROM $wpdbpg->posts $where" );
+	$result = $wpdbpg->get_results( "SELECT post_author, COUNT(*) FROM $wpdbpg->posts $where AND post_author IN ($userlist) GROUP BY post_author", ARRAY_N );
+	$prefix = $wpdbpg->get_blog_prefix();
+		$option_name = $wpdbpg->get_blog_prefix() . $option_name;
+		$option_name = $wpdbpg->get_blog_prefix() . $option_name;
+				$this->query_fields[] = "$wpdbpg->users.$field";
+			$this->query_fields = "$wpdbpg->users.*";
+			$this->query_fields = "$wpdbpg->users.ID";
+		$this->query_from = "FROM $wpdbpg->users";
+					FROM $wpdbpg->posts
+				) p ON ({$wpdbpg->users}.ID = p.post_author)
+				$orderby = "$wpdbpg->usermeta.meta_value";
+				$this->query_limit = $wpdbpg->prepare("LIMIT %d, %d", $qv['offset'], $qv['number']);
+				$this->query_limit = $wpdbpg->prepare("LIMIT %d", $qv['number']);
+			$qv['meta_key'] = $wpdbpg->get_blog_prefix( $blog_id ) . 'user_level';
+			$cap_meta_query['key'] = $wpdbpg->get_blog_prefix( $blog_id ) . 'capabilities';
+			$clauses = $meta_query->get_sql( 'user', $wpdbpg->users, 'ID', $this );
+			$this->query_where .= " AND $wpdbpg->users.ID IN ($ids)";
+			$this->query_where .= " AND $wpdbpg->users.ID NOT IN ($ids)";
+			$this->results = $wpdbpg->get_results("SELECT $this->query_fields $this->query_from $this->query_where $this->query_orderby $this->query_limit");
+			$this->results = $wpdbpg->get_col("SELECT $this->query_fields $this->query_from $this->query_where $this->query_orderby $this->query_limit");
+			$this->total_users = $wpdbpg->get_var( apply_filters( 'found_users_query', 'SELECT FOUND_ROWS()' ) );
+	if ( isset( $keys[ $wpdbpg->base_prefix . 'capabilities' ] ) && defined( 'MULTISITE' ) ) {
+		unset( $keys[ $wpdbpg->base_prefix . 'capabilities' ] );
+		if ( $wpdbpg->base_prefix && 0 !== strpos( $key, $wpdbpg->base_prefix ) )
+		$blog_id = str_replace( array( $wpdbpg->base_prefix, '_capabilities' ), '', $key );
+	$blog_prefix = $wpdbpg->get_blog_prefix($id);
+		$row = $wpdbpg->get_row( "SELECT $select_count, COUNT(*) FROM $wpdbpg->usermeta WHERE meta_key = '{$blog_prefix}capabilities'", ARRAY_N );
+		$users_of_blog = $wpdbpg->get_col( "SELECT meta_value FROM $wpdbpg->usermeta WHERE meta_key = '{$blog_prefix}capabilities'" );
+	$user_nicename_check = $wpdbpg->get_var( $wpdbpg->prepare("SELECT ID FROM $wpdbpg->users WHERE user_nicename = %s AND user_login != %s LIMIT 1" , $user_nicename, $user_login));
+			$user_nicename_check = $wpdbpg->get_var( $wpdbpg->prepare("SELECT ID FROM $wpdbpg->users WHERE user_nicename = %s AND user_login != %s LIMIT 1" , $alt_user_nicename, $user_login));
+		$wpdbpg->update( $wpdbpg->users, $data, compact( 'ID' ) );
+		$wpdbpg->insert( $wpdbpg->users, $data + compact( 'user_login' ) );
+		$user_id = (int) $wpdbpg->insert_id;
+	$row = $wpdbpg->get_row( $wpdbpg->prepare( "SELECT ID, user_activation_key FROM $wpdbpg->users WHERE user_login = %s", $login ) );
+Arquivo ./wp-includes/class-wp-xmlrpc-server.php
+		$page_list = $wpdbpg->get_results("
+			FROM {$wpdbpg->posts}
+		$attachments = $wpdbpg->get_results( "SELECT ID, guid FROM {$wpdbpg->posts} WHERE post_parent = '0' AND post_type = 'attachment'" );
+					$wpdbpg->update($wpdbpg->posts, array('post_parent' => $post_ID), array('ID' => $file->ID) );
+			$old_file = $wpdbpg->get_row("
+				FROM {$wpdbpg->posts}
+		$comments = $wpdbpg->get_results( $wpdbpg->prepare("SELECT comment_author_url, comment_content, comment_author_IP, comment_type FROM $wpdbpg->comments WHERE comment_post_ID = %d", $post_ID) );
+				$sql = $wpdbpg->prepare("SELECT ID FROM $wpdbpg->posts WHERE post_title RLIKE %s", like_escape( $title ) );
+				if (! ($post_ID = $wpdbpg->get_var($sql)) ) {
+		if ( $wpdbpg->get_results( $wpdbpg->prepare("SELECT * FROM $wpdbpg->comments WHERE comment_post_ID = %d AND comment_author_url = %s", $post_ID, $pagelinkedfrom) ) )
+		$comments = $wpdbpg->get_results( $wpdbpg->prepare("SELECT comment_author_url, comment_content, comment_author_IP, comment_type FROM $wpdbpg->comments WHERE comment_post_ID = %d", $post_ID) );
+Arquivo ./wp-includes/post.php
+			$_post = $wpdbpg->get_row( $wpdbpg->prepare( "SELECT * FROM $wpdbpg->posts WHERE ID = %d LIMIT 1", $post_id ) );
+	$return = $wpdbpg->update( $wpdbpg->posts, array('post_type' => $post_type), array('ID' => $post_id) );
+	$query = "SELECT post_status, COUNT( * ) AS num_posts FROM {$wpdbpg->posts} WHERE post_type = %s";
+		$results = (array) $wpdbpg->get_results( $wpdbpg->prepare( $query, $type ), ARRAY_A );
+	$count = $wpdbpg->get_results( "SELECT post_mime_type, COUNT( * ) AS num_posts FROM $wpdbpg->posts WHERE post_type = 'attachment' AND post_status != 'trash' $and GROUP BY post_mime_type", ARRAY_A );
+	$counts['trash'] = $wpdbpg->get_var( "SELECT COUNT( * ) FROM $wpdbpg->posts WHERE post_type = 'attachment' AND post_status = 'trash' $and");
+	if ( !$post = $wpdbpg->get_row($wpdbpg->prepare("SELECT * FROM $wpdbpg->posts WHERE ID = %d", $postid)) )
+		$children_query = $wpdbpg->prepare( "SELECT * FROM $wpdbpg->posts WHERE post_parent = %d AND post_type = %s", $postid, $post->post_type );
+		$children = $wpdbpg->get_results( $children_query );
+		$wpdbpg->update( $wpdbpg->posts, $parent_data, $parent_where + array( 'post_type' => $post->post_type ) );
+	$revision_ids = $wpdbpg->get_col( $wpdbpg->prepare( "SELECT ID FROM $wpdbpg->posts WHERE post_parent = %d AND post_type = 'revision'", $postid ) );
+	$wpdbpg->update( $wpdbpg->posts, $parent_data, $parent_where + array( 'post_type' => 'attachment' ) );
+	$comment_ids = $wpdbpg->get_col( $wpdbpg->prepare( "SELECT comment_ID FROM $wpdbpg->comments WHERE comment_post_ID = %d", $postid ));
+	$post_meta_ids = $wpdbpg->get_col( $wpdbpg->prepare( "SELECT meta_id FROM $wpdbpg->postmeta WHERE post_id = %d ", $postid ));
+	$result = $wpdbpg->delete( $wpdbpg->posts, array( 'ID' => $postid ) );
+	$comments = $wpdbpg->get_results( $wpdbpg->prepare("SELECT comment_ID, comment_approved FROM $wpdbpg->comments WHERE comment_post_ID = %d", $post_id) );
+	$result = $wpdbpg->update($wpdbpg->comments, array('comment_approved' => 'post-trashed'), array('comment_post_ID' => $post_id));
+		$wpdbpg->query( "UPDATE $wpdbpg->comments SET comment_approved = '$status' WHERE comment_ID IN ('" . $comments_in . "')" );
+		if ( false === $wpdbpg->update( $wpdbpg->posts, $data, $where ) ) {
+				return new WP_Error('db_update_error', __('Could not update post in the database'), $wpdbpg->last_error);
+			if ( ! $wpdbpg->get_var( $wpdbpg->prepare("SELECT ID FROM $wpdbpg->posts WHERE ID = %d", $import_id) ) ) {
+		if ( false === $wpdbpg->insert( $wpdbpg->posts, $data ) ) {
+				return new WP_Error('db_insert_error', __('Could not insert post into the database'), $wpdbpg->last_error);
+		$post_ID = (int) $wpdbpg->insert_id;
+		$wpdbpg->update( $wpdbpg->posts, array( 'post_name' => $data['post_name'] ), $where );
+		$wpdbpg->update( $wpdbpg->posts, array( 'guid' => get_permalink( $post_ID ) ), $where );
+	$wpdbpg->update( $wpdbpg->posts, array( 'post_status' => 'publish' ), array( 'ID' => $post->ID ) );
+		$check_sql = "SELECT post_name FROM $wpdbpg->posts WHERE post_name = %s AND ID != %d LIMIT 1";
+		$post_name_check = $wpdbpg->get_var( $wpdbpg->prepare( $check_sql, $slug, $post_ID ) );
+				$post_name_check = $wpdbpg->get_var( $wpdbpg->prepare( $check_sql, $alt_post_name, $post_ID ) );
+		$check_sql = "SELECT post_name FROM $wpdbpg->posts WHERE post_name = %s AND post_type IN ( '" . implode( "', '", esc_sql( $hierarchical_post_types ) ) . "' ) AND ID != %d AND post_parent = %d LIMIT 1";
+		$post_name_check = $wpdbpg->get_var( $wpdbpg->prepare( $check_sql, $slug, $post_ID, $post_parent ) );
+				$post_name_check = $wpdbpg->get_var( $wpdbpg->prepare( $check_sql, $alt_post_name, $post_ID, $post_parent ) );
+		$check_sql = "SELECT post_name FROM $wpdbpg->posts WHERE post_name = %s AND post_type = %s AND ID != %d LIMIT 1";
+		$post_name_check = $wpdbpg->get_var( $wpdbpg->prepare( $check_sql, $slug, $post_type, $post_ID ) );
+				$post_name_check = $wpdbpg->get_var( $wpdbpg->prepare( $check_sql, $alt_post_name, $post_type, $post_ID ) );
+	$pung = $wpdbpg->get_var( $wpdbpg->prepare( "SELECT pinged FROM $wpdbpg->posts WHERE ID = %d", $post_id ));
+	return $wpdbpg->update( $wpdbpg->posts, array( 'pinged' => $new ), array( 'ID' => $post_id ) );
+	$pung = $wpdbpg->get_var( $wpdbpg->prepare( "SELECT pinged FROM $wpdbpg->posts WHERE ID = %d", $post_id ));
+	$to_ping = $wpdbpg->get_var( $wpdbpg->prepare( "SELECT to_ping FROM $wpdbpg->posts WHERE ID = %d", $post_id ));
+		$page_ids = $wpdbpg->get_col("SELECT ID FROM $wpdbpg->posts WHERE post_type = 'page'");
+	$pages = $wpdbpg->get_results( "SELECT ID, post_name, post_parent, post_type FROM $wpdbpg->posts WHERE post_name IN ($in_string) AND (post_type = '$post_type_sql' OR post_type = 'attachment')", OBJECT_K );
+	$page = $wpdbpg->get_var( $wpdbpg->prepare( "SELECT ID FROM $wpdbpg->posts WHERE post_title = %s AND post_type= %s", $page_title, $post_type ) );
+					$author_query = $wpdbpg->prepare(' post_author = %d ', $post_author);
+					$author_query .= $wpdbpg->prepare(' OR post_author = %d ', $post_author);
+		$join = " LEFT JOIN $wpdbpg->postmeta ON ( $wpdbpg->posts.ID = $wpdbpg->postmeta.post_id )";
+			$where .= $wpdbpg->prepare(" AND $wpdbpg->postmeta.meta_key = %s", $meta_key);
+			$where .= $wpdbpg->prepare(" AND $wpdbpg->postmeta.meta_value = %s", $meta_value);
+		$where .= $wpdbpg->prepare(' AND post_parent = %d ', $parent);
+		$where_post_type = $wpdbpg->prepare( "post_type = %s AND post_status = %s", $post_type, array_shift( $post_status ) );
+		$where_post_type = $wpdbpg->prepare( "post_type = %s AND post_status IN ('$post_status')", $post_type );
+				$orderby = "$wpdbpg->posts.ID";
+				$orderby = "$wpdbpg->posts.comment_count";
+					$orderby = "$wpdbpg->posts." . $orderby;
+					$orderby = "$wpdbpg->posts.post_" . $orderby;
+	$sort_column = ! empty( $orderby_array ) ? implode( ',', $orderby_array ) : "$wpdbpg->posts.post_title";
+	$query = "SELECT * FROM $wpdbpg->posts $join WHERE ($where_post_type) $where ";
+	$pages = $wpdbpg->get_results($query);
+		$wpdbpg->update( $wpdbpg->posts, $data, array( 'ID' => $post_ID ) );
+			if ( ! $wpdbpg->get_var( $wpdbpg->prepare("SELECT ID FROM $wpdbpg->posts WHERE ID = %d", $import_id) ) ) {
+		$wpdbpg->insert( $wpdbpg->posts, $data );
+		$post_ID = (int) $wpdbpg->insert_id;
+		$wpdbpg->update( $wpdbpg->posts, compact("post_name"), array( 'ID' => $post_ID ) );
+	if ( !$post = $wpdbpg->get_row( $wpdbpg->prepare("SELECT * FROM $wpdbpg->posts WHERE ID = %d", $post_id) ) )
+	$comment_ids = $wpdbpg->get_col( $wpdbpg->prepare( "SELECT comment_ID FROM $wpdbpg->comments WHERE comment_post_ID = %d", $post_id ));
+	$post_meta_ids = $wpdbpg->get_col( $wpdbpg->prepare( "SELECT meta_id FROM $wpdbpg->postmeta WHERE post_id = %d ", $post_id ));
+	$result = $wpdbpg->delete( $wpdbpg->posts, array( 'ID' => $post_id ) );
+		if (! $wpdbpg->get_row( $wpdbpg->prepare( "SELECT meta_id FROM $wpdbpg->postmeta WHERE meta_key = '_wp_attachment_metadata' AND meta_value LIKE %s AND post_id <> %d", '%' . $meta['thumb'] . '%', $post_id)) ) {
+			$sql = $wpdbpg->prepare( 'WHERE post_type = %s AND ', $post_type );
+			$sql = $wpdbpg->prepare( 'WHERE post_author = %d AND post_type = %s AND ', $post_author, $post_type );
+				$date = $wpdbpg->get_var("SELECT post_{$field}_gmt FROM $wpdbpg->posts WHERE post_status = 'publish' AND post_type IN ({$post_types}) ORDER BY post_{$field}_gmt DESC LIMIT 1");
+				$date = $wpdbpg->get_var("SELECT post_{$field} FROM $wpdbpg->posts WHERE post_status = 'publish' AND post_type IN ({$post_types}) ORDER BY post_{$field}_gmt DESC LIMIT 1");
+				$date = $wpdbpg->get_var("SELECT DATE_ADD(post_{$field}_gmt, INTERVAL '$add_seconds_server' SECOND) FROM $wpdbpg->posts WHERE post_status = 'publish' AND post_type IN ({$post_types}) ORDER BY post_{$field}_gmt DESC LIMIT 1");
+			$wpdbpg->update( $wpdbpg->posts, array( 'guid' => get_permalink( $post->ID ) ), array( 'ID' => $post->ID ) );
+	$old_posts = $wpdbpg->get_col( "SELECT ID FROM $wpdbpg->posts WHERE post_status = 'auto-draft' AND DATE_SUB( NOW(), INTERVAL 7 DAY ) > post_date" );
+		$fresh_posts = $wpdbpg->get_results( sprintf( "SELECT $wpdbpg->posts.* FROM $wpdbpg->posts WHERE ID IN (%s)", join( ",", $non_cached_ids ) ) );
+Arquivo ./wp-includes/functions.wp-styles.php
+Arquivo ./wp-includes/class.wp-styles.php
+Arquivo ./wp-includes/class-wp-http-ixr-client.php
+Arquivo ./wp-includes/load.php
+	if ( !empty( $wpdbpg->error ) )
+	$wpdbpg->field_types = array( 'post_author' => '%d', 'post_parent' => '%d', 'menu_order' => '%d', 'term_id' => '%d', 'term_group' => '%d', 'term_taxonomy_id' => '%d',
+	$prefix = $wpdbpg->set_prefix( $table_prefix );
+Arquivo ./wp-includes/functions.wp-scripts.php
+Arquivo ./wp-includes/ms-default-filters.php
+Arquivo ./wp-includes/SimplePie/Item.php
+Arquivo ./wp-includes/SimplePie/Restriction.php
+Arquivo ./wp-includes/SimplePie/Registry.php
+Arquivo ./wp-includes/SimplePie/XML/Declaration/Parser.php
+Arquivo ./wp-includes/SimplePie/Rating.php
+Arquivo ./wp-includes/SimplePie/Credit.php
+Arquivo ./wp-includes/SimplePie/Parse/Date.php
+Arquivo ./wp-includes/SimplePie/Caption.php
+Arquivo ./wp-includes/SimplePie/Sanitize.php
+Arquivo ./wp-includes/SimplePie/HTTP/Parser.php
+Arquivo ./wp-includes/SimplePie/Net/IPv6.php
+Arquivo ./wp-includes/SimplePie/Cache.php
+Arquivo ./wp-includes/SimplePie/Locator.php
+Arquivo ./wp-includes/SimplePie/Enclosure.php
+Arquivo ./wp-includes/SimplePie/Core.php
+Arquivo ./wp-includes/SimplePie/Author.php
+Arquivo ./wp-includes/SimplePie/Copyright.php
+Arquivo ./wp-includes/SimplePie/gzdecode.php
+Arquivo ./wp-includes/SimplePie/Cache/MySQL.php
+Arquivo ./wp-includes/SimplePie/Cache/Base.php
+Arquivo ./wp-includes/SimplePie/Cache/DB.php
+Arquivo ./wp-includes/SimplePie/Cache/File.php
+Arquivo ./wp-includes/SimplePie/Cache/Memcache.php
+Arquivo ./wp-includes/SimplePie/Misc.php
+Arquivo ./wp-includes/SimplePie/Decode/HTML/Entities.php
+Arquivo ./wp-includes/SimplePie/IRI.php
+Arquivo ./wp-includes/SimplePie/Exception.php
+Arquivo ./wp-includes/SimplePie/File.php
+Arquivo ./wp-includes/SimplePie/Source.php
+Arquivo ./wp-includes/SimplePie/Category.php
+Arquivo ./wp-includes/SimplePie/Parser.php
+Arquivo ./wp-includes/SimplePie/Content/Type/Sniffer.php
+Arquivo ./wp-includes/ms-deprecated.php
+	$blogs = $wpdbpg->get_results( $wpdbpg->prepare("SELECT blog_id, domain, path FROM $wpdbpg->blogs WHERE site_id = %d AND public = '1' AND archived = '0' AND mature = '0' AND spam = '0' AND deleted = '0' ORDER BY registered DESC", $wpdbpg->siteid), ARRAY_A );
+		$blog_list[ $details['blog_id'] ]['postcount'] = $wpdbpg->get_var( "SELECT COUNT(ID) FROM " . $wpdbpg->get_blog_prefix( $details['blog_id'] ). "posts WHERE post_status='publish' AND post_type='post'" );
+Arquivo ./wp-includes/class-wp-walker.php
+Arquivo ./wp-includes/plugin.php
+Arquivo ./wp-includes/class-http.php
+Arquivo ./wp-includes/capabilities.php
+		$this->role_key = $wpdbpg->get_blog_prefix() . 'user_roles';
+		$this->role_key = $wpdbpg->get_blog_prefix() . 'user_roles';
+		if ( !$user = $wpdbpg->get_row( $wpdbpg->prepare(
+			"SELECT * FROM $wpdbpg->users WHERE $db_field = %s", $value
+			$this->cap_key = $wpdbpg->get_blog_prefix() . 'capabilities';
+		update_user_meta( $this->ID, $wpdbpg->get_blog_prefix() . 'user_level', $this->user_level );
+		delete_user_meta( $this->ID, $wpdbpg->get_blog_prefix() . 'user_level' );
+			$cap_key = $wpdbpg->get_blog_prefix( $blog_id ) . 'capabilities';
+Arquivo ./wp-includes/class-phpmailer.php
+Arquivo ./wp-includes/query.php
+				$q['search_orderby_title'][] = "$wpdbpg->posts.post_title LIKE '%$term%'";
+			$search .= "{$searchand}(($wpdbpg->posts.post_title LIKE '{$n}{$term}{$n}') OR ($wpdbpg->posts.post_content LIKE '{$n}{$term}{$n}'))";
+				$search .= " AND ($wpdbpg->posts.post_password = '') ";
+			$search_orderby .= "WHEN $wpdbpg->posts.post_title LIKE '%{$search_orderby_s}%' THEN 1 ";
+			$search_orderby .= "WHEN $wpdbpg->posts.post_content LIKE '%{$search_orderby_s}%' THEN 4 ";
+				$fields = "$wpdbpg->posts.ID";
+				$fields = "$wpdbpg->posts.ID, $wpdbpg->posts.post_parent";
+				$fields = "$wpdbpg->posts.*";
+			$where .= " AND $wpdbpg->posts.menu_order = " . $q['menu_order'];
+			$where .= " AND YEAR($wpdbpg->posts.post_date)=" . substr($q['m'], 0, 4);
+				$where .= " AND MONTH($wpdbpg->posts.post_date)=" . substr($q['m'], 4, 2);
+				$where .= " AND DAYOFMONTH($wpdbpg->posts.post_date)=" . substr($q['m'], 6, 2);
+				$where .= " AND HOUR($wpdbpg->posts.post_date)=" . substr($q['m'], 8, 2);
+				$where .= " AND MINUTE($wpdbpg->posts.post_date)=" . substr($q['m'], 10, 2);
+				$where .= " AND SECOND($wpdbpg->posts.post_date)=" . substr($q['m'], 12, 2);
+			$where .= " AND $wpdbpg->posts.post_name = '" . $q['name'] . "'";
+				$where .= " AND ($wpdbpg->posts.ID = '$reqpage')";
+			$where .= " AND $wpdbpg->posts.post_name = '" . $q['attachment'] . "'";
+			$where .= " AND {$wpdbpg->posts}.ID = " . $q['p'];
+			$where .= " AND {$wpdbpg->posts}.ID IN ($post__in)";
+			$where .= " AND {$wpdbpg->posts}.ID NOT IN ($post__not_in)";
+			$where .= $wpdbpg->prepare( " AND $wpdbpg->posts.post_parent = %d ", $q['post_parent'] );
+			$where .= " AND {$wpdbpg->posts}.post_parent IN ($post_parent__in)";
+			$where .= " AND {$wpdbpg->posts}.post_parent NOT IN ($post_parent__not_in)";
+				$where = " AND {$wpdbpg->posts}.ID = " . $q['page_id'];
+			$clauses = $this->tax_query->get_sql( $wpdbpg->posts, 'ID' );
+			$groupby = "{$wpdbpg->posts}.ID";
+			$where .= " AND {$wpdbpg->posts}.post_author NOT IN ($author__not_in) ";
+			$where .= " AND {$wpdbpg->posts}.post_author IN ($author__in) ";
+			$whichauthor .= " AND ($wpdbpg->posts.post_author = " . absint($q['author']) . ')';
+			$whichmimetype = wp_post_mime_type_where( $q['post_mime_type'], $wpdbpg->posts );
+			$orderby = "$wpdbpg->posts.post_date " . $q['order'];
+			$orderby = "FIELD( {$wpdbpg->posts}.ID, $post__in )";
+			$orderby = "FIELD( {$wpdbpg->posts}.post_parent, $post_parent__in )";
+						$orderby = "$wpdbpg->posts.menu_order";
+						$orderby = "$wpdbpg->posts.ID";
+							$orderby = "CAST($wpdbpg->postmeta.meta_value AS {$meta_type})";
+							$orderby = "$wpdbpg->postmeta.meta_value";
+						$orderby = "$wpdbpg->postmeta.meta_value+0";
+						$orderby = "$wpdbpg->posts.comment_count";
+						$orderby = "$wpdbpg->posts.post_" . $orderby;
+				$orderby = "$wpdbpg->posts.post_date ".$q['order'];
+				$where .= " AND $wpdbpg->posts.post_type IN ('" . join("', '", $in_search_post_types ) . "')";
+			$where .= " AND $wpdbpg->posts.post_type IN ('" . join("', '", $post_type) . "')";
+			$where .= " AND $wpdbpg->posts.post_type = '$post_type'";
+			$where .= " AND $wpdbpg->posts.post_type = 'attachment'";
+			$where .= " AND $wpdbpg->posts.post_type = 'page'";
+			$where .= " AND $wpdbpg->posts.post_type = 'post'";
+					$e_status[] = "$wpdbpg->posts.post_status <> '$status'";
+							$p_status[] = "$wpdbpg->posts.post_status = '$status'";
+							$r_status[] = "$wpdbpg->posts.post_status = '$status'";
+					$statuswheres[] = "($wpdbpg->posts.post_author = $user_id " . "AND (" . join( ' OR ', $r_status ) . "))";
+					$statuswheres[] = "($wpdbpg->posts.post_author = $user_id " . "AND (" . join( ' OR ', $p_status ) . "))";
+				$join .= " LEFT JOIN $wpdbpg->posts AS p2 ON ($wpdbpg->posts.post_parent = p2.ID) ";
+					$statuswheres[$index] = "($statuswhere OR ($wpdbpg->posts.post_status = 'inherit' AND " . str_replace($wpdbpg->posts, 'p2', $statuswhere) . "))";
+			$where .= " AND ($wpdbpg->posts.post_status = 'publish'";
+				$where .= " OR $wpdbpg->posts.post_status = '$state'";
+					$where .= " OR $wpdbpg->posts.post_status = '$state'";
+					$where .= current_user_can( $read_private_cap ) ? " OR $wpdbpg->posts.post_status = '$state'" : " OR $wpdbpg->posts.post_author = $user_id AND $wpdbpg->posts.post_status = '$state'";
+			$clauses = $this->meta_query->get_sql( 'post', $wpdbpg->posts, 'ID', $this );
+				$cjoin = "JOIN $wpdbpg->posts ON ($wpdbpg->comments.comment_post_ID = $wpdbpg->posts.ID) $join ";
+				$cgroupby = "$wpdbpg->comments.comment_id";
+				$cjoin = "JOIN $wpdbpg->posts ON ( $wpdbpg->comments.comment_post_ID = $wpdbpg->posts.ID )";
+			$this->comments = (array) $wpdbpg->get_results("SELECT $distinct $wpdbpg->comments.* FROM $wpdbpg->comments $cjoin $cwhere $cgroupby $corderby $climits");
+				$where = "AND $wpdbpg->posts.ID IN ($post_ids) ";
+		$this->request = $old_request = "SELECT $found_rows $distinct $fields FROM $wpdbpg->posts $join WHERE 1=1 $where $groupby $orderby $limits";
+			$this->posts = $wpdbpg->get_col( $this->request );
+			$this->posts = $wpdbpg->get_results( $this->request );
+		$split_the_query = ( $old_request == $this->request && "$wpdbpg->posts.*" == $fields && !empty( $limits ) && $q['posts_per_page'] < 500 );
+			$this->request = "SELECT $found_rows $distinct $wpdbpg->posts.ID FROM $wpdbpg->posts $join WHERE 1=1 $where $groupby $orderby $limits";
+			$ids = $wpdbpg->get_col( $this->request );
+			$this->posts = $wpdbpg->get_results( $this->request );
+			$comments_request = "SELECT $wpdbpg->comments.* FROM $wpdbpg->comments $cjoin $cwhere $cgroupby $corderby $climits";
+			$this->comments = $wpdbpg->get_results($comments_request);
+			$this->found_posts = $wpdbpg->get_var( apply_filters_ref_array( 'found_posts_query', array( 'SELECT FOUND_ROWS()', &$this ) ) );
+		$query = $wpdbpg->prepare("SELECT post_id FROM $wpdbpg->postmeta, $wpdbpg->posts WHERE ID = post_id AND post_type = %s AND meta_key = '_wp_old_slug' AND meta_value = %s", $post_type, $wp_query->query_vars['name']);
+			$query .= $wpdbpg->prepare(" AND YEAR(post_date) = %d", $wp_query->query_vars['year']);
+			$query .= $wpdbpg->prepare(" AND MONTH(post_date) = %d", $wp_query->query_vars['monthnum']);
+			$query .= $wpdbpg->prepare(" AND DAYOFMONTH(post_date) = %d", $wp_query->query_vars['day']);
+		$id = (int) $wpdbpg->get_var($query);
+Arquivo ./wp-includes/author-template.php
+	foreach ( (array) $wpdbpg->get_results("SELECT DISTINCT post_author, COUNT(ID) AS count FROM $wpdbpg->posts WHERE post_type = 'post' AND " . get_private_posts_cap_sql( 'post' ) . " GROUP BY post_author") as $row )
+		$rows = (array) $wpdbpg->get_col("SELECT DISTINCT post_author FROM $wpdbpg->posts WHERE post_type = 'post' AND post_status = 'publish' LIMIT 2");
+Arquivo ./wp-includes/registration.php
+Arquivo ./wp-includes/comment-template.php
+		$comments = $wpdbpg->get_results($wpdbpg->prepare("SELECT * FROM $wpdbpg->comments WHERE comment_post_ID = %d AND (comment_approved = '1' OR ( user_id = %d AND comment_approved = '0' ) )  ORDER BY comment_date_gmt", $post->ID, $user_ID));
+		$comments = $wpdbpg->get_results($wpdbpg->prepare("SELECT * FROM $wpdbpg->comments WHERE comment_post_ID = %d AND ( comment_approved = '1' OR ( comment_author = %s AND comment_author_email = %s AND comment_approved = '0' ) ) ORDER BY comment_date_gmt", $post->ID, wp_specialchars_decode($comment_author,ENT_QUOTES), $comment_author_email));
+Arquivo ./wp-includes/class-phpass.php
+Arquivo ./wp-includes/nav-menu.php
+Arquivo ./wp-includes/feed-atom.php
+Arquivo ./wp-includes/general-template.php
+		$query = "SELECT YEAR(post_date) AS `year`, MONTH(post_date) AS `month`, count(ID) as posts FROM $wpdbpg->posts $join $where GROUP BY YEAR(post_date), MONTH(post_date) ORDER BY post_date $order $limit";
+			$results = $wpdbpg->get_results( $query );
+		$query = "SELECT YEAR(post_date) AS `year`, count(ID) as posts FROM $wpdbpg->posts $join $where GROUP BY YEAR(post_date) ORDER BY post_date $order $limit";
+			$results = $wpdbpg->get_results( $query );
+		$query = "SELECT YEAR(post_date) AS `year`, MONTH(post_date) AS `month`, DAYOFMONTH(post_date) AS `dayofmonth`, count(ID) as posts FROM $wpdbpg->posts $join $where GROUP BY YEAR(post_date), MONTH(post_date), DAYOFMONTH(post_date) ORDER BY post_date $order $limit";
+			$results = $wpdbpg->get_results( $query );
+		$query = "SELECT DISTINCT $week AS `week`, YEAR( `post_date` ) AS `yr`, DATE_FORMAT( `post_date`, '%Y-%m-%d' ) AS `yyyymmdd`, count( `ID` ) AS `posts` FROM `$wpdbpg->posts` $join $where GROUP BY $week, YEAR( `post_date` ) ORDER BY `post_date` $order $limit";
+			$results = $wpdbpg->get_results( $query );
+		$query = "SELECT * FROM $wpdbpg->posts $join $where ORDER BY $orderby $limit";
+			$results = $wpdbpg->get_results( $query );
+		$gotsome = $wpdbpg->get_var("SELECT 1 as test FROM $wpdbpg->posts WHERE post_type = 'post' AND post_status = 'publish' LIMIT 1");
+		$thismonth = $wpdbpg->get_var("SELECT DATE_FORMAT((DATE_ADD('{$thisyear}0101', INTERVAL $d DAY) ), '%m')");
+	$previous = $wpdbpg->get_row("SELECT MONTH(post_date) AS month, YEAR(post_date) AS year
+		FROM $wpdbpg->posts
+	$next = $wpdbpg->get_row("SELECT MONTH(post_date) AS month, YEAR(post_date) AS year
+		FROM $wpdbpg->posts
+	$dayswithposts = $wpdbpg->get_results("SELECT DISTINCT DAYOFMONTH(post_date)
+		FROM $wpdbpg->posts WHERE post_date >= '{$thisyear}-{$thismonth}-01 00:00:00'
+	$ak_post_titles = $wpdbpg->get_results("SELECT ID, post_title, DAYOFMONTH(post_date) as dom "
+		."FROM $wpdbpg->posts "
+Arquivo ./wp-includes/feed.php
+Arquivo ./wp-includes/vars.php
+Arquivo ./wp-includes/post-formats.php
+Arquivo ./wp-includes/media.php
+Arquivo ./wp-includes/pomo/translations.php
+Arquivo ./wp-includes/pomo/po.php
+Arquivo ./wp-includes/pomo/mo.php
+Arquivo ./wp-includes/pomo/streams.php
+Arquivo ./wp-includes/pomo/entry.php
+Arquivo ./wp-includes/class-IXR.php
+Arquivo ./wp-includes/feed-rss2-comments.php
+Arquivo ./wp-includes/atomlib.php
+Arquivo ./wp-includes/cache.php
+Arquivo ./wp-includes/option.php
+				$row = $wpdbpg->get_row( $wpdbpg->prepare( "SELECT option_value FROM $wpdbpg->options WHERE option_name = %s LIMIT 1", $option ) );
+		$suppress = $wpdbpg->suppress_errors();
+		$row = $wpdbpg->get_row( $wpdbpg->prepare( "SELECT option_value FROM $wpdbpg->options WHERE option_name = %s LIMIT 1", $option ) );
+		$wpdbpg->suppress_errors( $suppress );
+		$suppress = $wpdbpg->suppress_errors();
+		if ( !$alloptions_db = $wpdbpg->get_results( "SELECT option_name, option_value FROM $wpdbpg->options WHERE autoload = 'yes'" ) )
+			$alloptions_db = $wpdbpg->get_results( "SELECT option_name, option_value FROM $wpdbpg->options" );
+		$wpdbpg->suppress_errors($suppress);
+		$site_id = $wpdbpg->siteid;
+	$options = $wpdbpg->get_results( $wpdbpg->prepare("SELECT meta_key, meta_value FROM $wpdbpg->sitemeta WHERE meta_key IN ($core_options_in) AND site_id = %d", $site_id) );
+	$result = $wpdbpg->update( $wpdbpg->options, array( 'option_value' => $serialized_value ), array( 'option_name' => $option ) );
+	$result = $wpdbpg->query( $wpdbpg->prepare( "INSERT INTO `$wpdbpg->options` (`option_name`, `option_value`, `autoload`) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE `option_name` = VALUES(`option_name`), `option_value` = VALUES(`option_value`), `autoload` = VALUES(`autoload`)", $option, $serialized_value, $autoload ) );
+	$row = $wpdbpg->get_row( $wpdbpg->prepare( "SELECT autoload FROM $wpdbpg->options WHERE option_name = %s", $option ) );
+	$result = $wpdbpg->delete( $wpdbpg->options, array( 'option_name' => $option ) );
+	$notoptions_key = "{$wpdbpg->siteid}:notoptions";
+		$cache_key = "{$wpdbpg->siteid}:$option";
+			$row = $wpdbpg->get_row( $wpdbpg->prepare("SELECT meta_value FROM $wpdbpg->sitemeta WHERE meta_key = %s AND site_id = %d", $option, $wpdbpg->siteid ) );
+	$notoptions_key = "{$wpdbpg->siteid}:notoptions";
+		$cache_key = "{$wpdbpg->siteid}:$option";
+		$result = $wpdbpg->insert( $wpdbpg->sitemeta, array('site_id' => $wpdbpg->siteid, 'meta_key' => $option, 'meta_value' => $serialized_value ) );
+		$row = $wpdbpg->get_row( $wpdbpg->prepare( "SELECT meta_id FROM {$wpdbpg->sitemeta} WHERE meta_key = %s AND site_id = %d", $option, $wpdbpg->siteid ) );
+		$cache_key = "{$wpdbpg->siteid}:$option";
+		$result = $wpdbpg->delete( $wpdbpg->sitemeta, array( 'meta_key' => $option, 'site_id' => $wpdbpg->siteid ) );
+	$notoptions_key = "{$wpdbpg->siteid}:notoptions";
+		$result = $wpdbpg->update( $wpdbpg->sitemeta, array( 'meta_value' => $serialized_value ), array( 'site_id' => $wpdbpg->siteid, 'meta_key' => $option ) );
+			$cache_key = "{$wpdbpg->siteid}:$option";
+Arquivo ./wp-includes/locale.php
+Arquivo ./wp-includes/post-thumbnail-template.php
+Arquivo ./wp-includes/rewrite.php
+		$pages = $wpdbpg->get_results("SELECT ID, post_name, post_parent FROM $wpdbpg->posts WHERE post_type = 'page' AND post_status != 'auto-draft'");
+			$attachments = $wpdbpg->get_results( $wpdbpg->prepare( "SELECT ID, post_name, post_parent FROM $wpdbpg->posts WHERE post_type = 'attachment' AND post_parent = %d", $id ));
+Arquivo ./wp-includes/js/tinymce/wp-tinymce.php
+Arquivo ./wp-includes/js/tinymce/langs/wp-langs.php
+Arquivo ./wp-includes/js/tinymce/wp-mce-help.php
+Arquivo ./wp-includes/js/tinymce/plugins/spellchecker/classes/GoogleSpell.php
+Arquivo ./wp-includes/js/tinymce/plugins/spellchecker/classes/utils/Logger.php
+Arquivo ./wp-includes/js/tinymce/plugins/spellchecker/classes/utils/JSON.php
+Arquivo ./wp-includes/js/tinymce/plugins/spellchecker/classes/PSpellShell.php
+Arquivo ./wp-includes/js/tinymce/plugins/spellchecker/classes/SpellChecker.php
+Arquivo ./wp-includes/js/tinymce/plugins/spellchecker/classes/PSpell.php
+Arquivo ./wp-includes/js/tinymce/plugins/spellchecker/classes/EnchantSpell.php
+Arquivo ./wp-includes/js/tinymce/plugins/spellchecker/rpc.php
+Arquivo ./wp-includes/js/tinymce/plugins/spellchecker/includes/general.php
+Arquivo ./wp-includes/js/tinymce/plugins/spellchecker/config.php
+Arquivo ./wp-includes/cron.php
+Arquivo ./wp-includes/feed-rss2.php
+Arquivo ./wp-includes/version.php
+Arquivo ./wp-includes/admin-bar.php
+Arquivo ./wp-includes/pluggable.php
+	$users = $wpdbpg->get_results( "SELECT * FROM $wpdbpg->users WHERE ID IN ($list)" );
+	$comments_waiting = $wpdbpg->get_var("SELECT count(comment_ID) FROM $wpdbpg->comments WHERE comment_approved = '0'");
+	$wpdbpg->update($wpdbpg->users, array('user_pass' => $hash, 'user_activation_key' => ''), array('ID' => $user_id) );
+Arquivo ./wp-includes/ID3/module.tag.lyrics3.php
+Arquivo ./wp-includes/ID3/module.audio-video.quicktime.php
+Arquivo ./wp-includes/ID3/module.audio-video.matroska.php
+Arquivo ./wp-includes/ID3/module.tag.apetag.php
+Arquivo ./wp-includes/ID3/module.audio.flac.php
+Arquivo ./wp-includes/ID3/module.audio.mp3.php
+Arquivo ./wp-includes/ID3/module.tag.id3v2.php
+Arquivo ./wp-includes/ID3/module.audio.ogg.php
+Arquivo ./wp-includes/ID3/module.audio-video.flv.php
+Arquivo ./wp-includes/ID3/getid3.php
+Arquivo ./wp-includes/ID3/module.audio.dts.php
+Arquivo ./wp-includes/ID3/getid3.lib.php
+Arquivo ./wp-includes/ID3/module.tag.id3v1.php
+Arquivo ./wp-includes/ID3/module.audio-video.asf.php
+Arquivo ./wp-includes/ID3/module.audio.ac3.php
+Arquivo ./wp-includes/ID3/module.audio-video.riff.php
+Arquivo ./wp-includes/shortcodes.php
+Arquivo ./wp-includes/template.php
+Arquivo ./wp-includes/ms-default-constants.php
+		define( 'UPLOADS', UPLOADBLOGSDIR . "/{$wpdbpg->blogid}/files/" );
+			define( 'BLOGUPLOADDIR', WP_CONTENT_DIR . "/blogs.dir/{$wpdbpg->blogid}/files/" );
+Arquivo ./wp-includes/link-template.php
+		$join = " INNER JOIN $wpdbpg->term_relationships AS tr ON p.ID = tr.object_id INNER JOIN $wpdbpg->term_taxonomy tt ON tr.term_taxonomy_id = tt.term_taxonomy_id";
+			$join .= $wpdbpg->prepare( " AND tt.taxonomy = %s AND tt.term_id IN (" . implode( ',', array_map( 'intval', $term_array ) ) . ")", $taxonomy );
+		$posts_in_ex_terms_sql = $wpdbpg->prepare( "AND tt.taxonomy = %s", $taxonomy );
+				$posts_in_ex_terms_sql = $wpdbpg->prepare( " AND tt.taxonomy = %s AND tt.term_id NOT IN (" . implode( $excluded_terms, ',' ) . ')', $taxonomy );
+	$where = apply_filters( "get_{$adjacent}_post_where", $wpdbpg->prepare( "WHERE p.post_date $op %s AND p.post_type = %s AND p.post_status = 'publish' $posts_in_ex_terms_sql", $current_post_date, $post->post_type), $in_same_term, $excluded_terms );
+	$query = "SELECT p.ID FROM $wpdbpg->posts AS p $join $where $sort";
+	$result = $wpdbpg->get_var( $query );
+Arquivo ./wp-includes/class-snoopy.php
+Arquivo ./wp-includes/class-wp-customize-manager.php
+Arquivo ./wp-includes/canonical.php
+		$vars = $wpdbpg->get_results( $wpdbpg->prepare("SELECT post_type, post_parent FROM $wpdbpg->posts WHERE ID = %d", $id) );
+			if ( ( false !== $author ) && $wpdbpg->get_var( $wpdbpg->prepare( "SELECT ID FROM $wpdbpg->posts WHERE $wpdbpg->posts.post_author = %d AND $wpdbpg->posts.post_status = 'publish' LIMIT 1", $author->ID ) ) ) {
+		$where = $wpdbpg->prepare("post_name LIKE %s", like_escape( get_query_var('name') ) . '%');
+			$where .= $wpdbpg->prepare(" AND post_type = %s", get_query_var('post_type'));
+			$where .= $wpdbpg->prepare(" AND YEAR(post_date) = %d", get_query_var('year'));
+			$where .= $wpdbpg->prepare(" AND MONTH(post_date) = %d", get_query_var('monthnum'));
+			$where .= $wpdbpg->prepare(" AND DAYOFMONTH(post_date) = %d", get_query_var('day'));
+		$post_id = $wpdbpg->get_var("SELECT ID FROM $wpdbpg->posts WHERE $where AND post_status = 'publish'");
+Arquivo ./wp-includes/class-wp-ajax-response.php
+Arquivo ./wp-includes/class-json.php
+Arquivo ./wp-includes/class-feed.php
+Arquivo ./wp-includes/class-wp-image-editor-gd.php
+Arquivo ./wp-includes/class.wp-scripts.php
+Arquivo ./wp-includes/feed-rss.php
+Arquivo ./wp-includes/theme.php
+Arquivo ./wp-includes/registration-functions.php
+Arquivo ./wp-includes/default-widgets.php
+Arquivo ./wp-includes/default-filters.php
+Arquivo ./wp-includes/nav-menu-template.php
+Arquivo ./wp-includes/class-oembed.php
+Arquivo ./wp-includes/date.php
+			$where_parts[] = $wpdbpg->prepare( "$column $gt %s", $this->build_mysql_datetime( $query['after'], true ) );
+			$where_parts[] = $wpdbpg->prepare( "$column $lt %s", $this->build_mysql_datetime( $query['before'], false ) );
+		return $wpdbpg->prepare( "DATE_FORMAT( $column, %s ) $compare %f", $format, $time );
+Arquivo ./wp-includes/functions.php
+			$mids = $wpdbpg->get_col( $wpdbpg->prepare("SELECT meta_id FROM $wpdbpg->postmeta WHERE post_id = %d AND meta_key = 'enclosure' AND meta_value LIKE (%s)", $post_ID, like_escape( $link_test ) . '%') );
+		if ( $url != '' && !$wpdbpg->get_var( $wpdbpg->prepare( "SELECT post_id FROM $wpdbpg->postmeta WHERE post_id = %d AND meta_key = 'enclosure' AND meta_value LIKE (%s)", $post_ID, like_escape( $url ) . '%' ) ) ) {
+	return $wpdbpg->num_queries;
+	$suppress = $wpdbpg->suppress_errors();
+		$installed = $wpdbpg->get_var( "SELECT option_value FROM $wpdbpg->options WHERE option_name = 'siteurl'" );
+	$wpdbpg->suppress_errors( $suppress );
+	$suppress = $wpdbpg->suppress_errors();
+	$wp_tables = $wpdbpg->tables();
+		if ( ! $wpdbpg->get_results( "DESCRIBE $table;" ) )
+		$wpdbpg->error = sprintf( __( 'One or more database tables are unavailable. The database may need to be <a href="%s">repaired</a>.' ), 'maint/repair.php?referrer=is_blog_installed' );
+	$wpdbpg->suppress_errors( $suppress );
+		wp_die($wpdbpg->error);
+	$primary_network_id = (int) $wpdbpg->get_var( "SELECT id FROM $wpdbpg->site ORDER BY id LIMIT 1" );
+	$posts_to_delete = $wpdbpg->get_results($wpdbpg->prepare("SELECT post_id FROM $wpdbpg->postmeta WHERE meta_key = '_wp_trash_meta_time' AND meta_value < '%d'", $delete_timestamp), ARRAY_A);
+	$comments_to_delete = $wpdbpg->get_results($wpdbpg->prepare("SELECT comment_id FROM $wpdbpg->commentmeta WHERE meta_key = '_wp_trash_meta_time' AND meta_value < '%d'", $delete_timestamp), ARRAY_A);
+Arquivo ./wp-includes/compat.php
+Arquivo ./wp-includes/deprecated.php
+ * $wpdbpg->linkcategories and output it as a nested HTML unordered list.
+	$cur = $wpdbpg->get_row( $wpdbpg->prepare("SELECT * FROM $wpdbpg->usermeta WHERE user_id = %d AND meta_key = %s", $user_id, $meta_key) );
+		$wpdbpg->query( $wpdbpg->prepare("DELETE FROM $wpdbpg->usermeta WHERE user_id = %d AND meta_key = %s AND meta_value = %s", $user_id, $meta_key, $meta_value) );
+		$wpdbpg->query( $wpdbpg->prepare("DELETE FROM $wpdbpg->usermeta WHERE user_id = %d AND meta_key = %s", $user_id, $meta_key) );
+			$metas = $wpdbpg->get_col( $wpdbpg->prepare("SELECT meta_value FROM $wpdbpg->usermeta WHERE user_id = %d AND meta_key = %s", $user_id, $meta_key) );
+		$metas = $wpdbpg->get_col( $wpdbpg->prepare("SELECT meta_value FROM $wpdbpg->usermeta WHERE user_id = %d", $user_id) );
+	$cur = $wpdbpg->get_row( $wpdbpg->prepare("SELECT * FROM $wpdbpg->usermeta WHERE user_id = %d AND meta_key = %s", $user_id, $meta_key) );
+		$wpdbpg->insert($wpdbpg->usermeta, compact('user_id', 'meta_key', 'meta_value') );
+		$wpdbpg->update($wpdbpg->usermeta, compact('meta_value'), compact('user_id', 'meta_key') );
+		do_action( 'added_usermeta', $wpdbpg->insert_id, $user_id, $meta_key, $meta_value );
+	$blog_prefix = $wpdbpg->get_blog_prefix($id);
+	$users = $wpdbpg->get_results( "SELECT user_id, user_id AS ID, user_login, display_name, user_email, meta_value FROM $wpdbpg->users, $wpdbpg->usermeta WHERE {$wpdbpg->users}.ID = {$wpdbpg->usermeta}.user_id AND meta_key = '{$blog_prefix}capabilities' ORDER BY {$wpdbpg->usermeta}.user_id" );
+Arquivo ./wp-includes/ms-load.php
+		$current_site->site_name = $wpdbpg->get_var( $wpdbpg->prepare( "SELECT meta_value FROM $wpdbpg->sitemeta WHERE site_id = %d AND meta_key = 'site_name'", $current_site->id ) );
+	$sites = $wpdbpg->get_results( "SELECT * FROM $wpdbpg->site" ); // usually only one site
+		$current_site->blog_id = $wpdbpg->get_var( $wpdbpg->prepare( "SELECT blog_id FROM $wpdbpg->blogs WHERE domain = %s AND path = %s", $current_site->domain, $current_site->path ) );
+		$current_site = $wpdbpg->get_row( $wpdbpg->prepare( "SELECT * FROM $wpdbpg->site WHERE domain = %s AND path = %s", $domain, $path ) );
+		$current_site = $wpdbpg->get_row( $wpdbpg->prepare( "SELECT * FROM $wpdbpg->site WHERE domain IN ( %s, %s ) AND path = %s ORDER BY CHAR_LENGTH( domain ) DESC LIMIT 1", $domain, $cookie_domain, $path ) );
+			$current_site = $wpdbpg->get_row( $wpdbpg->prepare("SELECT * FROM $wpdbpg->site WHERE domain = %s AND path='/'", $domain ) );
+			$current_site = $wpdbpg->get_row( $wpdbpg->prepare("SELECT * FROM $wpdbpg->site WHERE domain IN ( %s, %s ) AND path = '/' ORDER BY CHAR_LENGTH( domain ) DESC LIMIT 1", $domain, $cookie_domain, $path ) );
+		$current_site = $wpdbpg->get_row( $wpdbpg->prepare("SELECT * FROM $wpdbpg->site WHERE domain = %s AND path = %s", $sitedomain, $path) );
+		$current_site = $wpdbpg->get_row( $wpdbpg->prepare("SELECT * FROM $wpdbpg->site WHERE domain = %s AND path='/'", $sitedomain) );
+ * Used when a blog's tables do not exist. Checks for a missing $wpdbpg->site table as well.
+	if ( ! $wpdbpg->get_var( "SHOW TABLES LIKE '$wpdbpg->site'" ) )
+		$msg .= '<p>' . sprintf( __( '<strong>Database tables are missing.</strong> This means that MySQL is not running, WordPress was not installed properly, or someone deleted <code>%s</code>. You really should look at your database now.' ), $wpdbpg->site ) . '</p>';
+		$msg .= '<p>' . sprintf( __( '<strong>Could not find site <code>%1$s</code>.</strong> Searched for table <code>%2$s</code> in database <code>%3$s</code>. Is that right?' ), rtrim( $domain . $path, '/' ), $wpdbpg->blogs, DB_NAME ) . '</p>';
+	foreach ( $wpdbpg->tables('global') as $t => $table ) {
+Arquivo ./wp-includes/feed-rdf.php
+Arquivo ./wp-includes/default-constants.php
+Arquivo ./wp-includes/revision.php
+	$result = $wpdbpg->query( $wpdbpg->prepare( "INSERT IGNORE INTO `$wpdbpg->options` (`option_name`, `option_value`, `autoload`) VALUES (%s, %s, 'no') /* LOCK */", $lock, $now ) );
+		$result = $wpdbpg->update( $wpdbpg->posts, $update, array( 'ID' => $this_revision->ID ) );
+Arquivo ./wp-includes/wp-diff.php
+Arquivo ./wp-includes/comment.php
+			$ok_to_comment = $wpdbpg->get_var("SELECT comment_approved FROM $wpdbpg->comments WHERE comment_author = '$author' AND comment_author_email = '$email' and comment_approved = '1' LIMIT 1");
+	return $wpdbpg->get_results($wpdbpg->prepare("SELECT * FROM $wpdbpg->comments WHERE comment_post_ID = %d AND comment_approved = '1' ORDER BY comment_date", $post_id));
+			$_comment = $wpdbpg->get_row($wpdbpg->prepare("SELECT * FROM $wpdbpg->comments WHERE comment_ID = %d LIMIT 1", $comment));
+			$approved = $wpdbpg->prepare( "comment_approved = %s", $status );
+					$ordersby[ $key ] = "$wpdbpg->commentmeta.meta_value";
+					$ordersby[ $key ] = "$wpdbpg->commentmeta.meta_value+0";
+			$where .= $wpdbpg->prepare( ' AND comment_post_ID = %d', $post_id );
+			$where .= $wpdbpg->prepare( ' AND comment_author_email = %s', $author_email );
+			$where .= $wpdbpg->prepare( ' AND comment_karma = %d', $karma );
+			$where .= $wpdbpg->prepare( ' AND comment_type = %s', $type );
+			$where .= $wpdbpg->prepare( ' AND comment_parent = %d', $parent );
+			$where .= $wpdbpg->prepare( ' AND user_id = %d', $user_id );
+			$join = "JOIN $wpdbpg->posts ON $wpdbpg->posts.ID = $wpdbpg->comments.comment_post_ID";
+				$where .= $wpdbpg->prepare( " AND {$wpdbpg->posts}.{$field_name} = %s", $field_value );
+			$clauses = $this->meta_query->get_sql( 'comment', $wpdbpg->comments, 'comment_ID', $this );
+			$groupby = "{$wpdbpg->comments}.comment_ID";
+		$query = "SELECT $fields FROM $wpdbpg->comments $join WHERE $where $groupby ORDER BY $orderby $order $limits";
+			return $wpdbpg->get_var( $query );
+		$comments = $wpdbpg->get_results( $query );
+			$lastcommentmodified = $wpdbpg->get_var("SELECT comment_date_gmt FROM $wpdbpg->comments WHERE comment_approved = '1' ORDER BY comment_date_gmt DESC LIMIT 1");
+			$lastcommentmodified = $wpdbpg->get_var("SELECT comment_date FROM $wpdbpg->comments WHERE comment_approved = '1' ORDER BY comment_date_gmt DESC LIMIT 1");
+			$lastcommentmodified = $wpdbpg->get_var($wpdbpg->prepare("SELECT DATE_ADD(comment_date_gmt, INTERVAL %s SECOND) FROM $wpdbpg->comments WHERE comment_approved = '1' ORDER BY comment_date_gmt DESC LIMIT 1", $add_seconds_server));
+		$where = $wpdbpg->prepare("WHERE comment_post_ID = %d", $post_id);
+	$totals = (array) $wpdbpg->get_results("
+		FROM {$wpdbpg->comments}
+	$dupe = $wpdbpg->prepare( "SELECT comment_ID FROM $wpdbpg->comments WHERE comment_post_ID = %d AND comment_parent = %s AND comment_approved != 'trash' AND ( comment_author = %s ", wp_unslash( $comment_post_ID ), wp_unslash( $comment_parent ), wp_unslash( $comment_author ) );
+		$dupe .= $wpdbpg->prepare( "OR comment_author_email = %s ", wp_unslash( $comment_author_email ) );
+	$dupe .= $wpdbpg->prepare( ") AND comment_content = %s LIMIT 1", wp_unslash( $comment_content ) );
+	if ( $wpdbpg->get_var($dupe) ) {
+		$post_author = $wpdbpg->get_var($wpdbpg->prepare("SELECT post_author FROM $wpdbpg->posts WHERE ID = %d LIMIT 1", $comment_post_ID));
+	if ( $lasttime = $wpdbpg->get_var( $wpdbpg->prepare( "SELECT `comment_date_gmt` FROM `$wpdbpg->comments` WHERE `comment_date_gmt` >= %s AND ( `comment_author_IP` = %s OR `comment_author_email` = %s ) ORDER BY `comment_date_gmt` DESC LIMIT 1", $hour_ago, $ip, $email ) ) ) {
+	$oldercoms = $wpdbpg->get_var( $wpdbpg->prepare( "SELECT COUNT(comment_ID) FROM $wpdbpg->comments WHERE comment_post_ID = %d AND comment_parent = 0 AND comment_approved = '1' AND comment_date_gmt < '%s'" . $comtypewhere, $comment->comment_post_ID, $comment->comment_date_gmt ) );
+		$where = $wpdbpg->prepare( "WHERE comment_post_ID = %d", $post_id );
+	$count = $wpdbpg->get_results( "SELECT comment_approved, COUNT( * ) AS num_comments FROM {$wpdbpg->comments} {$where} GROUP BY comment_approved", ARRAY_A );
+	$children = $wpdbpg->get_col( $wpdbpg->prepare("SELECT comment_ID FROM $wpdbpg->comments WHERE comment_parent = %d", $comment_id) );
+		$wpdbpg->update($wpdbpg->comments, array('comment_parent' => $comment->comment_parent), array('comment_parent' => $comment_id));
+	$meta_ids = $wpdbpg->get_col( $wpdbpg->prepare( "SELECT meta_id FROM $wpdbpg->commentmeta WHERE comment_id = %d", $comment_id ) );
+	if ( ! $wpdbpg->delete( $wpdbpg->comments, array( 'comment_ID' => $comment_id ) ) )
+	$wpdbpg->insert($wpdbpg->comments, $data);
+	$id = (int) $wpdbpg->insert_id;
+	if ( !$wpdbpg->update( $wpdbpg->comments, array('comment_approved' => $status), array('comment_ID' => $comment_id) ) ) {
+			return new WP_Error('db_update_error', __('Could not update comment status'), $wpdbpg->last_error);
+	$rval = $wpdbpg->update( $wpdbpg->comments, $data, compact( 'comment_ID' ) );
+	$new = (int) $wpdbpg->get_var( $wpdbpg->prepare("SELECT COUNT(*) FROM $wpdbpg->comments WHERE comment_post_ID = %d AND comment_approved = '1'", $post_id) );
+	$wpdbpg->update( $wpdbpg->posts, array('comment_count' => $new), array('ID' => $post_id) );
+	while ($ping = $wpdbpg->get_row("SELECT ID, post_content, meta_id FROM {$wpdbpg->posts}, {$wpdbpg->postmeta} WHERE {$wpdbpg->posts}.ID = {$wpdbpg->postmeta}.post_id AND {$wpdbpg->postmeta}.meta_key = '_pingme' LIMIT 1")) {
+	while ($enclosure = $wpdbpg->get_row("SELECT ID, post_content, meta_id FROM {$wpdbpg->posts}, {$wpdbpg->postmeta} WHERE {$wpdbpg->posts}.ID = {$wpdbpg->postmeta}.post_id AND {$wpdbpg->postmeta}.meta_key = '_encloseme' LIMIT 1")) {
+	$trackbacks = $wpdbpg->get_col("SELECT ID FROM $wpdbpg->posts WHERE to_ping <> '' AND post_status = 'publish'");
+		$wpdbpg->update($wpdbpg->posts, array('to_ping' => ''), array('ID' => $post_id) );
+				$wpdbpg->query( $wpdbpg->prepare("UPDATE $wpdbpg->posts SET to_ping = TRIM(REPLACE(to_ping, %s, '')) WHERE ID = %d", $tb_ping, $post_id) );
+	$wpdbpg->query( $wpdbpg->prepare("UPDATE $wpdbpg->posts SET pinged = CONCAT(pinged, '\n', %s) WHERE ID = %d", $trackback_url, $ID) );
+	return $wpdbpg->query( $wpdbpg->prepare("UPDATE $wpdbpg->posts SET to_ping = TRIM(REPLACE(to_ping, %s, '')) WHERE ID = %d", $trackback_url, $ID) );
+Arquivo ./wp-includes/meta.php
+	if ( $unique && $wpdbpg->get_var( $wpdbpg->prepare(
+	$result = $wpdbpg->insert( $table, array(
+	$mid = (int) $wpdbpg->insert_id;
+	if ( ! $meta_id = $wpdbpg->get_var( $wpdbpg->prepare( "SELECT $id_column FROM $table WHERE meta_key = %s AND $column = %d", $meta_key, $object_id ) ) )
+	$result = $wpdbpg->update( $table, $data, $where );
+	$query = $wpdbpg->prepare( "SELECT $id_column FROM $table WHERE meta_key = %s", $meta_key );
+		$query .= $wpdbpg->prepare(" AND $type_column = %d", $object_id );
+		$query .= $wpdbpg->prepare(" AND meta_value = %s", $meta_value );
+	$meta_ids = $wpdbpg->get_col( $query );
+		$object_ids = $wpdbpg->get_col( $wpdbpg->prepare( "SELECT $type_column FROM $table WHERE meta_key = %s", $meta_key ) );
+	$count = $wpdbpg->query($query);
+	$meta = $wpdbpg->get_row( $wpdbpg->prepare( "SELECT * FROM $table WHERE $id_column = %d", $meta_id ) );
+		$result = $wpdbpg->update( $table, $data, $where, '%s', '%d' );
+		$result = (bool) $wpdbpg->delete( $table, array( $id_column => $meta_id ) );
+	$meta_list = $wpdbpg->get_results( "SELECT $column, meta_key, meta_value FROM $table WHERE $column IN ($id_list) ORDER BY $id_column ASC", ARRAY_A );
+				$where["key-only-$key"] = $wpdbpg->prepare( "$meta_table.meta_key = %s", trim( $q['key'] ) );
+				$where[$k] = $wpdbpg->prepare( "$alias.meta_key = %s", $meta_key );
+			$where[$k] = ' (' . $where[$k] . $wpdbpg->prepare( "CAST($alias.meta_value AS {$meta_type}) {$meta_compare} {$meta_compare_string})", $meta_value );
+	if ( empty($wpdbpg->$table_name) )
+	return $wpdbpg->$table_name;
+Arquivo ./wp-includes/update.php
+		$mysql_version = preg_replace('/[^0-9.].*/', '', $wpdbpg->db_version());
+Arquivo ./wp-includes/ms-functions.php
+		$site_id = $wpdbpg->siteid;
+		$site_id = $wpdbpg->get_var( $wpdbpg->prepare( "SELECT id FROM $wpdbpg->site WHERE domain = %s AND path = %s", $sitedomain, $path ) );
+		return $wpdbpg->get_results( $wpdbpg->prepare( "SELECT u.ID, u.user_login, u.user_pass FROM $wpdbpg->users AS u, $wpdbpg->sitemeta AS sm WHERE sm.meta_key = 'admin_user_id' AND u.ID = sm.meta_value AND sm.site_id = %d", $site_id ), ARRAY_A );
+		return $blogs[$wpdbpg->blogid];
+				if ( $blog->site_id != $wpdbpg->siteid )
+		$wpdbpg->query( $wpdbpg->prepare("UPDATE $wpdbpg->posts SET post_author = %d WHERE post_author = %d", $reassign, $user_id) );
+		$wpdbpg->query( $wpdbpg->prepare("UPDATE $wpdbpg->links SET link_owner = %d WHERE link_owner = %d", $reassign, $user_id) );
+	$id = $wpdbpg->get_var( $wpdbpg->prepare( "SELECT blog_id FROM $wpdbpg->blogs WHERE domain = %s and path = %s /* get_blog_id_from_url */", $domain, $path ) );
+	$signup = $wpdbpg->get_row( $wpdbpg->prepare("SELECT * FROM $wpdbpg->signups WHERE user_login = %s", $user_name) );
+			$wpdbpg->delete( $wpdbpg->signups, array( 'user_login' => $user_name ) );
+	$signup = $wpdbpg->get_row( $wpdbpg->prepare("SELECT * FROM $wpdbpg->signups WHERE user_email = %s", $user_email) );
+			$wpdbpg->delete( $wpdbpg->signups, array( 'user_email' => $user_email ) );
+	if ( !is_subdomain_install() && $wpdbpg->get_var( $wpdbpg->prepare( "SELECT post_name FROM " . $wpdbpg->get_blog_prefix( $current_site->blog_id ) . "posts WHERE post_type = 'page' AND post_name = %s", $blogname ) ) )
+	$signup = $wpdbpg->get_row( $wpdbpg->prepare("SELECT * FROM $wpdbpg->signups WHERE domain = %s AND path = %s", $mydomain, $path) ); // TODO: Check email too?
+			$wpdbpg->delete( $wpdbpg->signups, array( 'domain' => $mydomain , 'path' => $path ) );
+	$wpdbpg->insert( $wpdbpg->signups, array(
+	$wpdbpg->insert( $wpdbpg->signups, array(
+	$signup = $wpdbpg->get_row( $wpdbpg->prepare("SELECT * FROM $wpdbpg->signups WHERE activation_key = %s", $key) );
+		$wpdbpg->update( $wpdbpg->signups, array('active' => 1, 'activated' => $now), array('activation_key' => $key) );
+	$blog_id = wpmu_create_blog( $signup->domain, $signup->path, $signup->title, $user_id, $meta, $wpdbpg->siteid );
+			$wpdbpg->update( $wpdbpg->signups, array( 'active' => 1, 'activated' => $now ), array( 'activation_key' => $key ) );
+	$wpdbpg->update( $wpdbpg->signups, array('active' => 1, 'activated' => $now), array('activation_key' => $key) );
+	$result = $wpdbpg->get_var( $wpdbpg->prepare("SELECT blog_id FROM $wpdbpg->blogs WHERE domain = %s AND path = %s AND site_id = %d", $domain, $path, $site_id) );
+	$result = $wpdbpg->insert( $wpdbpg->blogs, array('site_id' => $site_id, 'domain' => $domain, 'path' => $path, 'registered' => current_time('mysql')) );
+	$blog_id = $wpdbpg->insert_id;
+	$suppress = $wpdbpg->suppress_errors();
+	if ( $wpdbpg->get_results( "DESCRIBE {$wpdbpg->posts}" ) )
+	$wpdbpg->suppress_errors( $suppress );
+	$table_prefix = $wpdbpg->get_blog_prefix();
+	$suppress = $wpdbpg->suppress_errors();
+	$wpdbpg->suppress_errors( $suppress );
+		$prefix = $wpdbpg->get_blog_prefix( $blog->userblog_id );
+		$recent_post = $wpdbpg->get_row( $wpdbpg->prepare("SELECT ID, post_date_gmt FROM {$prefix}posts WHERE post_author = %d AND post_type = 'post' AND post_status = 'publish' ORDER BY post_date_gmt DESC LIMIT 1", $user_id ), ARRAY_A);
+	update_option( 'post_count', (int) $wpdbpg->get_var( "SELECT COUNT(ID) FROM {$wpdbpg->posts} WHERE post_status = 'publish' and post_type = 'post'" ) );
+		$wpdbpg->insert( $wpdbpg->registration_log, array('email' => $user->user_email, 'IP' => preg_replace( '/[^0-9., ]/', '', wp_unslash( $_SERVER['REMOTE_ADDR'] ) ), 'blog_id' => $blog_id, 'date_registered' => current_time('mysql')) );
+	$c = $wpdbpg->get_row( $wpdbpg->prepare( "SELECT * FROM $wpdbpg->terms WHERE term_id = %d", $term_id ) );
+	$global_id = $wpdbpg->get_var( $wpdbpg->prepare( "SELECT cat_ID FROM $wpdbpg->sitecategories WHERE category_nicename = %s", $c->slug ) );
+		$used_global_id = $wpdbpg->get_var( $wpdbpg->prepare( "SELECT cat_ID FROM $wpdbpg->sitecategories WHERE cat_ID = %d", $c->term_id ) );
+			$wpdbpg->insert( $wpdbpg->sitecategories, array( 'cat_ID' => $term_id, 'cat_name' => $c->name, 'category_nicename' => $c->slug ) );
+			$global_id = $wpdbpg->insert_id;
+			$max_global_id = $wpdbpg->get_var( "SELECT MAX(cat_ID) FROM $wpdbpg->sitecategories" );
+			$max_local_id = $wpdbpg->get_var( "SELECT MAX(term_id) FROM $wpdbpg->terms" );
+			$wpdbpg->insert( $wpdbpg->sitecategories, array( 'cat_ID' => $new_global_id, 'cat_name' => $c->name, 'category_nicename' => $c->slug ) );
+			$global_id = $wpdbpg->insert_id;
+		$local_id = $wpdbpg->get_row( $wpdbpg->prepare( "SELECT term_id FROM $wpdbpg->terms WHERE term_id = %d", $global_id ) );
+		$wpdbpg->update( $wpdbpg->terms, array('term_id' => $global_id), array('term_id' => $term_id) );
+		$wpdbpg->update( $wpdbpg->term_taxonomy, array('term_id' => $global_id), array('term_id' => $term_id) );
+		$wpdbpg->update( $wpdbpg->term_taxonomy, array('parent' => $global_id), array('parent' => $term_id) );
+		$blog_id = $wpdbpg->blogid;
+	$local_key = $wpdbpg->get_blog_prefix( $blog_id ) . $key;
+	$count = $wpdbpg->get_var( $wpdbpg->prepare("SELECT COUNT(blog_id) as c FROM $wpdbpg->blogs WHERE site_id = %d AND spam = '0' AND deleted = '0' and archived = '0'", $wpdbpg->siteid) );
+	$count = $wpdbpg->get_var( "SELECT COUNT(ID) as c FROM $wpdbpg->users WHERE spam = '0' AND deleted = '0'" );
+		'network_id' => $wpdbpg->siteid,
+	$query = "SELECT * FROM $wpdbpg->blogs WHERE 1=1 ";
+		$query .= $wpdbpg->prepare( "AND public = %d ", $args['public'] );
+		$query .= $wpdbpg->prepare( "AND archived = %d ", $args['archived'] );
+		$query .= $wpdbpg->prepare( "AND mature = %d ", $args['mature'] );
+		$query .= $wpdbpg->prepare( "AND spam = %d ", $args['spam'] );
+		$query .= $wpdbpg->prepare( "AND deleted = %d ", $args['deleted'] );
+			$query .= $wpdbpg->prepare( "LIMIT %d , %d ", $args['offset'], $args['limit'] );
+			$query .= $wpdbpg->prepare( "LIMIT %d ", $args['limit'] );
+	$site_results = $wpdbpg->get_results( $query, ARRAY_A );
+Arquivo ./wp-includes/category.php
+Arquivo ./wp-includes/class-wp-admin-bar.php
+Arquivo ./wp-includes/ms-blogs.php
+	update_blog_details( $wpdbpg->blogid, array('last_updated' => current_time('mysql', true)) );
+	do_action( 'wpmu_blog_updated', $wpdbpg->blogid );
+	$blog_id = $wpdbpg->get_var( $wpdbpg->prepare("SELECT blog_id FROM {$wpdbpg->blogs} WHERE domain = %s AND path = %s", $domain, $path) );
+				$blog = $wpdbpg->get_row( $wpdbpg->prepare( "SELECT * FROM $wpdbpg->blogs WHERE domain IN (%s,%s) AND path = %s ORDER BY CHAR_LENGTH(domain) DESC", $nowww, $fields['domain'], $fields['path'] ) );
+				$blog = $wpdbpg->get_row( $wpdbpg->prepare( "SELECT * FROM $wpdbpg->blogs WHERE domain = %s AND path = %s", $fields['domain'], $fields['path'] ) );
+				$blog = $wpdbpg->get_row( $wpdbpg->prepare( "SELECT * FROM $wpdbpg->blogs WHERE domain IN (%s,%s) ORDER BY CHAR_LENGTH(domain) DESC", $nowww, $fields['domain'] ) );
+				$blog = $wpdbpg->get_row( $wpdbpg->prepare( "SELECT * FROM $wpdbpg->blogs WHERE domain = %s", $fields['domain'] ) );
+		$details = $wpdbpg->get_row( $wpdbpg->prepare( "SELECT * FROM $wpdbpg->blogs WHERE blog_id = %d /* get_blog_details */", $blog_id ) );
+	$result = $wpdbpg->update( $wpdbpg->blogs, $update_details, array('blog_id' => $blog_id) );
+	$wpdbpg->set_blog_id( $new_blog );
+	$GLOBALS['table_prefix'] = $wpdbpg->get_blog_prefix();
+	$wpdbpg->set_blog_id( $blog );
+	$GLOBALS['table_prefix'] = $wpdbpg->get_blog_prefix();
+	$result = $wpdbpg->update( $wpdbpg->blogs, array($pref => $value, 'last_updated' => current_time('mysql', true)), array('blog_id' => $blog_id) );
+	return $wpdbpg->get_var( $wpdbpg->prepare("SELECT %s FROM {$wpdbpg->blogs} WHERE blog_id = %d", $pref, $id) );
+	return $wpdbpg->get_results( $wpdbpg->prepare("SELECT blog_id, domain, path FROM $wpdbpg->blogs WHERE site_id = %d AND public = '1' AND archived = '0' AND mature = '0' AND spam = '0' AND deleted = '0' AND last_updated != '0000-00-00 00:00:00' ORDER BY last_updated DESC limit %d, %d", $wpdbpg->siteid, $start, $quantity ) , ARRAY_A );
+Arquivo ./wp-includes/post-template.php
+		if ( $wpdbpg->get_var( $wpdbpg->prepare("SELECT ID FROM $wpdbpg->posts WHERE post_parent = %d AND post_type = 'page' AND post_status = 'publish' LIMIT 1", $page_id) ) )
+Arquivo ./wp-includes/theme-compat/footer.php
+Arquivo ./wp-includes/theme-compat/header.php
+Arquivo ./wp-includes/theme-compat/sidebar.php
+Arquivo ./wp-includes/theme-compat/comments-popup.php
+Arquivo ./wp-includes/theme-compat/comments.php
+Arquivo ./wp-includes/class-pop3.php
+Arquivo ./wp-includes/class-smtp.php
+Arquivo ./wp-includes/template-loader.php
+Arquivo ./wp-includes/category-template.php
+Arquivo ./wp-includes/wp-db.php
+Arquivo ./wp-includes/class-wp-editor.php
+Arquivo ./wp-includes/class-wp-image-editor-imagick.php
+Arquivo ./wp-includes/Text/Diff/Renderer.php
+Arquivo ./wp-includes/Text/Diff/Engine/native.php
+Arquivo ./wp-includes/Text/Diff/Engine/xdiff.php
+Arquivo ./wp-includes/Text/Diff/Engine/shell.php
+Arquivo ./wp-includes/Text/Diff/Engine/string.php
+Arquivo ./wp-includes/Text/Diff/Renderer/inline.php
+Arquivo ./wp-includes/Text/Diff.php
+Arquivo ./wp-includes/taxonomy.php
+	$object_ids = $wpdbpg->get_col("SELECT tr.object_id FROM $wpdbpg->term_relationships AS tr INNER JOIN $wpdbpg->term_taxonomy AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy IN ($taxonomies) AND tt.term_id IN ($term_ids) ORDER BY tr.object_id $order");
+				$alias = $i ? 'tt' . $i : $wpdbpg->term_relationships;
+				$join .= " INNER JOIN $wpdbpg->term_relationships";
+					FROM $wpdbpg->term_relationships
+					FROM $wpdbpg->term_relationships
+				$terms = $wpdbpg->get_col( "
+					SELECT $wpdbpg->term_taxonomy.$resulting_field
+					FROM $wpdbpg->term_taxonomy
+					INNER JOIN $wpdbpg->terms USING (term_id)
+					AND $wpdbpg->terms.{$query['field']} IN ($terms)
+				$terms = $wpdbpg->get_col( "
+					FROM $wpdbpg->term_taxonomy
+				$terms = $wpdbpg->get_col( "
+					FROM $wpdbpg->term_taxonomy
+			$_term = $wpdbpg->get_row( $wpdbpg->prepare( "SELECT t.*, tt.* FROM $wpdbpg->terms AS t INNER JOIN $wpdbpg->term_taxonomy AS tt ON t.term_id = tt.term_id WHERE tt.taxonomy = %s AND t.term_id = %d LIMIT 1", $taxonomy, $term) );
+	$term = $wpdbpg->get_row( $wpdbpg->prepare( "SELECT t.*, tt.* FROM $wpdbpg->terms AS t INNER JOIN $wpdbpg->term_taxonomy AS tt ON t.term_id = tt.term_id WHERE tt.taxonomy = %s AND $field = %s LIMIT 1", $taxonomy, $value) );
+		$where .= $wpdbpg->prepare( " AND t.name LIKE %s", '%' . $name__like . '%' );
+		$where .= $wpdbpg->prepare( " AND tt.description LIKE %s", '%' . $description__like . '%' );
+		$where .= $wpdbpg->prepare( ' AND ((t.name LIKE %s) OR (t.slug LIKE %s))', '%' . $search . '%', '%' . $search . '%' );
+	$join = "INNER JOIN $wpdbpg->term_taxonomy AS tt ON t.term_id = tt.term_id";
+	$query = "SELECT $fields FROM $wpdbpg->terms AS t $join WHERE $where $orderby $order $limits";
+		$term_count = $wpdbpg->get_var($query);
+	$terms = $wpdbpg->get_results($query);
+	$select = "SELECT term_id FROM $wpdbpg->terms as t WHERE ";
+	$tax_select = "SELECT tt.term_id, tt.term_taxonomy_id FROM $wpdbpg->terms AS t INNER JOIN $wpdbpg->term_taxonomy as tt ON tt.term_id = t.term_id WHERE ";
+			return $wpdbpg->get_row( $wpdbpg->prepare( $tax_select . $where . " AND tt.taxonomy = %s", $term, $taxonomy ), ARRAY_A );
+			return $wpdbpg->get_var( $wpdbpg->prepare( $select . $where, $term ) );
+		if ( $result = $wpdbpg->get_row( $wpdbpg->prepare("SELECT tt.term_id, tt.term_taxonomy_id FROM $wpdbpg->terms AS t INNER JOIN $wpdbpg->term_taxonomy as tt ON tt.term_id = t.term_id WHERE $where AND tt.taxonomy = %s", $where_fields), ARRAY_A) )
+		return $wpdbpg->get_row( $wpdbpg->prepare("SELECT tt.term_id, tt.term_taxonomy_id FROM $wpdbpg->terms AS t INNER JOIN $wpdbpg->term_taxonomy as tt ON tt.term_id = t.term_id WHERE $else_where AND tt.taxonomy = %s", $else_where_fields), ARRAY_A);
+	if ( $result = $wpdbpg->get_var( $wpdbpg->prepare("SELECT term_id FROM $wpdbpg->terms as t WHERE $where", $where_fields) ) )
+	return $wpdbpg->get_var( $wpdbpg->prepare("SELECT term_id FROM $wpdbpg->terms as t WHERE $else_where", $else_where_fields) );
+		$edit_tt_ids = $wpdbpg->get_col( "SELECT `term_taxonomy_id` FROM $wpdbpg->term_taxonomy WHERE `parent` = " . (int)$term_obj->term_id );
+		$wpdbpg->update( $wpdbpg->term_taxonomy, compact( 'parent' ), array( 'parent' => $term_obj->term_id) + compact( 'taxonomy' ) );
+	$objects = $wpdbpg->get_col( $wpdbpg->prepare( "SELECT object_id FROM $wpdbpg->term_relationships WHERE term_taxonomy_id = %d", $tt_id ) );
+	$wpdbpg->delete( $wpdbpg->term_taxonomy, array( 'term_taxonomy_id' => $tt_id ) );
+	if ( !$wpdbpg->get_var( $wpdbpg->prepare( "SELECT COUNT(*) FROM $wpdbpg->term_taxonomy WHERE term_id = %d", $term) ) )
+		$wpdbpg->delete( $wpdbpg->terms, array( 'term_id' => $term ) );
+	$query = "SELECT $select_this FROM $wpdbpg->terms AS t INNER JOIN $wpdbpg->term_taxonomy AS tt ON tt.term_id = t.term_id INNER JOIN $wpdbpg->term_relationships AS tr ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy IN ($taxonomies) AND tr.object_id IN ($object_ids) $orderby $order";
+		$_terms = $wpdbpg->get_results( $query );
+		$_terms = $wpdbpg->get_col( $query );
+		$terms = $wpdbpg->get_col("SELECT tr.term_taxonomy_id FROM $wpdbpg->term_relationships AS tr INNER JOIN $wpdbpg->term_taxonomy AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tr.object_id IN ($object_ids) AND tt.taxonomy IN ($taxonomies) $orderby $order");
+		$alias = $wpdbpg->get_row( $wpdbpg->prepare( "SELECT term_id, term_group FROM $wpdbpg->terms WHERE slug = %s", $alias_of) );
+			$term_group = $wpdbpg->get_var("SELECT MAX(term_group) FROM $wpdbpg->terms") + 1;
+			$wpdbpg->update($wpdbpg->terms, compact('term_group'), array('term_id' => $alias->term_id) );
+		$existing_term = $wpdbpg->get_row( $wpdbpg->prepare( "SELECT name FROM $wpdbpg->terms WHERE term_id = %d", $term_id), ARRAY_A );
+				if ( false === $wpdbpg->insert( $wpdbpg->terms, compact( 'name', 'slug', 'term_group' ) ) )
+					return new WP_Error('db_insert_error', __('Could not insert term into the database'), $wpdbpg->last_error);
+				$term_id = (int) $wpdbpg->insert_id;
+			if ( false === $wpdbpg->insert( $wpdbpg->terms, compact( 'name', 'slug', 'term_group' ) ) )
+				return new WP_Error('db_insert_error', __('Could not insert term into the database'), $wpdbpg->last_error);
+			$term_id = (int) $wpdbpg->insert_id;
+		if ( false === $wpdbpg->insert( $wpdbpg->terms, compact( 'name', 'slug', 'term_group' ) ) )
+			return new WP_Error('db_insert_error', __('Could not insert term into the database'), $wpdbpg->last_error);
+		$term_id = (int) $wpdbpg->insert_id;
+		$wpdbpg->update( $wpdbpg->terms, compact( 'slug' ), compact( 'term_id' ) );
+	$tt_id = $wpdbpg->get_var( $wpdbpg->prepare( "SELECT tt.term_taxonomy_id FROM $wpdbpg->term_taxonomy AS tt INNER JOIN $wpdbpg->terms AS t ON tt.term_id = t.term_id WHERE tt.taxonomy = %s AND t.term_id = %d", $taxonomy, $term_id ) );
+	$wpdbpg->insert( $wpdbpg->term_taxonomy, compact( 'term_id', 'taxonomy', 'description', 'parent') + array( 'count' => 0 ) );
+	$tt_id = (int) $wpdbpg->insert_id;
+		if ( $wpdbpg->get_var( $wpdbpg->prepare( "SELECT term_taxonomy_id FROM $wpdbpg->term_relationships WHERE object_id = %d AND term_taxonomy_id = %d", $object_id, $tt_id ) ) )
+		$wpdbpg->insert( $wpdbpg->term_relationships, array( 'object_id' => $object_id, 'term_taxonomy_id' => $tt_id ) );
+			$delete_term_ids = $wpdbpg->get_col( $wpdbpg->prepare( "SELECT tt.term_id FROM $wpdbpg->term_taxonomy AS tt WHERE tt.taxonomy = %s AND tt.term_taxonomy_id IN ($in_delete_tt_ids)", $taxonomy ) );
+				$values[] = $wpdbpg->prepare( "(%d, %d, %d)", $object_id, $tt_id, ++$term_order);
+			if ( false === $wpdbpg->query( "INSERT INTO $wpdbpg->term_relationships (object_id, term_taxonomy_id, term_order) VALUES " . join( ',', $values ) . " ON DUPLICATE KEY UPDATE term_order = VALUES(term_order)" ) )
+				return new WP_Error( 'db_insert_error', __( 'Could not insert term relationship into the database' ), $wpdbpg->last_error );
+		$deleted = $wpdbpg->query( $wpdbpg->prepare( "DELETE FROM $wpdbpg->term_relationships WHERE object_id = %d AND term_taxonomy_id IN ($in_tt_ids)", $object_id ) );
+		$query = $wpdbpg->prepare( "SELECT slug FROM $wpdbpg->terms WHERE slug = %s AND term_id != %d", $slug, $term->term_id );
+		$query = $wpdbpg->prepare( "SELECT slug FROM $wpdbpg->terms WHERE slug = %s", $slug );
+	if ( $wpdbpg->get_var( $query ) ) {
+			$slug_check = $wpdbpg->get_var( $wpdbpg->prepare( "SELECT slug FROM $wpdbpg->terms WHERE slug = %s", $alt_slug ) );
+		$alias = $wpdbpg->get_row( $wpdbpg->prepare( "SELECT term_id, term_group FROM $wpdbpg->terms WHERE slug = %s", $alias_of) );
+			$term_group = $wpdbpg->get_var("SELECT MAX(term_group) FROM $wpdbpg->terms") + 1;
+			$wpdbpg->update( $wpdbpg->terms, compact('term_group'), array( 'term_id' => $alias->term_id ) );
+	$id = $wpdbpg->get_var( $wpdbpg->prepare( "SELECT term_id FROM $wpdbpg->terms WHERE slug = %s", $slug ) );
+	$wpdbpg->update($wpdbpg->terms, compact( 'name', 'slug', 'term_group' ), compact( 'term_id' ) );
+		$wpdbpg->update( $wpdbpg->terms, compact( 'slug' ), compact( 'term_id' ) );
+	$tt_id = $wpdbpg->get_var( $wpdbpg->prepare( "SELECT tt.term_taxonomy_id FROM $wpdbpg->term_taxonomy AS tt INNER JOIN $wpdbpg->terms AS t ON tt.term_id = t.term_id WHERE tt.taxonomy = %s AND t.term_id = %d", $taxonomy, $term_id) );
+	$wpdbpg->update( $wpdbpg->term_taxonomy, compact( 'term_id', 'taxonomy', 'description', 'parent' ), array( 'term_taxonomy_id' => $tt_id ) );
+		$terms = $wpdbpg->get_results("SELECT term_id, taxonomy FROM $wpdbpg->term_taxonomy WHERE term_taxonomy_id IN ($tt_ids)");
+	$results = $wpdbpg->get_results("SELECT object_id, term_taxonomy_id FROM $wpdbpg->term_relationships INNER JOIN $wpdbpg->posts ON object_id = ID WHERE term_taxonomy_id IN (" . implode(',', array_keys($term_ids)) . ") AND post_type IN ('" . implode("', '", $object_types) . "') AND post_status = 'publish'");
+			$count += (int) $wpdbpg->get_var( $wpdbpg->prepare( "SELECT COUNT(*) FROM $wpdbpg->term_relationships, $wpdbpg->posts p1 WHERE p1.ID = $wpdbpg->term_relationships.object_id AND ( post_status = 'publish' OR ( post_status = 'inherit' AND post_parent > 0 AND ( SELECT post_status FROM $wpdbpg->posts WHERE ID = p1.post_parent ) = 'publish' ) ) AND post_type = 'attachment' AND term_taxonomy_id = %d", $term ) );
+			$count += (int) $wpdbpg->get_var( $wpdbpg->prepare( "SELECT COUNT(*) FROM $wpdbpg->term_relationships, $wpdbpg->posts WHERE $wpdbpg->posts.ID = $wpdbpg->term_relationships.object_id AND post_status = 'publish' AND post_type IN ('" . implode("', '", $object_types ) . "') AND term_taxonomy_id = %d", $term ) );
+		$wpdbpg->update( $wpdbpg->term_taxonomy, compact( 'count' ), array( 'term_taxonomy_id' => $term ) );
+		$count = $wpdbpg->get_var( $wpdbpg->prepare( "SELECT COUNT(*) FROM $wpdbpg->term_relationships WHERE term_taxonomy_id = %d", $term ) );
+		$wpdbpg->update( $wpdbpg->term_taxonomy, compact( 'count' ), array( 'term_taxonomy_id' => $term ) );
+Arquivo ./wp-includes/media-template.php
+Arquivo ./wp-includes/kses.php
+Arquivo ./wp-includes/class.wp-dependencies.php
+Arquivo ./wp-includes/class-wp.php
+Arquivo ./wp-includes/ms-files.php
+Arquivo ./wp-includes/bookmark.php
+			$_bookmark = $wpdbpg->get_row($wpdbpg->prepare("SELECT * FROM $wpdbpg->links WHERE link_id = %d LIMIT 1", $bookmark));
+		$join = " INNER JOIN $wpdbpg->term_relationships AS tr ON ($wpdbpg->links.link_id = tr.object_id) INNER JOIN $wpdbpg->term_taxonomy as tt ON tt.term_taxonomy_id = tr.term_taxonomy_id";
+			$orderby = "$wpdbpg->links.link_id";
+	$query = "SELECT * $length $recently_updated_test $get_updated FROM $wpdbpg->links $join WHERE 1=1 $visible $category_query";
+	$results = $wpdbpg->get_results($query);
+Arquivo ./wp-includes/bookmark-template.php
+Arquivo ./wp-includes/widgets.php
+Arquivo ./wp-includes/class-simplepie.php
+Arquivo ./wp-includes/class-wp-customize-control.php
+Arquivo ./wp-includes/class-wp-customize-section.php
+Arquivo ./wp-includes/http.php
+	$queried[ $host ] = (bool) $wpdbpg->get_var( $wpdbpg->prepare( "SELECT domain FROM $wpdbpg->blogs WHERE domain = %s LIMIT 1", $host ) );
+Arquivo ./wp-includes/ms-settings.php
+		$current_site->blog_id = $wpdbpg->get_var( $wpdbpg->prepare( "SELECT blog_id FROM $wpdbpg->blogs WHERE domain = %s AND path = %s", $current_site->domain, $current_site->path ) );
+			$current_site = $wpdbpg->get_row( $wpdbpg->prepare( "SELECT * FROM $wpdbpg->site WHERE id = %d", $current_blog->site_id ) );
+				$current_site->blog_id = $wpdbpg->get_var( $wpdbpg->prepare( "SELECT blog_id FROM $wpdbpg->blogs WHERE domain = %s AND path = %s", $current_site->domain, $current_site->path ) );
+			$msg = ! $wpdbpg->get_var( "SHOW TABLES LIKE '$wpdbpg->site'" ) ? ' ' . __( 'Database tables are missing.' ) : '';
+$wpdbpg->set_prefix( $table_prefix, false ); // $table_prefix can be set in sunrise.php
+$wpdbpg->set_blog_id( $current_blog->blog_id, $current_blog->site_id );
+$table_prefix = $wpdbpg->get_blog_prefix();
+Arquivo ./wp-includes/feed-atom-comments.php
+Arquivo ./wp-includes/class-wp-customize-setting.php
+Arquivo ./wp-login.php
+	$wpdbpg->update( $wpdbpg->users, array( 'user_activation_key' => $hashed ), array( 'user_login' => $user_login ) );
+Arquivo ./wp-blog-header.php
+Arquivo ./wp-cron.php
+		$row = $wpdbpg->get_row( $wpdbpg->prepare( "SELECT option_value FROM $wpdbpg->options WHERE option_name = %s LIMIT 1", '_transient_doing_cron' ) );
+Arquivo ./wp-trackback.php
+	$dupe = $wpdbpg->get_results( $wpdbpg->prepare("SELECT * FROM $wpdbpg->comments WHERE comment_post_ID = %d AND comment_author_url = %s", $comment_post_ID, $comment_author_url) );
+	$trackback_id = $wpdbpg->insert_id;
+Arquivo ./index.php
