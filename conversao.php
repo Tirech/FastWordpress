@@ -1,6 +1,6 @@
 \<?php
-#Arquivo /root/wordpress/wp-admin/user-new.php
-$aq = file_get_contents('/root/wordpress/wp-admin/user-new.php');
+#Arquivo /var/www/wordpress/wp-admin/user-new.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/user-new.php');
 $aq = convertSQL2pg($aq);
 /*
 			wpmu_signup_user( $new_user_login, $_REQUEST[ 'email' ], array( 'add_to_blog' => $wpdb->blogid, 'new_role' => $_REQUEST[ 'role' ] ) );
@@ -9,9 +9,9 @@ $aq = convertSQL2pg($aq);
 				wpmu_activate_signup( $key );
 				$redirect = add_query_arg( array('update' => 'addnoconfirmation'), 'user-new.php' );
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/user-new.php',$aq);
-#Arquivo /root/wordpress/wp-admin/network.php
-$aq = file_get_contents('/root/wordpress/wp-admin/network.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/user-new.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/network.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/network.php');
 $aq = convertSQL2pg($aq);
 /*
 foreach ( $wpdb->tables( 'ms_global' ) as $table => $prefixed_table )
@@ -32,18 +32,18 @@ foreach ( $wpdb->tables( 'ms_global' ) as $table => $prefixed_table )
 ?>
 	<div class="error"><p><strong><?php _e('Warning:'); ?></strong> <?php _e( 'An existing WordPress network was detected.' ); ?></p></div>
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/network.php',$aq);
-#Arquivo /root/wordpress/wp-admin/edit-comments.php
-$aq = file_get_contents('/root/wordpress/wp-admin/edit-comments.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/network.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/edit-comments.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/edit-comments.php');
 $aq = convertSQL2pg($aq);
 /*
 		$comment_ids = $wpdb->get_col( $wpdb->prepare( "SELECT comment_ID FROM $wpdb->comments WHERE comment_approved = %s AND %s > comment_date_gmt", $comment_status, $delete_time ) );
 		$doaction = 'delete';
 	} elseif ( isset( $_REQUEST['delete_comments'] ) ) {
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/edit-comments.php',$aq);
-#Arquivo /root/wordpress/wp-admin/upload.php
-$aq = file_get_contents('/root/wordpress/wp-admin/upload.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/edit-comments.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/upload.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/upload.php');
 $aq = convertSQL2pg($aq);
 /*
 		$post_ids = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_type='attachment' AND post_status = 'trash'" );
@@ -62,9 +62,9 @@ $aq = convertSQL2pg($aq);
 				foreach ( $attach as $att_id ) {
 					clean_attachment_cache( $att_id );
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/upload.php',$aq);
-#Arquivo /root/wordpress/wp-admin/export.php
-$aq = file_get_contents('/root/wordpress/wp-admin/export.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/upload.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/export.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/export.php');
 $aq = convertSQL2pg($aq);
 /*
 	$months = $wpdb->get_results( $wpdb->prepare( "
@@ -81,18 +81,18 @@ $aq = convertSQL2pg($aq);
 		wp_dropdown_users( array( 'include' => $authors, 'name' => 'page_author', 'multi' => true, 'show_option_all' => __('All') ) );
 ?>
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/export.php',$aq);
-#Arquivo /root/wordpress/wp-admin/network/upgrade.php
-$aq = file_get_contents('/root/wordpress/wp-admin/network/upgrade.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/export.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/network/upgrade.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/network/upgrade.php');
 $aq = convertSQL2pg($aq);
 /*
 		$blogs = $wpdb->get_results( "SELECT * FROM {$wpdb->blogs} WHERE site_id = '{$wpdb->siteid}' AND spam = '0' AND deleted = '0' AND archived = '0' ORDER BY registered DESC LIMIT {$n}, 5", ARRAY_A );
 		if ( empty( $blogs ) ) {
 			echo '<p>' . __( 'All done!' ) . '</p>';
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/network/upgrade.php',$aq);
-#Arquivo /root/wordpress/wp-admin/network/site-settings.php
-$aq = file_get_contents('/root/wordpress/wp-admin/network/site-settings.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/network/upgrade.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/network/site-settings.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/network/site-settings.php');
 $aq = convertSQL2pg($aq);
 /*
 		$blog_prefix = $wpdb->get_blog_prefix( $id );
@@ -100,9 +100,9 @@ $aq = convertSQL2pg($aq);
 		foreach ( $options as $option ) {
 			if ( $option->option_name == 'default_role' )
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/network/site-settings.php',$aq);
-#Arquivo /root/wordpress/wp-admin/network/site-new.php
-$aq = file_get_contents('/root/wordpress/wp-admin/network/site-new.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/network/site-settings.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/network/site-new.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/network/site-new.php');
 $aq = convertSQL2pg($aq);
 /*
 	$wpdb->hide_errors();
@@ -111,9 +111,9 @@ $aq = convertSQL2pg($aq);
 	if ( !is_wp_error( $id ) ) {
 		if ( !is_super_admin( $user_id ) && !get_user_option( 'primary_blog', $user_id ) )
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/network/site-new.php',$aq);
-#Arquivo /root/wordpress/wp-admin/install.php
-$aq = file_get_contents('/root/wordpress/wp-admin/install.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/network/site-new.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/install.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/install.php');
 $aq = convertSQL2pg($aq);
 /*
 	$user_table = ( $wpdb->get_var("SHOW TABLES LIKE '$wpdb->users'") != null );
@@ -137,9 +137,9 @@ if ( ! is_string( $wpdb->base_prefix ) || '' === $wpdb->base_prefix ) {
 			$result = wp_install($weblog_title, $user_name, $admin_email, $public, '', $admin_password);
 			extract( $result, EXTR_SKIP );
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/install.php',$aq);
-#Arquivo /root/wordpress/wp-admin/includes/ms.php
-$aq = file_get_contents('/root/wordpress/wp-admin/includes/ms.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/install.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/includes/ms.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/includes/ms.php');
 $aq = convertSQL2pg($aq);
 /*
 		$tables = $wpdb->tables( 'blog' );
@@ -181,9 +181,9 @@ $aq = convertSQL2pg($aq);
 		$result = true;
 	else
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/includes/ms.php',$aq);
-#Arquivo /root/wordpress/wp-admin/includes/user.php
-$aq = file_get_contents('/root/wordpress/wp-admin/includes/user.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/ms.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/includes/user.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/includes/user.php');
 $aq = convertSQL2pg($aq);
 /*
 	$query = $wpdb->prepare("SELECT ID, post_title FROM $wpdb->posts WHERE post_type = 'post' AND post_status = 'draft' AND post_author = %d ORDER BY post_modified DESC", $user_id);
@@ -220,9 +220,9 @@ $aq = convertSQL2pg($aq);
 	}
 
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/includes/user.php',$aq);
-#Arquivo /root/wordpress/wp-admin/includes/post.php
-$aq = file_get_contents('/root/wordpress/wp-admin/includes/post.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/user.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/includes/post.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/includes/post.php');
 $aq = convertSQL2pg($aq);
 /*
 		$pages = $wpdb->get_results("SELECT ID, post_parent FROM $wpdb->posts WHERE post_type = 'page'");
@@ -266,9 +266,9 @@ $aq = convertSQL2pg($aq);
 }
 
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/includes/post.php',$aq);
-#Arquivo /root/wordpress/wp-admin/includes/class-wp-list-table.php
-$aq = file_get_contents('/root/wordpress/wp-admin/includes/class-wp-list-table.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/post.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/includes/class-wp-list-table.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/includes/class-wp-list-table.php');
 $aq = convertSQL2pg($aq);
 /*
 		$months = $wpdb->get_results( $wpdb->prepare( "
@@ -277,27 +277,27 @@ $aq = convertSQL2pg($aq);
 			WHERE post_type = %s
 			ORDER BY post_date DESC
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/includes/class-wp-list-table.php',$aq);
-#Arquivo /root/wordpress/wp-admin/includes/class-wp-ms-users-list-table.php
-$aq = file_get_contents('/root/wordpress/wp-admin/includes/class-wp-ms-users-list-table.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/class-wp-list-table.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/includes/class-wp-ms-users-list-table.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/includes/class-wp-ms-users-list-table.php');
 $aq = convertSQL2pg($aq);
 /*
 			$args['include'] = $wpdb->get_col( "SELECT ID FROM $wpdb->users WHERE user_login IN ('$logins')" );
 		}
 
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/includes/class-wp-ms-users-list-table.php',$aq);
-#Arquivo /root/wordpress/wp-admin/includes/nav-menu.php
-$aq = file_get_contents('/root/wordpress/wp-admin/includes/nav-menu.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/class-wp-ms-users-list-table.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/includes/nav-menu.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/includes/nav-menu.php');
 $aq = convertSQL2pg($aq);
 /*
 	$menu_items_to_delete = $wpdb->get_col($wpdb->prepare("SELECT ID FROM $wpdb->posts AS p LEFT JOIN $wpdb->postmeta AS m ON p.ID = m.post_id WHERE post_type = 'nav_menu_item' AND post_status = 'draft' AND meta_key = '_menu_item_orphaned' AND meta_value < '%d'", $delete_timestamp ) );
 
 	foreach( (array) $menu_items_to_delete as $menu_item_id )
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/includes/nav-menu.php',$aq);
-#Arquivo /root/wordpress/wp-admin/includes/media.php
-$aq = file_get_contents('/root/wordpress/wp-admin/includes/media.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/nav-menu.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/includes/media.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/includes/media.php');
 $aq = convertSQL2pg($aq);
 /*
 		$attachments = intval( $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'attachment' AND post_status != 'trash' AND post_parent = %d", $post_id ) ) );
@@ -310,9 +310,9 @@ $arc_result = $wpdb->get_results( $arc_query );
 
 $month_count = count($arc_result);
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/includes/media.php',$aq);
-#Arquivo /root/wordpress/wp-admin/includes/export.php
-$aq = file_get_contents('/root/wordpress/wp-admin/includes/export.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/media.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/includes/export.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/includes/export.php');
 $aq = convertSQL2pg($aq);
 /*
 		$where = $wpdb->prepare( "{$wpdb->posts}.post_type = %s", $args['content'] );
@@ -368,9 +368,9 @@ $aq = convertSQL2pg($aq);
 			foreach ( $c_meta as $meta ) : ?>
 			<wp:commentmeta>
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/includes/export.php',$aq);
-#Arquivo /root/wordpress/wp-admin/includes/class-wp-ms-sites-list-table.php
-$aq = file_get_contents('/root/wordpress/wp-admin/includes/class-wp-ms-sites-list-table.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/export.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/includes/class-wp-ms-sites-list-table.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/includes/class-wp-ms-sites-list-table.php');
 $aq = convertSQL2pg($aq);
 /*
 		$query = "SELECT * FROM {$wpdb->blogs} WHERE site_id = '{$wpdb->siteid}' ";
@@ -405,9 +405,9 @@ $aq = convertSQL2pg($aq);
 
 		if ( wp_is_large_network() )
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/includes/class-wp-ms-sites-list-table.php',$aq);
-#Arquivo /root/wordpress/wp-admin/includes/class-wp-posts-list-table.php
-$aq = file_get_contents('/root/wordpress/wp-admin/includes/class-wp-posts-list-table.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/class-wp-ms-sites-list-table.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/includes/class-wp-posts-list-table.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/includes/class-wp-posts-list-table.php');
 $aq = convertSQL2pg($aq);
 /*
 			$this->user_posts_count = $wpdb->get_var( $wpdb->prepare( "
@@ -423,9 +423,9 @@ $aq = convertSQL2pg($aq);
 					clean_post_cache( $page );
 				}
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/includes/class-wp-posts-list-table.php',$aq);
-#Arquivo /root/wordpress/wp-admin/includes/template.php
-$aq = file_get_contents('/root/wordpress/wp-admin/includes/template.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/class-wp-posts-list-table.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/includes/template.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/includes/template.php');
 $aq = convertSQL2pg($aq);
 /*
 	$keys = $wpdb->get_col( "
@@ -438,9 +438,9 @@ $aq = convertSQL2pg($aq);
 
 	if ( $items ) {
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/includes/template.php',$aq);
-#Arquivo /root/wordpress/wp-admin/includes/schema.php
-$aq = file_get_contents('/root/wordpress/wp-admin/includes/schema.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/template.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/includes/schema.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/includes/schema.php');
 $aq = convertSQL2pg($aq);
 /*
 $charset_collate = $wpdb->get_charset_collate();
@@ -579,9 +579,9 @@ CREATE TABLE $wpdb->signups (
 		update_user_meta( $site_user->ID, 'source_domain', $domain );
 		update_user_meta( $site_user->ID, 'primary_blog', $blog_id );
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/includes/schema.php',$aq);
-#Arquivo /root/wordpress/wp-admin/includes/upgrade.php
-$aq = file_get_contents('/root/wordpress/wp-admin/includes/upgrade.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/schema.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/includes/upgrade.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/includes/upgrade.php');
 $aq = convertSQL2pg($aq);
 /*
 		$cat_id = $wpdb->get_var( $wpdb->prepare( "SELECT cat_ID FROM {$wpdb->sitecategories} WHERE category_nicename = %s", $cat_slug ) );
@@ -1071,9 +1071,9 @@ CREATE TABLE $wpdb->sitecategories (
   cat_ID bigint(20) NOT NULL auto_increment,
   cat_name varchar(55) NOT NULL default '',
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/includes/upgrade.php',$aq);
-#Arquivo /root/wordpress/wp-admin/includes/deprecated.php
-$aq = file_get_contents('/root/wordpress/wp-admin/includes/deprecated.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/upgrade.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/includes/deprecated.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/includes/deprecated.php');
 $aq = convertSQL2pg($aq);
 /*
 		$level_key = $wpdb->get_blog_prefix() . 'user_level';
@@ -1140,9 +1140,9 @@ $aq = convertSQL2pg($aq);
 	}
 
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/includes/deprecated.php',$aq);
-#Arquivo /root/wordpress/wp-admin/includes/update-core.php
-$aq = file_get_contents('/root/wordpress/wp-admin/includes/update-core.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/deprecated.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/includes/update-core.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/includes/update-core.php');
 $aq = convertSQL2pg($aq);
 /*
 	$mysql_version  = $wpdb->db_version();
@@ -1153,9 +1153,9 @@ $aq = convertSQL2pg($aq);
 		$mysql_compat = true;
 	else
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/includes/update-core.php',$aq);
-#Arquivo /root/wordpress/wp-admin/includes/comment.php
-$aq = file_get_contents('/root/wordpress/wp-admin/includes/comment.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/update-core.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/includes/comment.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/includes/comment.php');
 $aq = convertSQL2pg($aq);
 /*
 	return $wpdb->get_var( $wpdb->prepare("SELECT comment_post_ID FROM $wpdb->comments
@@ -1166,9 +1166,9 @@ $aq = convertSQL2pg($aq);
 
 	if ( $single ) {
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/includes/comment.php',$aq);
-#Arquivo /root/wordpress/wp-admin/includes/class-wp-importer.php
-$aq = file_get_contents('/root/wordpress/wp-admin/includes/class-wp-importer.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/comment.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/includes/class-wp-importer.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/includes/class-wp-importer.php');
 $aq = convertSQL2pg($aq);
 /*
 			$sql = $wpdb->prepare( "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = '%s' LIMIT %d,%d", $meta_key, $offset, $limit );
@@ -1191,18 +1191,18 @@ $aq = convertSQL2pg($aq);
 		// Reset $wp_actions to keep it from growing out of control
 		$wp_actions = array();
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/includes/class-wp-importer.php',$aq);
-#Arquivo /root/wordpress/wp-admin/includes/class-wp-media-list-table.php
-$aq = file_get_contents('/root/wordpress/wp-admin/includes/class-wp-media-list-table.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/class-wp-importer.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/includes/class-wp-media-list-table.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/includes/class-wp-media-list-table.php');
 $aq = convertSQL2pg($aq);
 /*
 		$total_orphans = $wpdb->get_var( "SELECT COUNT( * ) FROM $wpdb->posts WHERE post_type = 'attachment' AND post_status != 'trash' AND post_parent < 1" );
 		$matches = wp_match_mime_types(array_keys($post_mime_types), array_keys($_num_posts));
 		foreach ( $matches as $type => $reals )
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/includes/class-wp-media-list-table.php',$aq);
-#Arquivo /root/wordpress/wp-admin/includes/class-wp-upgrader.php
-$aq = file_get_contents('/root/wordpress/wp-admin/includes/class-wp-upgrader.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/class-wp-media-list-table.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/includes/class-wp-upgrader.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/includes/class-wp-upgrader.php');
 $aq = convertSQL2pg($aq);
 /*
 			if ( file_exists( WP_CONTENT_DIR . '/db.php' ) && empty( $wpdb->is_mysql ) )
@@ -1216,9 +1216,9 @@ $aq = convertSQL2pg($aq);
 
 		if ( ! $lock_result ) {
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/includes/class-wp-upgrader.php',$aq);
-#Arquivo /root/wordpress/wp-admin/includes/bookmark.php
-$aq = file_get_contents('/root/wordpress/wp-admin/includes/bookmark.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/class-wp-upgrader.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/includes/bookmark.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/includes/bookmark.php');
 $aq = convertSQL2pg($aq);
 /*
 	$wpdb->delete( $wpdb->links, array( 'link_id' => $link_id ) );
@@ -1241,18 +1241,18 @@ $aq = convertSQL2pg($aq);
 	}
 
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/includes/bookmark.php',$aq);
-#Arquivo /root/wordpress/wp-admin/options.php
-$aq = file_get_contents('/root/wordpress/wp-admin/options.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/bookmark.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/options.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/options.php');
 $aq = convertSQL2pg($aq);
 /*
 $options = $wpdb->get_results( "SELECT * FROM $wpdb->options ORDER BY option_name" );
 
 foreach ( (array) $options as $option ) :
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/options.php',$aq);
-#Arquivo /root/wordpress/wp-admin/upgrade.php
-$aq = file_get_contents('/root/wordpress/wp-admin/upgrade.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/options.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/upgrade.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/upgrade.php');
 $aq = convertSQL2pg($aq);
 /*
 $mysql_version  = $wpdb->db_version();
@@ -1265,9 +1265,9 @@ else
 
 <?php printf( __( '%s seconds' ), timer_stop( 0 ) ); ?>
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/upgrade.php',$aq);
-#Arquivo /root/wordpress/wp-admin/update-core.php
-$aq = file_get_contents('/root/wordpress/wp-admin/update-core.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/upgrade.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/update-core.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/update-core.php');
 $aq = convertSQL2pg($aq);
 /*
 	$mysql_version  = $wpdb->db_version();
@@ -1278,9 +1278,9 @@ $aq = convertSQL2pg($aq);
 				$mysql_compat = true;
 			else
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/update-core.php',$aq);
-#Arquivo /root/wordpress/wp-admin/install-helper.php
-$aq = file_get_contents('/root/wordpress/wp-admin/install-helper.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/update-core.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/install-helper.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/install-helper.php');
 $aq = convertSQL2pg($aq);
 /*
  * if (check_column($wpdb->comments, 'comment_author', 'tinytext'))
@@ -1331,18 +1331,18 @@ $aq = convertSQL2pg($aq);
 
 	foreach ($results as $row ) {
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/install-helper.php',$aq);
-#Arquivo /root/wordpress/wp-admin/edit.php
-$aq = file_get_contents('/root/wordpress/wp-admin/edit.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/install-helper.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/edit.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/edit.php');
 $aq = convertSQL2pg($aq);
 /*
 			$post_ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type=%s AND post_status = %s", $post_type, $post_status ) );
 		$doaction = 'delete';
 	} elseif ( isset( $_REQUEST['media'] ) ) {
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/edit.php',$aq);
-#Arquivo /root/wordpress/wp-admin/setup-config.php
-$aq = file_get_contents('/root/wordpress/wp-admin/setup-config.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/edit.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/setup-config.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/setup-config.php');
 $aq = convertSQL2pg($aq);
 /*
 	if ( ! empty( $wpdb->error ) )
@@ -1350,9 +1350,9 @@ $aq = convertSQL2pg($aq);
 
 	// Fetch or generate keys and salts.
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/setup-config.php',$aq);
-#Arquivo /root/wordpress/wp-admin/maint/repair.php
-$aq = file_get_contents('/root/wordpress/wp-admin/maint/repair.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/setup-config.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/maint/repair.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/maint/repair.php');
 $aq = convertSQL2pg($aq);
 /*
 	$tables = $wpdb->tables();
@@ -1378,9 +1378,9 @@ $aq = convertSQL2pg($aq);
 
 				echo '<br />&nbsp;&nbsp;&nbsp;&nbsp;';
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/maint/repair.php',$aq);
-#Arquivo /root/wordpress/wp-admin/user-edit.php
-$aq = file_get_contents('/root/wordpress/wp-admin/user-edit.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/maint/repair.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/user-edit.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/user-edit.php');
 $aq = convertSQL2pg($aq);
 /*
 		if ( $wpdb->get_var( $wpdb->prepare( "SELECT user_login FROM {$wpdb->signups} WHERE user_login = %s", $current_user->user_login ) ) )
@@ -1399,36 +1399,36 @@ $aq = convertSQL2pg($aq);
 		if ( !is_network_admin() && null == $cap && $_POST[ 'role' ] == '' ) {
 			$_POST[ 'role' ] = 'contributor';
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/user-edit.php',$aq);
-#Arquivo /root/wordpress/wp-admin/link.php
-$aq = file_get_contents('/root/wordpress/wp-admin/link.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/user-edit.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/link.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/link.php');
 $aq = convertSQL2pg($aq);
 /*
 		//$q = $wpdb->query("update $wpdb->links SET link_category='$category' WHERE link_id IN ($all_links)");
 
 		wp_redirect($this_file);
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/link.php',$aq);
-#Arquivo /root/wordpress/wp-admin/ms-delete-site.php
-$aq = file_get_contents('/root/wordpress/wp-admin/ms-delete-site.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/link.php',$aq);
+#Arquivo /var/www/wordpress/wp-admin/ms-delete-site.php
+$aq = file_get_contents('/var/www/wordpress/wp-admin/ms-delete-site.php');
 $aq = convertSQL2pg($aq);
 /*
 		wpmu_delete_blog( $wpdb->blogid );
 		wp_die( sprintf( __( 'Thank you for using %s, your site has been deleted. Happy trails to you until we meet again.' ), $current_site->site_name ) );
 	} else {
 */
-file_put_contents('/root/wordpress/wppg/wp-admin/ms-delete-site.php',$aq);
-#Arquivo /root/wordpress/wp-signup.php
-$aq = file_get_contents('/root/wordpress/wp-signup.php');
+file_put_contents('/var/www/wordpress/wppg/wp-admin/ms-delete-site.php',$aq);
+#Arquivo /var/www/wordpress/wp-signup.php
+$aq = file_get_contents('/var/www/wordpress/wp-signup.php');
 $aq = convertSQL2pg($aq);
 /*
 	wpmu_create_blog( $domain, $path, $blog_title, $current_user->ID, $meta, $wpdb->siteid );
 	confirm_another_blog_signup($domain, $path, $blog_title, $current_user->user_login, $current_user->user_email, $meta);
 	return true;
 */
-file_put_contents('/root/wordpress/wppg/wp-signup.php',$aq);
-#Arquivo /root/wordpress/wp-content/plugins/akismet/legacy.php
-$aq = file_get_contents('/root/wordpress/wp-content/plugins/akismet/legacy.php');
+file_put_contents('/var/www/wordpress/wppg/wp-signup.php',$aq);
+#Arquivo /var/www/wordpress/wp-content/plugins/akismet/legacy.php
+$aq = file_get_contents('/var/www/wordpress/wp-content/plugins/akismet/legacy.php');
 $aq = convertSQL2pg($aq);
 /*
 			$type = $wpdb->escape( $type );
@@ -1465,9 +1465,9 @@ $aq = convertSQL2pg($aq);
 		ob_start( 'akismet_recheck_button' );
 }
 */
-file_put_contents('/root/wordpress/wppg/wp-content/plugins/akismet/legacy.php',$aq);
-#Arquivo /root/wordpress/wp-content/plugins/akismet/akismet.php
-$aq = file_get_contents('/root/wordpress/wp-content/plugins/akismet/akismet.php');
+file_put_contents('/var/www/wordpress/wppg/wp-content/plugins/akismet/legacy.php',$aq);
+#Arquivo /var/www/wordpress/wp-content/plugins/akismet/akismet.php
+$aq = file_get_contents('/var/www/wordpress/wp-content/plugins/akismet/akismet.php');
 $aq = convertSQL2pg($aq);
 /*
 		return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->comments WHERE user_id = %d AND comment_approved = 1", $user_id ) );
@@ -1512,9 +1512,9 @@ $aq = convertSQL2pg($aq);
 	if ( $remaining && !wp_next_scheduled('akismet_schedule_cron_recheck') ) {
 		wp_schedule_single_event( time() + 1200, 'akismet_schedule_cron_recheck' );
 */
-file_put_contents('/root/wordpress/wppg/wp-content/plugins/akismet/akismet.php',$aq);
-#Arquivo /root/wordpress/wp-content/plugins/akismet/admin.php
-$aq = file_get_contents('/root/wordpress/wp-content/plugins/akismet/admin.php');
+file_put_contents('/var/www/wordpress/wppg/wp-content/plugins/akismet/akismet.php',$aq);
+#Arquivo /var/www/wordpress/wp-content/plugins/akismet/admin.php
+$aq = file_get_contents('/var/www/wordpress/wp-content/plugins/akismet/admin.php');
 $aq = convertSQL2pg($aq);
 /*
 				$waiting = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->commentmeta WHERE meta_key = 'akismet_error'" );
@@ -1544,18 +1544,18 @@ $aq = convertSQL2pg($aq);
 	foreach ( (array) $moderation as $c ) {
 		$c['user_ip']    = $c['comment_author_IP'];
 */
-file_put_contents('/root/wordpress/wppg/wp-content/plugins/akismet/admin.php',$aq);
-#Arquivo /root/wordpress/wp-includes/formatting.php
-$aq = file_get_contents('/root/wordpress/wp-includes/formatting.php');
+file_put_contents('/var/www/wordpress/wppg/wp-content/plugins/akismet/admin.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/formatting.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/formatting.php');
 $aq = convertSQL2pg($aq);
 /*
 	return $wpdb->_escape( $data );
 }
 
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/formatting.php',$aq);
-#Arquivo /root/wordpress/wp-includes/user.php
-$aq = file_get_contents('/root/wordpress/wp-includes/user.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/formatting.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/user.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/user.php');
 $aq = convertSQL2pg($aq);
 /*
 	$count = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->posts $where" );
@@ -1684,9 +1684,9 @@ $aq = convertSQL2pg($aq);
 	if ( ! $row )
 		return new WP_Error('invalid_key', __('Invalid key'));
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/user.php',$aq);
-#Arquivo /root/wordpress/wp-includes/class-wp-xmlrpc-server.php
-$aq = file_get_contents('/root/wordpress/wp-includes/class-wp-xmlrpc-server.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/user.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/class-wp-xmlrpc-server.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/class-wp-xmlrpc-server.php');
 $aq = convertSQL2pg($aq);
 /*
 		$page_list = $wpdb->get_results("
@@ -1728,9 +1728,9 @@ $aq = convertSQL2pg($aq);
 
 		if ( !$comments )
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/class-wp-xmlrpc-server.php',$aq);
-#Arquivo /root/wordpress/wp-includes/post.php
-$aq = file_get_contents('/root/wordpress/wp-includes/post.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/class-wp-xmlrpc-server.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/post.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/post.php');
 $aq = convertSQL2pg($aq);
 /*
 			$_post = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->posts WHERE ID = %d LIMIT 1", $post_id ) );
@@ -2003,9 +2003,9 @@ $aq = convertSQL2pg($aq);
 
 		update_post_caches( $fresh_posts, 'any', $update_term_cache, $update_meta_cache );
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/post.php',$aq);
-#Arquivo /root/wordpress/wp-includes/load.php
-$aq = file_get_contents('/root/wordpress/wp-includes/load.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/post.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/load.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/load.php');
 $aq = convertSQL2pg($aq);
 /*
 	if ( !empty( $wpdb->error ) )
@@ -2019,9 +2019,9 @@ $aq = convertSQL2pg($aq);
 
 	if ( is_wp_error( $prefix ) ) {
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/load.php',$aq);
-#Arquivo /root/wordpress/wp-includes/ms-deprecated.php
-$aq = file_get_contents('/root/wordpress/wp-includes/ms-deprecated.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/load.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/ms-deprecated.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/ms-deprecated.php');
 $aq = convertSQL2pg($aq);
 /*
 	$blogs = $wpdb->get_results( $wpdb->prepare("SELECT blog_id, domain, path FROM $wpdb->blogs WHERE site_id = %d AND public = '1' AND archived = '0' AND mature = '0' AND spam = '0' AND deleted = '0' ORDER BY registered DESC", $wpdb->siteid), ARRAY_A );
@@ -2032,9 +2032,9 @@ $aq = convertSQL2pg($aq);
 	}
 	unset( $blogs );
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/ms-deprecated.php',$aq);
-#Arquivo /root/wordpress/wp-includes/capabilities.php
-$aq = file_get_contents('/root/wordpress/wp-includes/capabilities.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/ms-deprecated.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/capabilities.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/capabilities.php');
 $aq = convertSQL2pg($aq);
 /*
 		$this->role_key = $wpdb->get_blog_prefix() . 'user_roles';
@@ -2066,9 +2066,9 @@ $aq = convertSQL2pg($aq);
 		else
 			$cap_key = '';
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/capabilities.php',$aq);
-#Arquivo /root/wordpress/wp-includes/query.php
-$aq = file_get_contents('/root/wordpress/wp-includes/query.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/capabilities.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/query.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/query.php');
 $aq = convertSQL2pg($aq);
 /*
 				$q['search_orderby_title'][] = "$wpdb->posts.post_title LIKE '%$term%'";
@@ -2341,9 +2341,9 @@ $aq = convertSQL2pg($aq);
 
 		if ( ! $id )
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/query.php',$aq);
-#Arquivo /root/wordpress/wp-includes/author-template.php
-$aq = file_get_contents('/root/wordpress/wp-includes/author-template.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/query.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/author-template.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/author-template.php');
 $aq = convertSQL2pg($aq);
 /*
 	foreach ( (array) $wpdb->get_results("SELECT DISTINCT post_author, COUNT(ID) AS count FROM $wpdb->posts WHERE post_type = 'post' AND " . get_private_posts_cap_sql( 'post' ) . " GROUP BY post_author") as $row )
@@ -2354,9 +2354,9 @@ $aq = convertSQL2pg($aq);
 		$is_multi_author = 1 < count( $rows ) ? 1 : 0;
 		set_transient( 'is_multi_author', $is_multi_author );
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/author-template.php',$aq);
-#Arquivo /root/wordpress/wp-includes/comment-template.php
-$aq = file_get_contents('/root/wordpress/wp-includes/comment-template.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/author-template.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/comment-template.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/comment-template.php');
 $aq = convertSQL2pg($aq);
 /*
 		$comments = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->comments WHERE comment_post_ID = %d AND (comment_approved = '1' OR ( user_id = %d AND comment_approved = '0' ) )  ORDER BY comment_date_gmt", $post->ID, $user_ID));
@@ -2367,9 +2367,9 @@ $aq = convertSQL2pg($aq);
 	}
 
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/comment-template.php',$aq);
-#Arquivo /root/wordpress/wp-includes/general-template.php
-$aq = file_get_contents('/root/wordpress/wp-includes/general-template.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/comment-template.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/general-template.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/general-template.php');
 $aq = convertSQL2pg($aq);
 /*
 		$query = "SELECT YEAR(post_date) AS `year`, MONTH(post_date) AS `month`, count(ID) as posts FROM $wpdb->posts $join $where GROUP BY YEAR(post_date), MONTH(post_date) ORDER BY post_date $order $limit";
@@ -2440,9 +2440,9 @@ $aq = convertSQL2pg($aq);
 		."WHERE post_date >= '{$thisyear}-{$thismonth}-01 00:00:00' "
 		."AND post_date <= '{$thisyear}-{$thismonth}-{$last_day} 23:59:59' "
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/general-template.php',$aq);
-#Arquivo /root/wordpress/wp-includes/option.php
-$aq = file_get_contents('/root/wordpress/wp-includes/option.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/general-template.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/option.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/option.php');
 $aq = convertSQL2pg($aq);
 /*
 				$row = $wpdb->get_row( $wpdb->prepare( "SELECT option_value FROM $wpdb->options WHERE option_name = %s LIMIT 1", $option ) );
@@ -2531,9 +2531,9 @@ $aq = convertSQL2pg($aq);
 			wp_cache_set( $cache_key, $value, 'site-options' );
 		}
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/option.php',$aq);
-#Arquivo /root/wordpress/wp-includes/rewrite.php
-$aq = file_get_contents('/root/wordpress/wp-includes/rewrite.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/option.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/rewrite.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/rewrite.php');
 $aq = convertSQL2pg($aq);
 /*
 		$pages = $wpdb->get_results("SELECT ID, post_name, post_parent FROM $wpdb->posts WHERE post_type = 'page' AND post_status != 'auto-draft'");
@@ -2544,9 +2544,9 @@ $aq = convertSQL2pg($aq);
 			if ( !empty($attachments) ) {
 				foreach ( $attachments as $attachment ) {
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/rewrite.php',$aq);
-#Arquivo /root/wordpress/wp-includes/pluggable.php
-$aq = file_get_contents('/root/wordpress/wp-includes/pluggable.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/rewrite.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/pluggable.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/pluggable.php');
 $aq = convertSQL2pg($aq);
 /*
 	$users = $wpdb->get_results( "SELECT * FROM $wpdb->users WHERE ID IN ($list)" );
@@ -2561,9 +2561,9 @@ $aq = convertSQL2pg($aq);
 
 	wp_cache_delete($user_id, 'users');
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/pluggable.php',$aq);
-#Arquivo /root/wordpress/wp-includes/ms-default-constants.php
-$aq = file_get_contents('/root/wordpress/wp-includes/ms-default-constants.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/pluggable.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/ms-default-constants.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/ms-default-constants.php');
 $aq = convertSQL2pg($aq);
 /*
 		define( 'UPLOADS', UPLOADBLOGSDIR . "/{$wpdb->blogid}/files/" );
@@ -2574,9 +2574,9 @@ $aq = convertSQL2pg($aq);
 	}
 }
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/ms-default-constants.php',$aq);
-#Arquivo /root/wordpress/wp-includes/link-template.php
-$aq = file_get_contents('/root/wordpress/wp-includes/link-template.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/ms-default-constants.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/link-template.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/link-template.php');
 $aq = convertSQL2pg($aq);
 /*
 		$join = " INNER JOIN $wpdb->term_relationships AS tr ON p.ID = tr.object_id INNER JOIN $wpdb->term_taxonomy tt ON tr.term_taxonomy_id = tt.term_taxonomy_id";
@@ -2605,9 +2605,9 @@ $aq = convertSQL2pg($aq);
 	if ( null === $result )
 		$result = '';
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/link-template.php',$aq);
-#Arquivo /root/wordpress/wp-includes/canonical.php
-$aq = file_get_contents('/root/wordpress/wp-includes/canonical.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/link-template.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/canonical.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/canonical.php');
 $aq = convertSQL2pg($aq);
 /*
 		$vars = $wpdb->get_results( $wpdb->prepare("SELECT post_type, post_parent FROM $wpdb->posts WHERE ID = %d", $id) );
@@ -2636,9 +2636,9 @@ $aq = convertSQL2pg($aq);
 		if ( ! $post_id )
 			return false;
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/canonical.php',$aq);
-#Arquivo /root/wordpress/wp-includes/date.php
-$aq = file_get_contents('/root/wordpress/wp-includes/date.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/canonical.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/date.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/date.php');
 $aq = convertSQL2pg($aq);
 /*
 			$where_parts[] = $wpdb->prepare( "$column $gt %s", $this->build_mysql_datetime( $query['after'], true ) );
@@ -2652,9 +2652,9 @@ $aq = convertSQL2pg($aq);
 	}
 }
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/date.php',$aq);
-#Arquivo /root/wordpress/wp-includes/functions.php
-$aq = file_get_contents('/root/wordpress/wp-includes/functions.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/date.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/functions.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/functions.php');
 $aq = convertSQL2pg($aq);
 /*
 			$mids = $wpdb->get_col( $wpdb->prepare("SELECT meta_id FROM $wpdb->postmeta WHERE post_id = %d AND meta_key = 'enclosure' AND meta_value LIKE (%s)", $post_ID, like_escape( $link_test ) . '%') );
@@ -2716,9 +2716,9 @@ $aq = convertSQL2pg($aq);
 
 	foreach ( (array) $comments_to_delete as $comment ) {
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/functions.php',$aq);
-#Arquivo /root/wordpress/wp-includes/deprecated.php
-$aq = file_get_contents('/root/wordpress/wp-includes/deprecated.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/functions.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/deprecated.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/deprecated.php');
 $aq = convertSQL2pg($aq);
 /*
  * $wpdb->linkcategories and output it as a nested HTML unordered list.
@@ -2760,9 +2760,9 @@ $aq = convertSQL2pg($aq);
 	return $users;
 }
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/deprecated.php',$aq);
-#Arquivo /root/wordpress/wp-includes/ms-load.php
-$aq = file_get_contents('/root/wordpress/wp-includes/ms-load.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/deprecated.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/ms-load.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/ms-load.php');
 $aq = convertSQL2pg($aq);
 /*
 		$current_site->site_name = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM $wpdb->sitemeta WHERE site_id = %d AND meta_key = 'site_name'", $current_site->id ) );
@@ -2812,9 +2812,9 @@ $aq = convertSQL2pg($aq);
 		if ( 'sitecategories' == $t )
 			continue;
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/ms-load.php',$aq);
-#Arquivo /root/wordpress/wp-includes/revision.php
-$aq = file_get_contents('/root/wordpress/wp-includes/revision.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/ms-load.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/revision.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/revision.php');
 $aq = convertSQL2pg($aq);
 /*
 	$result = $wpdb->query( $wpdb->prepare( "INSERT IGNORE INTO `$wpdb->options` (`option_name`, `option_value`, `autoload`) VALUES (%s, %s, 'no') /* LOCK */", $lock, $now ) );
@@ -2825,9 +2825,9 @@ $aq = convertSQL2pg($aq);
 
 		if ( $result )
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/revision.php',$aq);
-#Arquivo /root/wordpress/wp-includes/comment.php
-$aq = file_get_contents('/root/wordpress/wp-includes/comment.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/revision.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/comment.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/comment.php');
 $aq = convertSQL2pg($aq);
 /*
 			$ok_to_comment = $wpdb->get_var("SELECT comment_approved FROM $wpdb->comments WHERE comment_author = '$author' AND comment_author_email = '$email' and comment_approved = '1' LIMIT 1");
@@ -2996,9 +2996,9 @@ $aq = convertSQL2pg($aq);
 }
 
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/comment.php',$aq);
-#Arquivo /root/wordpress/wp-includes/meta.php
-$aq = file_get_contents('/root/wordpress/wp-includes/meta.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/comment.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/meta.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/meta.php');
 $aq = convertSQL2pg($aq);
 /*
 	if ( $unique && $wpdb->get_var( $wpdb->prepare(
@@ -3076,18 +3076,18 @@ $aq = convertSQL2pg($aq);
 }
 
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/meta.php',$aq);
-#Arquivo /root/wordpress/wp-includes/update.php
-$aq = file_get_contents('/root/wordpress/wp-includes/update.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/meta.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/update.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/update.php');
 $aq = convertSQL2pg($aq);
 /*
 		$mysql_version = preg_replace('/[^0-9.].*/', '', $wpdb->db_version());
 	else
 		$mysql_version = 'N/A';
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/update.php',$aq);
-#Arquivo /root/wordpress/wp-includes/ms-functions.php
-$aq = file_get_contents('/root/wordpress/wp-includes/ms-functions.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/update.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/ms-functions.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/ms-functions.php');
 $aq = convertSQL2pg($aq);
 /*
 		$site_id = $wpdb->siteid;
@@ -3291,9 +3291,9 @@ $aq = convertSQL2pg($aq);
 
 	return $site_results;
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/ms-functions.php',$aq);
-#Arquivo /root/wordpress/wp-includes/ms-blogs.php
-$aq = file_get_contents('/root/wordpress/wp-includes/ms-blogs.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/ms-functions.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/ms-blogs.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/ms-blogs.php');
 $aq = convertSQL2pg($aq);
 /*
 	update_blog_details( $wpdb->blogid, array('last_updated' => current_time('mysql', true)) );
@@ -3352,18 +3352,18 @@ $aq = convertSQL2pg($aq);
 }
 
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/ms-blogs.php',$aq);
-#Arquivo /root/wordpress/wp-includes/post-template.php
-$aq = file_get_contents('/root/wordpress/wp-includes/post-template.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/ms-blogs.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/post-template.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/post-template.php');
 $aq = convertSQL2pg($aq);
 /*
 		if ( $wpdb->get_var( $wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE post_parent = %d AND post_type = 'page' AND post_status = 'publish' LIMIT 1", $page_id) ) )
 			$classes[] = 'page-parent';
 
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/post-template.php',$aq);
-#Arquivo /root/wordpress/wp-includes/taxonomy.php
-$aq = file_get_contents('/root/wordpress/wp-includes/taxonomy.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/post-template.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/taxonomy.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/taxonomy.php');
 $aq = convertSQL2pg($aq);
 /*
 	$object_ids = $wpdb->get_col("SELECT tr.object_id FROM $wpdb->term_relationships AS tr INNER JOIN $wpdb->term_taxonomy AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy IN ($taxonomies) AND tt.term_id IN ($term_ids) ORDER BY tr.object_id $order");
@@ -3630,9 +3630,9 @@ $aq = convertSQL2pg($aq);
 		do_action( 'edited_term_taxonomy', $term, $taxonomy );
 	}
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/taxonomy.php',$aq);
-#Arquivo /root/wordpress/wp-includes/bookmark.php
-$aq = file_get_contents('/root/wordpress/wp-includes/bookmark.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/taxonomy.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/bookmark.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/bookmark.php');
 $aq = convertSQL2pg($aq);
 /*
 			$_bookmark = $wpdb->get_row($wpdb->prepare("SELECT * FROM $wpdb->links WHERE link_id = %d LIMIT 1", $bookmark));
@@ -3655,18 +3655,18 @@ $aq = convertSQL2pg($aq);
 
 	$cache[ $key ] = $results;
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/bookmark.php',$aq);
-#Arquivo /root/wordpress/wp-includes/http.php
-$aq = file_get_contents('/root/wordpress/wp-includes/http.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/bookmark.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/http.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/http.php');
 $aq = convertSQL2pg($aq);
 /*
 	$queried[ $host ] = (bool) $wpdb->get_var( $wpdb->prepare( "SELECT domain FROM $wpdb->blogs WHERE domain = %s LIMIT 1", $host ) );
 	return $queried[ $host ];
 }
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/http.php',$aq);
-#Arquivo /root/wordpress/wp-includes/ms-settings.php
-$aq = file_get_contents('/root/wordpress/wp-includes/ms-settings.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/http.php',$aq);
+#Arquivo /var/www/wordpress/wp-includes/ms-settings.php
+$aq = file_get_contents('/var/www/wordpress/wp-includes/ms-settings.php');
 $aq = convertSQL2pg($aq);
 /*
 		$current_site->blog_id = $wpdb->get_var( $wpdb->prepare( "SELECT blog_id FROM $wpdb->blogs WHERE domain = %s AND path = %s", $current_site->domain, $current_site->path ) );
@@ -3689,27 +3689,27 @@ $table_prefix = $wpdb->get_blog_prefix();
 $_wp_switched_stack = array();
 $switched = false;
 */
-file_put_contents('/root/wordpress/wppg/wp-includes/ms-settings.php',$aq);
-#Arquivo /root/wordpress/wp-login.php
-$aq = file_get_contents('/root/wordpress/wp-login.php');
+file_put_contents('/var/www/wordpress/wppg/wp-includes/ms-settings.php',$aq);
+#Arquivo /var/www/wordpress/wp-login.php
+$aq = file_get_contents('/var/www/wordpress/wp-login.php');
 $aq = convertSQL2pg($aq);
 /*
 	$wpdb->update( $wpdb->users, array( 'user_activation_key' => $hashed ), array( 'user_login' => $user_login ) );
 
 	$message = __('Someone requested that the password be reset for the following account:') . "\r\n\r\n";
 */
-file_put_contents('/root/wordpress/wppg/wp-login.php',$aq);
-#Arquivo /root/wordpress/wp-cron.php
-$aq = file_get_contents('/root/wordpress/wp-cron.php');
+file_put_contents('/var/www/wordpress/wppg/wp-login.php',$aq);
+#Arquivo /var/www/wordpress/wp-cron.php
+$aq = file_get_contents('/var/www/wordpress/wp-cron.php');
 $aq = convertSQL2pg($aq);
 /*
 		$row = $wpdb->get_row( $wpdb->prepare( "SELECT option_value FROM $wpdb->options WHERE option_name = %s LIMIT 1", '_transient_doing_cron' ) );
 		if ( is_object( $row ) )
 			$value = $row->option_value;
 */
-file_put_contents('/root/wordpress/wppg/wp-cron.php',$aq);
-#Arquivo /root/wordpress/wp-trackback.php
-$aq = file_get_contents('/root/wordpress/wp-trackback.php');
+file_put_contents('/var/www/wordpress/wppg/wp-cron.php',$aq);
+#Arquivo /var/www/wordpress/wp-trackback.php
+$aq = file_get_contents('/var/www/wordpress/wp-trackback.php');
 $aq = convertSQL2pg($aq);
 /*
 	$dupe = $wpdb->get_results( $wpdb->prepare("SELECT * FROM $wpdb->comments WHERE comment_post_ID = %d AND comment_author_url = %s", $comment_post_ID, $comment_author_url) );
@@ -3720,4 +3720,4 @@ $aq = convertSQL2pg($aq);
 
 	/**
 */
-file_put_contents('/root/wordpress/wppg/wp-trackback.php',$aq);
+file_put_contents('/var/www/wordpress/wppg/wp-trackback.php',$aq);
