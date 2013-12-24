@@ -146,7 +146,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/ms.php');
 		/**
 		 * Filter the tables to drop when the blog is deleted.
 --
-			$wpdb->query( "DROP TABLE IF EXISTS `$table`" );
+			$wpdb->query( "DROP TABLE IF EXISTS \"$table\"" );
 		}
 
 		$wpdb->delete( $wpdb->blogs, array( 'blog_id' => $blog_id ) );
@@ -695,7 +695,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/upgrade.php');
 		if ( $wpdb->get_row( "SELECT blog_id FROM {$wpdb->blog_versions} WHERE blog_id = '{$wpdb->blogid}'" ) )
 			$wpdb->query( "UPDATE {$wpdb->blog_versions} SET db_version = '{$wp_db_version}' WHERE blog_id = '{$wpdb->blogid}'" );
 		else
-			$wpdb->query( "INSERT INTO {$wpdb->blog_versions} ( `blog_id` , `db_version` , `last_updated` ) VALUES ( '{$wpdb->blogid}', '{$wp_db_version}', NOW());" );
+			$wpdb->query( "INSERT INTO {$wpdb->blog_versions} ( \"blog_id\" , \"db_version\" , \"last_updated\" ) VALUES ( '{$wpdb->blogid}', '{$wp_db_version}', NOW());" );
 	}
 }
 --
@@ -804,7 +804,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/upgrade.php');
 	$wpdb->query("UPDATE $wpdb->comments SET comment_type='pingback', comment_content = REPLACE(comment_content, '<pingback />', '') WHERE comment_content LIKE '<pingback />%'");
 
 	// Some versions have multiple duplicate option_name rows with the same values
-	$options = $wpdb->get_results("SELECT option_name, COUNT(option_name) AS dupes FROM `$wpdb->options` GROUP BY option_name");
+	$options = $wpdb->get_results("SELECT option_name, COUNT(option_name) AS dupes FROM \"$wpdb->options\" GROUP BY option_name");
 	foreach ( $options as $option ) {
 		if ( 1 != $option->dupes ) { // Could this be done in the query?
 --
@@ -1053,16 +1053,16 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/upgrade.php');
 	return false;
 --
 	$wpdb->hide_errors();
-	$wpdb->query("ALTER TABLE `$table` DROP INDEX `$index`");
+	$wpdb->query("ALTER TABLE \"$table\" DROP INDEX \"$index\"");
 	// Now we need to take out all the extra ones we may have created
 	for ($i = 0; $i < 25; $i++) {
-		$wpdb->query("ALTER TABLE `$table` DROP INDEX `{$index}_$i`");
+		$wpdb->query("ALTER TABLE \"$table\" DROP INDEX \"{$index}_$i\"");
 	}
 	$wpdb->show_errors();
 	return true;
 }
 --
-	$wpdb->query("ALTER TABLE `$table` ADD INDEX ( `$index` )");
+	$wpdb->query("ALTER TABLE \"$table\" ADD INDEX ( \"$index\" )");
 	return true;
 }
 --
@@ -1089,12 +1089,15 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/upgrade.php');
 		// Upgrade global tables only for the main site. Don't upgrade at all if DO_NOT_UPGRADE_GLOBAL_TABLES is defined.
 --
 		$suppress = $wpdb->suppress_errors();
-		$tablefields = $wpdb->get_results("DESCRIBE {$table};");
+//		$tablefields = $wpdb->get_results("DESCRIBE {$table};");
+//		$tablefields = $wpdb->get_results($wpdb->describe('public.teste'));
+		$tablefields = $wpdb->get_results($wpdb->describe($table));
 		$wpdb->suppress_errors( $suppress );
 
 		if ( ! $tablefields )
 --
-		$tableindices = $wpdb->get_results("SHOW INDEX FROM {$table};");
+//		$tableindices = $wpdb->get_results("SHOW INDEX FROM {$table};");
+		$tableindices = $wpdb->get_results($wpdb->show_index($table));
 
 		if ($tableindices) {
 --
@@ -1110,7 +1113,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/upgrade.php');
 		update_option( 'link_manager_enabled', 0 );
 }
 --
-		$wpdb->query("DELETE o1 FROM $wpdb->options AS o1 JOIN $wpdb->options AS o2 USING (`option_name`) WHERE o2.option_id > o1.option_id");
+		$wpdb->query("DELETE o1 FROM $wpdb->options AS o1 JOIN $wpdb->options AS o2 USING (\"option_name\") WHERE o2.option_id > o1.option_id");
 
 		// Drop the old primary key and add the new.
 		$wpdb->query("ALTER TABLE $wpdb->options DROP PRIMARY KEY, ADD PRIMARY KEY(option_id)");
@@ -1275,7 +1278,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/class-wp-upgrader.
 
 			if ( ! $php_compat || ! $mysql_compat )
 --
-		$lock_result = $wpdb->query( $wpdb->prepare( "INSERT IGNORE INTO `$wpdb->options` ( `option_name`, `option_value`, `autoload` ) VALUES (%s, %s, 'no') /* LOCK */", $lock_name, time() ) );
+		$lock_result = $wpdb->query( $wpdb->prepare( "INSERT IGNORE INTO \"$wpdb->options\" ( \"option_name\", \"option_value\", \"autoload\" ) VALUES (%s, %s, 'no') /* LOCK */", $lock_name, time() ) );
 
 		if ( ! $lock_result ) {
 */
@@ -2435,7 +2438,7 @@ file_put_contents('/var/www/wordpress/wppg/wp-includes/comment-template.php',$aq
 $aq = file_get_contents('/var/www/wordpress/wp-includes/general-template.php');
 #$aq = convertSQL2pg($aq);
 /*
-		$query = "SELECT YEAR(post_date) AS `year`, MONTH(post_date) AS `month`, count(ID) as posts FROM $wpdb->posts $join $where GROUP BY YEAR(post_date), MONTH(post_date) ORDER BY post_date $order $limit";
+		$query = "SELECT YEAR(post_date) AS \"year\", MONTH(post_date) AS \"month\", count(ID) as posts FROM $wpdb->posts $join $where GROUP BY YEAR(post_date), MONTH(post_date) ORDER BY post_date $order $limit";
 		$key = md5( $query );
 		$key = "wp_get_archives:$key:$last_changed";
 --
@@ -2443,7 +2446,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/general-template.php');
 			wp_cache_set( $key, $results, 'posts' );
 		}
 --
-		$query = "SELECT YEAR(post_date) AS `year`, count(ID) as posts FROM $wpdb->posts $join $where GROUP BY YEAR(post_date) ORDER BY post_date $order $limit";
+		$query = "SELECT YEAR(post_date) AS \"year\", count(ID) as posts FROM $wpdb->posts $join $where GROUP BY YEAR(post_date) ORDER BY post_date $order $limit";
 		$key = md5( $query );
 		$key = "wp_get_archives:$key:$last_changed";
 --
@@ -2451,7 +2454,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/general-template.php');
 			wp_cache_set( $key, $results, 'posts' );
 		}
 --
-		$query = "SELECT YEAR(post_date) AS `year`, MONTH(post_date) AS `month`, DAYOFMONTH(post_date) AS `dayofmonth`, count(ID) as posts FROM $wpdb->posts $join $where GROUP BY YEAR(post_date), MONTH(post_date), DAYOFMONTH(post_date) ORDER BY post_date $order $limit";
+		$query = "SELECT YEAR(post_date) AS \"year\", MONTH(post_date) AS \"month\", DAYOFMONTH(post_date) AS \"dayofmonth\", count(ID) as posts FROM $wpdb->posts $join $where GROUP BY YEAR(post_date), MONTH(post_date), DAYOFMONTH(post_date) ORDER BY post_date $order $limit";
 		$key = md5( $query );
 		$key = "wp_get_archives:$key:$last_changed";
 --
@@ -2459,7 +2462,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/general-template.php');
 			$cache[ $key ] = $results;
 			wp_cache_set( $key, $results, 'posts' );
 --
-		$query = "SELECT DISTINCT $week AS `week`, YEAR( `post_date` ) AS `yr`, DATE_FORMAT( `post_date`, '%Y-%m-%d' ) AS `yyyymmdd`, count( `ID` ) AS `posts` FROM `$wpdb->posts` $join $where GROUP BY $week, YEAR( `post_date` ) ORDER BY `post_date` $order $limit";
+		$query = "SELECT DISTINCT $week AS \"week\", YEAR( \"post_date\" ) AS \"yr\", DATE_FORMAT( \"post_date\", '%Y-%m-%d' ) AS \"yyyymmdd\", count( \"ID\" ) AS \"posts\" FROM \"$wpdb->posts\" $join $where GROUP BY $week, YEAR( \"post_date\" ) ORDER BY \"post_date\" $order $limit";
 		$key = md5( $query );
 		$key = "wp_get_archives:$key:$last_changed";
 --
@@ -2537,7 +2540,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/option.php');
 	if ( ! $result )
 		return false;
 --
-	$result = $wpdb->query( $wpdb->prepare( "INSERT INTO `$wpdb->options` (`option_name`, `option_value`, `autoload`) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE `option_name` = VALUES(`option_name`), `option_value` = VALUES(`option_value`), `autoload` = VALUES(`autoload`)", $option, $serialized_value, $autoload ) );
+	$result = $wpdb->query( $wpdb->prepare( "INSERT INTO \"$wpdb->options\" (\"option_name\", \"option_value\", \"autoload\") VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE \"option_name\" = VALUES(\"option_name\"), \"option_value\" = VALUES(\"option_value\"), \"autoload\" = VALUES(\"autoload\")", $option, $serialized_value, $autoload ) );
 	if ( ! $result )
 		return false;
 --
@@ -2751,7 +2754,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/functions.php');
 	foreach ( $wp_tables as $table ) {
 		// The existence of custom user tables shouldn't suggest an insane state or prevent a clean install.
 --
-		if ( ! $wpdb->get_results( "DESCRIBE $table;" ) )
+		if ( ! $wpdb->get_results($wpdb->describe($table) ) )
 			continue;
 
 --
@@ -2880,7 +2883,7 @@ file_put_contents('/var/www/wordpress/wppg/wp-includes/ms-load.php',$aq);
 $aq = file_get_contents('/var/www/wordpress/wp-includes/revision.php');
 #$aq = convertSQL2pg($aq);
 /*
-	$result = $wpdb->query( $wpdb->prepare( "INSERT IGNORE INTO `$wpdb->options` (`option_name`, `option_value`, `autoload`) VALUES (%s, %s, 'no') /* LOCK */", $lock, $now ) );
+	$result = $wpdb->query( $wpdb->prepare( "INSERT IGNORE INTO \"$wpdb->options\" (\"option_name\", \"option_value\", \"autoload\") VALUES (%s, %s, 'no') /* LOCK */", $lock, $now ) );
 	if ( ! $result ) {
 		// If we couldn't get a lock, see how old the previous lock is
 --
@@ -2985,7 +2988,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/comment.php');
 	}
 
 --
-	if ( $lasttime = $wpdb->get_var( $wpdb->prepare( "SELECT `comment_date_gmt` FROM `$wpdb->comments` WHERE `comment_date_gmt` >= %s AND ( `comment_author_IP` = %s OR `comment_author_email` = %s ) ORDER BY `comment_date_gmt` DESC LIMIT 1", $hour_ago, $ip, $email ) ) ) {
+	if ( $lasttime = $wpdb->get_var( $wpdb->prepare( "SELECT \"comment_date_gmt\" FROM \"$wpdb->comments\" WHERE \"comment_date_gmt\" >= %s AND ( \"comment_author_IP\" = %s OR \"comment_author_email\" = %s ) ORDER BY \"comment_date_gmt\" DESC LIMIT 1", $hour_ago, $ip, $email ) ) ) {
 		$time_lastcomment = mysql2date('U', $lasttime, false);
 		$time_newcomment  = mysql2date('U', $date, false);
 --
@@ -3528,7 +3531,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/taxonomy.php');
 }
 
 --
-		$edit_tt_ids = $wpdb->get_col( "SELECT `term_taxonomy_id` FROM $wpdb->term_taxonomy WHERE `parent` = " . (int)$term_obj->term_id );
+		$edit_tt_ids = $wpdb->get_col( "SELECT \"term_taxonomy_id\" FROM $wpdb->term_taxonomy WHERE \"parent\" = " . (int)$term_obj->term_id );
 		do_action( 'edit_term_taxonomies', $edit_tt_ids );
 		$wpdb->update( $wpdb->term_taxonomy, compact( 'parent' ), array( 'parent' => $term_obj->term_id) + compact( 'taxonomy' ) );
 		do_action( 'edited_term_taxonomies', $edit_tt_ids );
