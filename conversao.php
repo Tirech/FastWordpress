@@ -19,7 +19,7 @@ foreach ( $wpdb->tables( 'ms_global' ) as $table => $prefixed_table )
 
 /**
 --
-	if ( $wpdb->get_var( "SHOW TABLES LIKE '$wpdb->site'" ) )
+	if ( $wpdb->get_var( "SHOW TABLES ILIKE '$wpdb->site'" ) )
 		return $wpdb->get_var( "SELECT domain FROM $wpdb->site ORDER BY id ASC LIMIT 1" );
 	return false;
 }
@@ -96,7 +96,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/network/site-settings.php')
 #$aq = convertSQL2pg($aq);
 /*
 		$blog_prefix = $wpdb->get_blog_prefix( $id );
-		$options = $wpdb->get_results( "SELECT * FROM {$blog_prefix}options WHERE option_name NOT LIKE '\_%' AND option_name NOT LIKE '%user_roles'" );
+		$options = $wpdb->get_results( "SELECT * FROM {$blog_prefix}options WHERE option_name NOT ILIKE '\_%' AND option_name NOT ILIKE '%user_roles'" );
 		foreach ( $options as $option ) {
 			if ( $option->option_name == 'default_role' )
 */
@@ -116,7 +116,7 @@ file_put_contents('/var/www/wordpress/wppg/wp-admin/network/site-new.php',$aq);
 $aq = file_get_contents('/var/www/wordpress/wp-admin/install.php');
 #$aq = convertSQL2pg($aq);
 /*
-	$user_table = ( $wpdb->get_var("SHOW TABLES LIKE '$wpdb->users'") != null );
+	$user_table = ( $wpdb->get_var("SHOW TABLES ILIKE '$wpdb->users'") != null );
 
 	// Ensure that Blogs appear in search engines by default
 --
@@ -377,7 +377,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/class-wp-ms-sites-
 
 		if ( empty($s) ) {
 --
-			$reg_blog_ids = $wpdb->get_col( "SELECT blog_id FROM {$wpdb->registration_log} WHERE {$wpdb->registration_log}.IP LIKE ( '{$like_s}$wild' )" );
+			$reg_blog_ids = $wpdb->get_col( "SELECT blog_id FROM {$wpdb->registration_log} WHERE {$wpdb->registration_log}.IP ILIKE ( '{$like_s}$wild' )" );
 
 			if ( !$reg_blog_ids )
 --
@@ -390,11 +390,11 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/class-wp-ms-sites-
 			} elseif ( is_subdomain_install() ) {
 				$blog_s = str_replace( '.' . $current_site->domain, '', $like_s );
 --
-				$query .= " AND ( {$wpdb->blogs}.domain LIKE '$blog_s' ) ";
+				$query .= " AND ( {$wpdb->blogs}.domain ILIKE '$blog_s' ) ";
 			} else {
 				if ( $like_s != trim('/', $current_site->path) )
 --
-				$query .= " AND  ( {$wpdb->blogs}.path LIKE '$blog_s' )";
+				$query .= " AND  ( {$wpdb->blogs}.path ILIKE '$blog_s' )";
 			}
 		}
 --
@@ -432,7 +432,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/template.php');
 		SELECT meta_key
 		FROM $wpdb->postmeta
 		GROUP BY meta_key
-		HAVING meta_key NOT LIKE '\_%'
+		HAVING meta_key NOT ILIKE '\_%'
 --
 	$items = $wpdb->get_results( $wpdb->prepare("SELECT ID, post_parent, post_title FROM $wpdb->posts WHERE post_parent = %d AND post_type = 'page' ORDER BY menu_order", $parent) );
 
@@ -613,12 +613,12 @@ CREATE INDEX domain_path ON $wpdb->signups USING btree (domain,path);
     // Deletes all expired transients.
 --
     $wpdb->query("DELETE a, b FROM $wpdb->options a, $wpdb->options b WHERE
-	        a.option_name LIKE '\_transient\_%' AND
-	        a.option_name NOT LIKE '\_transient\_timeout\_%' AND
+	        a.option_name ILIKE '\_transient\_%' AND
+	        a.option_name NOT ILIKE '\_transient\_timeout\_%' AND
 --
         $wpdb->query("DELETE a, b FROM $wpdb->options a, $wpdb->options b WHERE
-			a.option_name LIKE '\_site\_transient\_%' AND
-			a.option_name NOT LIKE '\_site\_transient\_timeout\_%' AND
+			a.option_name ILIKE '\_site\_transient\_%' AND
+			a.option_name NOT ILIKE '\_site\_transient\_timeout\_%' AND
 --
     if ($network_id == $wpdb->get_var($wpdb->prepare("SELECT id FROM $wpdb->site WHERE id = %d", $network_id)))
         $errors->add('siteid_exists', __('The network already exists.'));
@@ -716,8 +716,8 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/upgrade.php');
 	}
 --
 	$wpdb->query("UPDATE $wpdb->options SET option_value = REPLACE(option_value, 'wp-links/links-images/', 'wp-images/links/')
-	WHERE option_name LIKE 'links_rating_image%'
-	AND option_value LIKE 'wp-links/links-images/%'");
+	WHERE option_name ILIKE 'links_rating_image%'
+	AND option_value ILIKE 'wp-links/links-images/%'");
 --
 	$done_ids = $wpdb->get_results("SELECT DISTINCT post_id FROM $wpdb->post2cat");
 	if ($done_ids) :
@@ -800,8 +800,8 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/upgrade.php');
 	$wpdb->query('DROP TABLE IF EXISTS ' . $wpdb->prefix . 'optiongroup_options');
 
 	// Update comments table to use comment_type
-	$wpdb->query("UPDATE $wpdb->comments SET comment_type='trackback', comment_content = REPLACE(comment_content, '<trackback />', '') WHERE comment_content LIKE '<trackback />%'");
-	$wpdb->query("UPDATE $wpdb->comments SET comment_type='pingback', comment_content = REPLACE(comment_content, '<pingback />', '') WHERE comment_content LIKE '<pingback />%'");
+	$wpdb->query("UPDATE $wpdb->comments SET comment_type='trackback', comment_content = REPLACE(comment_content, '<trackback />', '') WHERE comment_content ILIKE '<trackback />%'");
+	$wpdb->query("UPDATE $wpdb->comments SET comment_type='pingback', comment_content = REPLACE(comment_content, '<pingback />', '') WHERE comment_content ILIKE '<pingback />%'");
 
 	// Some versions have multiple duplicate option_name rows with the same values
 	$options = $wpdb->get_results("SELECT option_name, COUNT(option_name) AS dupes FROM \"$wpdb->options\" GROUP BY option_name");
@@ -999,7 +999,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/upgrade.php');
 }
 --
 		$prefix = like_escape($wpdb->base_prefix);
-		$wpdb->query( "DELETE FROM $wpdb->usermeta WHERE meta_key LIKE '{$prefix}%meta-box-hidden%' OR meta_key LIKE '{$prefix}%closedpostboxes%' OR meta_key LIKE '{$prefix}%manage-%-columns-hidden%' OR meta_key LIKE '{$prefix}%meta-box-order%' OR meta_key LIKE '{$prefix}%metaboxorder%' OR meta_key LIKE '{$prefix}%screen_layout%'
+		$wpdb->query( "DELETE FROM $wpdb->usermeta WHERE meta_key ILIKE '{$prefix}%meta-box-hidden%' OR meta_key ILIKE '{$prefix}%closedpostboxes%' OR meta_key ILIKE '{$prefix}%manage-%-columns-hidden%' OR meta_key ILIKE '{$prefix}%meta-box-order%' OR meta_key ILIKE '{$prefix}%metaboxorder%' OR meta_key ILIKE '{$prefix}%screen_layout%'
 					 OR meta_key = 'manageedittagscolumnshidden' OR meta_key='managecategoriescolumnshidden' OR meta_key = 'manageedit-tagscolumnshidden' OR meta_key = 'manageeditcolumnshidden' OR meta_key = 'categories_per_page' OR meta_key = 'edit_tags_per_page'" );
 	}
 --
@@ -1036,19 +1036,19 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/upgrade.php');
 	}
 --
 		$wpdb->query("DELETE a, b FROM $wpdb->sitemeta a, $wpdb->sitemeta b WHERE
-			a.meta_key LIKE '\_site\_transient\_%' AND
-			a.meta_key NOT LIKE '\_site\_transient\_timeout\_%' AND
+			a.meta_key ILIKE '\_site\_transient\_%' AND
+			a.meta_key NOT ILIKE '\_site\_transient\_timeout\_%' AND
 --
 		while( $rows = $wpdb->get_results( "SELECT meta_key, meta_value FROM {$wpdb->sitemeta} ORDER BY meta_id LIMIT $start, 20" ) ) {
 			foreach( $rows as $row ) {
 				$value = $row->meta_value;
 --
-	if ( $wpdb->get_var("SHOW TABLES LIKE '$table_name'") == $table_name )
+	if ( $wpdb->get_var("SHOW TABLES ILIKE '$table_name'") == $table_name )
 		return true;
 	//didn't find it try to create it.
 	$q = $wpdb->query($create_ddl);
 	// we cannot directly tell that whether this succeeded!
-	if ( $wpdb->get_var("SHOW TABLES LIKE '$table_name'") == $table_name )
+	if ( $wpdb->get_var("SHOW TABLES ILIKE '$table_name'") == $table_name )
 		return true;
 	return false;
 --
@@ -1178,7 +1178,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/deprecated.php');
 		$this->query_orderby = ' ORDER BY user_login';
 
 --
-				$searches[] = $wpdb->prepare( $col . ' LIKE %s', '%' . like_escape($this->search_term) . '%' );
+				$searches[] = $wpdb->prepare( $col . ' ILIKE %s', '%' . like_escape($this->search_term) . '%' );
 			$search_sql .= implode(' OR ', $searches);
 			$search_sql .= ')';
 --
@@ -1187,7 +1187,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/deprecated.php');
 
 --
 			$this->query_from .= " INNER JOIN $wpdb->usermeta ON $wpdb->users.ID = $wpdb->usermeta.user_id";
-			$this->query_where .= $wpdb->prepare(" AND $wpdb->usermeta.meta_key = '{$wpdb->prefix}capabilities' AND $wpdb->usermeta.meta_value LIKE %s", '%' . $this->role . '%');
+			$this->query_where .= $wpdb->prepare(" AND $wpdb->usermeta.meta_key = '{$wpdb->prefix}capabilities' AND $wpdb->usermeta.meta_value ILIKE %s", '%' . $this->role . '%');
 		} elseif ( is_multisite() ) {
 			$level_key = $wpdb->prefix . 'capabilities'; // wpmu site admins don't have user_levels
 			$this->query_from .= ", $wpdb->usermeta";
@@ -1424,7 +1424,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/maint/repair.php');
 	$tables = $wpdb->tables();
 
 	// Sitecategories may not exist if global terms are disabled.
-	if ( is_multisite() && ! $wpdb->get_var( "SHOW TABLES LIKE '$wpdb->sitecategories'" ) )
+	if ( is_multisite() && ! $wpdb->get_var( "SHOW TABLES ILIKE '$wpdb->sitecategories'" ) )
 		unset( $tables['sitecategories'] );
 
 --
@@ -1524,8 +1524,8 @@ $aq = file_get_contents('/var/www/wordpress/wp-content/plugins/akismet/legacy.ph
 --
 	$s = $wpdb->escape($_POST['s']);
 	$comments = $wpdb->get_results("SELECT * FROM $wpdb->comments  WHERE
-		(comment_author LIKE '%$s%' OR
-		comment_author_email LIKE '%$s%' OR
+		(comment_author ILIKE '%$s%' OR
+		comment_author_email ILIKE '%$s%' OR
 --
 	if ( $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->comments WHERE comment_approved = '0'" ) )
 		ob_start( 'akismet_recheck_button' );
@@ -2037,7 +2037,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/post.php');
 	if ( ! $result ) {
 		return false;
 --
-		if (! $wpdb->get_row( $wpdb->prepare( "SELECT meta_id FROM $wpdb->postmeta WHERE meta_key = '_wp_attachment_metadata' AND meta_value LIKE %s AND post_id <> %d", '%' . $meta['thumb'] . '%', $post_id)) ) {
+		if (! $wpdb->get_row( $wpdb->prepare( "SELECT meta_id FROM $wpdb->postmeta WHERE meta_key = '_wp_attachment_metadata' AND meta_value ILIKE %s AND post_id <> %d", '%' . $meta['thumb'] . '%', $post_id)) ) {
 			$thumbfile = str_replace(basename($file), $meta['thumb'], $file);
 			/** This filter is documented in wp-admin/custom-header.php */
 --
@@ -2137,9 +2137,9 @@ file_put_contents('/var/www/wordpress/wppg/wp-includes/capabilities.php',$aq);
 $aq = file_get_contents('/var/www/wordpress/wp-includes/query.php');
 #$aq = convertSQL2pg($aq);
 /*
-				$q['search_orderby_title'][] = "$wpdb->posts.post_title LIKE '%$term%'";
+				$q['search_orderby_title'][] = "$wpdb->posts.post_title ILIKE '%$term%'";
 
-			$search .= "{$searchand}(($wpdb->posts.post_title LIKE '{$n}{$term}{$n}') OR ($wpdb->posts.post_content LIKE '{$n}{$term}{$n}'))";
+			$search .= "{$searchand}(($wpdb->posts.post_title ILIKE '{$n}{$term}{$n}') OR ($wpdb->posts.post_content ILIKE '{$n}{$term}{$n}'))";
 			$searchand = ' AND ';
 		}
 --
@@ -2147,11 +2147,11 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/query.php');
 		}
 
 --
-			$search_orderby .= "WHEN $wpdb->posts.post_title LIKE '%{$search_orderby_s}%' THEN 1 ";
+			$search_orderby .= "WHEN $wpdb->posts.post_title ILIKE '%{$search_orderby_s}%' THEN 1 ";
 
 			// sanity limit, sort as sentence when more than 6 terms
 --
-			$search_orderby .= "WHEN $wpdb->posts.post_content LIKE '%{$search_orderby_s}%' THEN 4 ";
+			$search_orderby .= "WHEN $wpdb->posts.post_content ILIKE '%{$search_orderby_s}%' THEN 4 ";
 			$search_orderby .= 'ELSE 5 END)';
 		} else {
 --
@@ -2684,7 +2684,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/canonical.php');
 				if ( $redirect_url = get_author_posts_url($author->ID, $author->user_nicename) )
 					$redirect['query'] = remove_query_arg('author', $redirect['query']);
 --
-		$where = $wpdb->prepare("post_name LIKE %s", like_escape( get_query_var('name') ) . '%');
+		$where = $wpdb->prepare("post_name ILIKE %s", like_escape( get_query_var('name') ) . '%');
 
 		// if any of post_type, year, monthnum, or day are set, use them to refine the query
 --
@@ -2723,11 +2723,11 @@ file_put_contents('/var/www/wordpress/wppg/wp-includes/date.php',$aq);
 $aq = file_get_contents('/var/www/wordpress/wp-includes/functions.php');
 #$aq = convertSQL2pg($aq);
 /*
-			$mids = $wpdb->get_col( $wpdb->prepare("SELECT meta_id FROM $wpdb->postmeta WHERE post_id = %d AND meta_key = 'enclosure' AND meta_value LIKE (%s)", $post_ID, like_escape( $link_test ) . '%') );
+			$mids = $wpdb->get_col( $wpdb->prepare("SELECT meta_id FROM $wpdb->postmeta WHERE post_id = %d AND meta_key = 'enclosure' AND meta_value ILIKE (%s)", $post_ID, like_escape( $link_test ) . '%') );
 			foreach ( $mids as $mid )
 				delete_metadata_by_mid( 'post', $mid );
 --
-		if ( $url != '' && !$wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE post_id = %d AND meta_key = 'enclosure' AND meta_value LIKE (%s)", $post_ID, like_escape( $url ) . '%' ) ) ) {
+		if ( $url != '' && !$wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE post_id = %d AND meta_key = 'enclosure' AND meta_value ILIKE (%s)", $post_ID, like_escape( $url ) . '%' ) ) ) {
 
 			if ( $headers = wp_get_http_headers( $url) ) {
 --
@@ -2867,7 +2867,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/ms-load.php');
  *
  * @access private
 --
-	if ( ! $wpdb->get_var( "SHOW TABLES LIKE '$wpdb->site'" ) )
+	if ( ! $wpdb->get_var( "SHOW TABLES ILIKE '$wpdb->site'" ) )
 		$msg .= '<p>' . sprintf( __( '<strong>Database tables are missing.</strong> This means that MySQL is not running, WordPress was not installed properly, or someone deleted <code>%s</code>. You really should look at your database now.' ), $wpdb->site ) . '</p>';
 	else
 		$msg .= '<p>' . sprintf( __( '<strong>Could not find site <code>%1$s</code>.</strong> Searched for table <code>%2$s</code> in database <code>%3$s</code>. Is that right?' ), rtrim( $domain . $path, '/' ), $wpdb->blogs, DB_NAME ) . '</p>';
@@ -3479,15 +3479,15 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/taxonomy.php');
 	if ( !$term )
 		return false;
 --
-		$where .= $wpdb->prepare( " AND t.name LIKE %s", '%' . $name__like . '%' );
+		$where .= $wpdb->prepare( " AND t.name ILIKE %s", '%' . $name__like . '%' );
 	}
 
 --
-		$where .= $wpdb->prepare( " AND tt.description LIKE %s", '%' . $description__like . '%' );
+		$where .= $wpdb->prepare( " AND tt.description ILIKE %s", '%' . $description__like . '%' );
 	}
 
 --
-		$where .= $wpdb->prepare( ' AND ((t.name LIKE %s) OR (t.slug LIKE %s))', '%' . $search . '%', '%' . $search . '%' );
+		$where .= $wpdb->prepare( ' AND ((t.name ILIKE %s) OR (t.slug ILIKE %s))', '%' . $search . '%', '%' . $search . '%' );
 	}
 
 --
@@ -3745,7 +3745,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/ms-settings.php');
 		} else
 			$blogname = substr( $domain, 0, strpos( $domain, '.' ) );
 --
-			$msg = ! $wpdb->get_var( "SHOW TABLES LIKE '$wpdb->site'" ) ? ' ' . __( 'Database tables are missing.' ) : '';
+			$msg = ! $wpdb->get_var( "SHOW TABLES ILIKE '$wpdb->site'" ) ? ' ' . __( 'Database tables are missing.' ) : '';
 			wp_die( __( 'No site by that name on this system.' ) . $msg );
 		}
 --
