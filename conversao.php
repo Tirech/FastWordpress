@@ -1,7 +1,7 @@
 \<?php
 #Arquivo /var/www/wordpress/wp-admin/user-new.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/user-new.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 			wpmu_signup_user( $new_user_login, $_REQUEST[ 'email' ], array( 'add_to_blog' => $wpdb->blogid, 'new_role' => $_REQUEST[ 'role' ] ) );
 			if ( isset( $_POST[ 'noconfirmation' ] ) && is_super_admin() ) {
@@ -12,7 +12,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/user-new.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/network.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/network.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 foreach ( $wpdb->tables( 'ms_global' ) as $table => $prefixed_table )
 	$wpdb->$table = $prefixed_table;
@@ -35,7 +35,7 @@ foreach ( $wpdb->tables( 'ms_global' ) as $table => $prefixed_table )
 file_put_contents('/var/www/wordpress/wppg/wp-admin/network.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/edit-comments.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/edit-comments.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		$comment_ids = $wpdb->get_col( $wpdb->prepare( "SELECT comment_ID FROM $wpdb->comments WHERE comment_approved = %s AND %s > comment_date_gmt", $comment_status, $delete_time ) );
 		$doaction = 'delete';
@@ -44,7 +44,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/edit-comments.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/upload.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/upload.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		$post_ids = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_type='attachment' AND post_status = 'trash'" );
 		$doaction = 'delete';
@@ -65,7 +65,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/upload.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/export.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/export.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 	$months = $wpdb->get_results( $wpdb->prepare( "
 		SELECT DISTINCT YEAR( post_date ) AS year, MONTH( post_date ) AS month
@@ -84,7 +84,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/export.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/network/upgrade.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/network/upgrade.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		$blogs = $wpdb->get_results( "SELECT * FROM {$wpdb->blogs} WHERE site_id = '{$wpdb->siteid}' AND spam = '0' AND deleted = '0' AND archived = '0' ORDER BY registered DESC LIMIT {$n}, 5", ARRAY_A );
 		if ( empty( $blogs ) ) {
@@ -93,7 +93,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/network/upgrade.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/network/site-settings.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/network/site-settings.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		$blog_prefix = $wpdb->get_blog_prefix( $id );
 		$options = $wpdb->get_results( "SELECT * FROM {$blog_prefix}options WHERE option_name NOT LIKE '\_%' AND option_name NOT LIKE '%user_roles'" );
@@ -103,7 +103,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/network/site-settings.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/network/site-new.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/network/site-new.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 	$wpdb->hide_errors();
 	$id = wpmu_create_blog( $newdomain, $path, $title, $user_id , array( 'public' => 1 ), $current_site->id );
@@ -114,7 +114,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/network/site-new.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/install.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/install.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 	$user_table = ( $wpdb->get_var("SHOW TABLES LIKE '$wpdb->users'") != null );
 
@@ -140,7 +140,7 @@ if ( ! is_string( $wpdb->base_prefix ) || '' === $wpdb->base_prefix ) {
 file_put_contents('/var/www/wordpress/wppg/wp-admin/install.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/includes/ms.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/ms.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		$tables = $wpdb->tables( 'blog' );
 		/**
@@ -184,7 +184,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/ms.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/includes/user.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/user.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 	$query = $wpdb->prepare("SELECT ID, post_title FROM $wpdb->posts WHERE post_type = 'post' AND post_status = 'draft' AND post_author = %d ORDER BY post_modified DESC", $user_id);
 
@@ -223,7 +223,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/user.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/includes/post.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/post.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		$pages = $wpdb->get_results("SELECT ID, post_parent FROM $wpdb->posts WHERE post_type = 'page'");
 		$children = array();
@@ -269,7 +269,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/post.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/includes/class-wp-list-table.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/class-wp-list-table.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		$months = $wpdb->get_results( $wpdb->prepare( "
 			SELECT DISTINCT YEAR( post_date ) AS year, MONTH( post_date ) AS month
@@ -280,7 +280,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/class-wp-list-table.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/includes/class-wp-ms-users-list-table.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/class-wp-ms-users-list-table.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 			$args['include'] = $wpdb->get_col( "SELECT ID FROM $wpdb->users WHERE user_login IN ('$logins')" );
 		}
@@ -289,7 +289,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/class-wp-ms-users-list-table.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/includes/nav-menu.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/nav-menu.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 	$menu_items_to_delete = $wpdb->get_col($wpdb->prepare("SELECT ID FROM $wpdb->posts AS p LEFT JOIN $wpdb->postmeta AS m ON p.ID = m.post_id WHERE post_type = 'nav_menu_item' AND post_status = 'draft' AND meta_key = '_menu_item_orphaned' AND meta_value < '%d'", $delete_timestamp ) );
 
@@ -298,7 +298,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/nav-menu.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/includes/media.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/media.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		$attachments = intval( $wpdb->get_var( $wpdb->prepare( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'attachment' AND post_status != 'trash' AND post_parent = %d", $post_id ) ) );
 
@@ -313,7 +313,7 @@ $month_count = count($arc_result);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/media.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/includes/export.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/export.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		$where = $wpdb->prepare( "{$wpdb->posts}.post_type = %s", $args['content'] );
 	} else {
@@ -371,7 +371,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/export.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/includes/class-wp-ms-sites-list-table.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/class-wp-ms-sites-list-table.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		$query = "SELECT * FROM {$wpdb->blogs} WHERE site_id = '{$wpdb->siteid}' ";
 
@@ -408,7 +408,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/class-wp-ms-sites-list-table.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/includes/class-wp-posts-list-table.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/class-wp-posts-list-table.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 			$this->user_posts_count = $wpdb->get_var( $wpdb->prepare( "
 				SELECT COUNT( 1 ) FROM $wpdb->posts
@@ -426,7 +426,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/class-wp-posts-list-table.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/includes/template.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/template.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 	$keys = $wpdb->get_col( "
 		SELECT meta_key
@@ -441,148 +441,211 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/template.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/includes/schema.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/schema.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 $charset_collate = $wpdb->get_charset_collate();
 
 /**
 --
-	if ( ! empty($wpdb->charset) )
-		$charset_collate = "DEFAULT CHARACTER SET $wpdb->charset";
-	if ( ! empty($wpdb->collate) )
-		$charset_collate .= " COLLATE $wpdb->collate";
+    if (!empty($wpdb->charset))
+        $charset_collate = "DEFAULT CHARACTER SET $wpdb->charset";
+    if (!empty($wpdb->collate))
+        $charset_collate .= " COLLATE $wpdb->collate";
 
-	if ( $blog_id && $blog_id != $wpdb->blogid )
-		$old_blog_id = $wpdb->set_blog_id( $blog_id );
+    if ($blog_id && $blog_id != $wpdb->blogid)
+        $old_blog_id = $wpdb->set_blog_id($blog_id);
 
-	// Engage multisite if in the middle of turning it on from network.php.
+    // Engage multisite if in the middle of turning it on from network.php.
 --
-	$blog_tables = "CREATE TABLE $wpdb->terms (
- term_id bigint(20) unsigned NOT NULL auto_increment,
+    $blog_tables = "CREATE TABLE $wpdb->terms (
+ term_id bigserial,
  name varchar(200) NOT NULL default '',
 --
+CREATE INDEX name ON $wpdb->terms USING btree (name);
+
 CREATE TABLE $wpdb->term_taxonomy (
- term_taxonomy_id bigint(20) unsigned NOT NULL auto_increment,
- term_id bigint(20) unsigned NOT NULL default 0,
+ term_taxonomy_id bigserial,
+ term_id bigint  NOT NULL default 0,
 --
+CREATE INDEX taxonomy ON $wpdb->term_taxonomy USING btree (taxonomy);
+
 CREATE TABLE $wpdb->term_relationships (
- object_id bigint(20) unsigned NOT NULL default 0,
- term_taxonomy_id bigint(20) unsigned NOT NULL default 0,
+ object_id bigint NOT NULL default 0,
+ term_taxonomy_id bigint NOT NULL default 0,
 --
+CREATE INDEX term_taxonomy_id ON $wpdb->term_relationships USING btree (term_taxonomy_id);
+
 CREATE TABLE $wpdb->commentmeta (
-  meta_id bigint(20) unsigned NOT NULL auto_increment,
-  comment_id bigint(20) unsigned NOT NULL default '0',
+  meta_id bigserial,
+  comment_id bigint NOT NULL default '0',
 --
+CREATE INDEX comment_id ON $wpdb->commentmeta USING btree (comment_id);
+CREATE INDEX p4meta_key ON $wpdb->commentmeta USING btree (meta_key);
+
+
 CREATE TABLE $wpdb->comments (
-  comment_ID bigint(20) unsigned NOT NULL auto_increment,
-  comment_post_ID bigint(20) unsigned NOT NULL default '0',
+  comment_ID bigserial,
+  comment_post_ID bigint NOT NULL default '0',
 --
+CREATE INDEX comment_post_ID ON $wpdb->comments USING btree (comment_post_ID);
+CREATE INDEX comment_approved_date_gmt ON $wpdb->comments USING btree (comment_approved,comment_date_gmt);
+CREATE INDEX comment_date_gmt ON $wpdb->comments USING btree (comment_date_gmt);
+CREATE INDEX comment_parent ON $wpdb->comments USING btree (comment_parent);
+
+
 CREATE TABLE $wpdb->links (
-  link_id bigint(20) unsigned NOT NULL auto_increment,
+  link_id bigserial,
   link_url varchar(255) NOT NULL default '',
 --
+CREATE INDEX link_visible ON $wpdb->links USING btree (link_visible);
+
 CREATE TABLE $wpdb->options (
-  option_id bigint(20) unsigned NOT NULL auto_increment,
+  option_id bigserial,
   option_name varchar(64) NOT NULL default '',
 --
 CREATE TABLE $wpdb->postmeta (
-  meta_id bigint(20) unsigned NOT NULL auto_increment,
-  post_id bigint(20) unsigned NOT NULL default '0',
+  meta_id bigserial,
+  post_id bigint NOT NULL default '0',
 --
+CREATE INDEX post_id ON $wpdb->postmeta USING btree (post_id);
+CREATE INDEX p3meta_key ON $wpdb->postmeta USING btree (meta_key);
+
 CREATE TABLE $wpdb->posts (
-  ID bigint(20) unsigned NOT NULL auto_increment,
-  post_author bigint(20) unsigned NOT NULL default '0',
+  ID bigserial,
+  post_author bigint NOT NULL default '0',
 --
-	$users_single_table = "CREATE TABLE $wpdb->users (
-  ID bigint(20) unsigned NOT NULL auto_increment,
+CREATE INDEX post_name ON $wpdb->posts USING btree (post_name);
+CREATE INDEX type_status_date ON $wpdb->posts USING btree (post_type,post_status,post_date,ID);
+CREATE INDEX post_parent ON $wpdb->posts USING btree (post_parent);
+CREATE INDEX post_author ON $wpdb->posts USING btree (post_author);
+";
+
+--
+    $users_single_table = "CREATE TABLE $wpdb->users (
+  ID bigserial,
   user_login varchar(60) NOT NULL default '',
 --
-	$users_multi_table = "CREATE TABLE $wpdb->users (
-  ID bigint(20) unsigned NOT NULL auto_increment,
+CREATE INDEX user_login_key ON $wpdb->users USING btree (user_login);
+CREATE INDEX user_nicename ON $wpdb->users USING btree (user_nicename);
+
+";
+--
+    $users_multi_table = "CREATE TABLE $wpdb->users (
+  ID bigserial,
   user_login varchar(60) NOT NULL default '',
 --
-	$usermeta_table = "CREATE TABLE $wpdb->usermeta (
-  umeta_id bigint(20) unsigned NOT NULL auto_increment,
-  user_id bigint(20) unsigned NOT NULL default '0',
+CREATE INDEX user_login_key ON $wpdb->users USING btree (user_login);
+CREATE INDEX user_nicename ON $wpdb->users USING btree (user_nicename);
+";
+
 --
-	$ms_global_tables = "CREATE TABLE $wpdb->blogs (
-  blog_id bigint(20) NOT NULL auto_increment,
-  site_id bigint(20) NOT NULL default '0',
+    $usermeta_table = "CREATE TABLE $wpdb->usermeta (
+  umeta_id bigserial,
+  user_id bigint  NOT NULL default '0',
 --
+CREATE INDEX user_id ON $wpdb->usermeta USING btree (user_id);
+CREATE INDEX p2meta_key ON $wpdb->usermeta USING btree (meta_key);
+";
+
+--
+    $ms_global_tables = "CREATE TABLE $wpdb->blogs (
+  blog_id bigserial,
+  site_id bigint NOT NULL default '0',
+--
+CREATE INDEX domain ON $wpdb->blogs USING btree (domain(50),path(5));
+CREATE INDEX lang_id ON $wpdb->blogs USING btree (lang_id);
+
 CREATE TABLE $wpdb->blog_versions (
-  blog_id bigint(20) NOT NULL default '0',
+  blog_id bigint NOT NULL default '0',
   db_version varchar(20) NOT NULL default '',
 --
+CREATE INDEX db_version ON $wpdb->blog_versions USING btree (db_version);
+
 CREATE TABLE $wpdb->registration_log (
-  ID bigint(20) NOT NULL auto_increment,
+  ID bigserial,
   email varchar(255) NOT NULL default '',
 --
+CREATE INDEX IP ON $wpdb->registration_log USING btree (IP);
+
 CREATE TABLE $wpdb->site (
-  id bigint(20) NOT NULL auto_increment,
+  id bigserial,
   domain varchar(200) NOT NULL default '',
 --
+CREATE INDEX domain ON $wpdb->site USING btree (domain,path);
+
 CREATE TABLE $wpdb->sitemeta (
-  meta_id bigint(20) NOT NULL auto_increment,
-  site_id bigint(20) NOT NULL default '0',
+  meta_id bigserial,
+  site_id bigint NOT NULL default '0',
 --
+CREATE INDEX p1meta_key ON $wpdb->sitemeta USING btree (meta_key);
+CREATE INDEX site_id ON $wpdb->sitemeta USING btree (site_id);
+
 CREATE TABLE $wpdb->signups (
-  signup_id bigint(20) NOT NULL auto_increment,
+  signup_id bigserial,
   domain varchar(200) NOT NULL default '',
 --
-		$wpdb->set_blog_id( $old_blog_id );
-
-	return $queries;
---
-	$existing_options = $wpdb->get_col( "SELECT option_name FROM $wpdb->options WHERE option_name in ( $keys )" );
-
-	$insert = '';
---
-		$insert .= $wpdb->prepare( "(%s, %s, %s)", $option, $value, $autoload );
-	}
+CREATE INDEX activation_key ON $wpdb->signups USING btree (activation_key);
+CREATE INDEX user_email ON $wpdb->signups USING btree (user_email);
+CREATE INDEX user_login_email ON $wpdb->signups USING btree (user_login,user_email);
+CREATE INDEX domain_path ON $wpdb->signups USING btree (domain,path);
+";
 
 --
-		$wpdb->query("INSERT INTO $wpdb->options (option_name, option_value, autoload) VALUES " . $insert);
+        $wpdb->set_blog_id($old_blog_id);
 
-	// in case it is set, but blank, update "home"
+    return $queries;
 --
-	$wpdb->query("DELETE FROM $wpdb->options WHERE option_name REGEXP '^rss_[0-9a-f]{32}(_ts)?$'");
+    $existing_options = $wpdb->get_col("SELECT option_name FROM $wpdb->options WHERE option_name in ( $keys )");
 
-	// Deletes all expired transients.
+    $insert = '';
 --
-	$wpdb->query("DELETE a, b FROM $wpdb->options a, $wpdb->options b WHERE
+        $insert .= $wpdb->prepare("(%s, %s, %s)", $option, $value, $autoload);
+    }
+
+--
+        $wpdb->query("INSERT INTO $wpdb->options (option_name, option_value, autoload) VALUES " . $insert);
+
+    // in case it is set, but blank, update "home"
+--
+    //$wpdb->query("DELETE FROM $wpdb->options WHERE option_name ~ ^rss_[0-9a-f]{32}(_ts)?$");
+    $wpdb->query("DELETE FROM $wpdb->options WHERE option_name ilike 'rss_%'");
+
+    // Deletes all expired transients.
+--
+    $wpdb->query("DELETE a, b FROM $wpdb->options a, $wpdb->options b WHERE
 	        a.option_name LIKE '\_transient\_%' AND
 	        a.option_name NOT LIKE '\_transient\_timeout\_%' AND
 --
-		$wpdb->query("DELETE a, b FROM $wpdb->options a, $wpdb->options b WHERE
+        $wpdb->query("DELETE a, b FROM $wpdb->options a, $wpdb->options b WHERE
 			a.option_name LIKE '\_site\_transient\_%' AND
 			a.option_name NOT LIKE '\_site\_transient\_timeout\_%' AND
 --
-	if ( $network_id == $wpdb->get_var( $wpdb->prepare( "SELECT id FROM $wpdb->site WHERE id = %d", $network_id ) ) )
-		$errors->add( 'siteid_exists', __( 'The network already exists.' ) );
+    if ($network_id == $wpdb->get_var($wpdb->prepare("SELECT id FROM $wpdb->site WHERE id = %d", $network_id)))
+        $errors->add('siteid_exists', __('The network already exists.'));
 
 --
-		$wpdb->insert( $wpdb->site, array( 'domain' => $domain, 'path' => $path ) );
-		$network_id = $wpdb->insert_id;
-	} else {
-		$wpdb->insert( $wpdb->site, array( 'domain' => $domain, 'path' => $path, 'id' => $network_id ) );
-	}
+        $wpdb->insert($wpdb->site, array('domain' => $domain, 'path' => $path));
+        $network_id = $wpdb->insert_id;
+    } else {
+        $wpdb->insert($wpdb->site, array('domain' => $domain, 'path' => $path, 'id' => $network_id));
+    }
 
 --
-		$insert .= $wpdb->prepare( "( %d, %s, %s)", $network_id, $meta_key, $meta_value );
-	}
-	$wpdb->query( "INSERT INTO $wpdb->sitemeta ( site_id, meta_key, meta_value ) VALUES " . $insert );
+        $insert .= $wpdb->prepare("( %d, %s, %s)", $network_id, $meta_key, $meta_value);
+    }
+    $wpdb->query("INSERT INTO $wpdb->sitemeta ( site_id, meta_key, meta_value ) VALUES " . $insert);
 
-	// When upgrading from single to multisite, assume the current site will become the main site of the network.
+    // When upgrading from single to multisite, assume the current site will become the main site of the network.
 --
-		$wpdb->insert( $wpdb->blogs, array( 'site_id' => $network_id, 'blog_id' => 1, 'domain' => $domain, 'path' => $path, 'registered' => current_time( 'mysql' ) ) );
-		$current_site->blog_id = $blog_id = $wpdb->insert_id;
-		update_user_meta( $site_user->ID, 'source_domain', $domain );
-		update_user_meta( $site_user->ID, 'primary_blog', $blog_id );
+        $wpdb->insert($wpdb->blogs, array('site_id' => $network_id, 'blog_id' => 1, 'domain' => $domain, 'path' => $path, 'registered' => current_time('mysql')));
+        $current_site->blog_id = $blog_id = $wpdb->insert_id;
+        update_user_meta($site_user->ID, 'source_domain', $domain);
+        update_user_meta($site_user->ID, 'primary_blog', $blog_id);
 */
 file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/schema.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/includes/upgrade.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/upgrade.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		$cat_id = $wpdb->get_var( $wpdb->prepare( "SELECT cat_ID FROM {$wpdb->sitecategories} WHERE category_nicename = %s", $cat_slug ) );
 		if ( $cat_id == null ) {
@@ -1074,7 +1137,7 @@ CREATE TABLE $wpdb->sitecategories (
 file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/upgrade.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/includes/deprecated.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/deprecated.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		$level_key = $wpdb->get_blog_prefix() . 'user_level';
 	else
@@ -1143,7 +1206,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/deprecated.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/includes/update-core.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/update-core.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 	$mysql_version  = $wpdb->db_version();
 	$old_wp_version = $GLOBALS['wp_version']; // The version of WordPress we're updating from
@@ -1156,7 +1219,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/update-core.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/includes/comment.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/comment.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 	return $wpdb->get_var( $wpdb->prepare("SELECT comment_post_ID FROM $wpdb->comments
 			WHERE comment_author = %s AND comment_date = %s", $comment_author, $comment_date) );
@@ -1169,7 +1232,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/comment.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/includes/class-wp-importer.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/class-wp-importer.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 			$sql = $wpdb->prepare( "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = '%s' LIMIT %d,%d", $meta_key, $offset, $limit );
 			$results = $wpdb->get_results( $sql );
@@ -1194,7 +1257,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/class-wp-importer.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/includes/class-wp-media-list-table.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/class-wp-media-list-table.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		$total_orphans = $wpdb->get_var( "SELECT COUNT( * ) FROM $wpdb->posts WHERE post_type = 'attachment' AND post_status != 'trash' AND post_parent < 1" );
 		$matches = wp_match_mime_types(array_keys($post_mime_types), array_keys($_num_posts));
@@ -1203,7 +1266,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/class-wp-media-list-table.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/includes/class-wp-upgrader.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/class-wp-upgrader.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 			if ( file_exists( WP_CONTENT_DIR . '/db.php' ) && empty( $wpdb->is_mysql ) )
 				$mysql_compat = true;
@@ -1219,7 +1282,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/class-wp-upgrader.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/includes/bookmark.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/bookmark.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 	$wpdb->delete( $wpdb->links, array( 'link_id' => $link_id ) );
 	/**
@@ -1244,7 +1307,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/bookmark.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/options.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/options.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 $options = $wpdb->get_results( "SELECT * FROM $wpdb->options ORDER BY option_name" );
 
@@ -1253,7 +1316,7 @@ foreach ( (array) $options as $option ) :
 file_put_contents('/var/www/wordpress/wppg/wp-admin/options.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/upgrade.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/upgrade.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 $mysql_version  = $wpdb->db_version();
 $php_compat     = version_compare( $php_version, $required_php_version, '>=' );
@@ -1268,7 +1331,7 @@ else
 file_put_contents('/var/www/wordpress/wppg/wp-admin/upgrade.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/update-core.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/update-core.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 	$mysql_version  = $wpdb->db_version();
 	$show_buttons = true;
@@ -1281,7 +1344,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/update-core.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/install-helper.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/install-helper.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
  * if (check_column($wpdb->comments, 'comment_author', 'tinytext'))
  *     echo "ok\n";
@@ -1334,7 +1397,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/install-helper.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/edit.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/edit.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 			$post_ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type=%s AND post_status = %s", $post_type, $post_status ) );
 		$doaction = 'delete';
@@ -1343,7 +1406,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/edit.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/setup-config.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/setup-config.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 	if ( ! empty( $wpdb->error ) )
 		wp_die( $wpdb->error->get_error_message() . $tryagain_link );
@@ -1353,7 +1416,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/setup-config.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/maint/repair.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/maint/repair.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 	$tables = $wpdb->tables();
 
@@ -1381,7 +1444,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/maint/repair.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/user-edit.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/user-edit.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		if ( $wpdb->get_var( $wpdb->prepare( "SELECT user_login FROM {$wpdb->signups} WHERE user_login = %s", $current_user->user_login ) ) )
 			$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->signups} SET user_email = %s WHERE user_login = %s", $user->user_email, $current_user->user_login ) );
@@ -1402,7 +1465,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/user-edit.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/link.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/link.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		//$q = $wpdb->query("update $wpdb->links SET link_category='$category' WHERE link_id IN ($all_links)");
 
@@ -1411,7 +1474,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/link.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/ms-delete-site.php
 $aq = file_get_contents('/var/www/wordpress/wp-admin/ms-delete-site.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		wpmu_delete_blog( $wpdb->blogid );
 		wp_die( sprintf( __( 'Thank you for using %s, your site has been deleted. Happy trails to you until we meet again.' ), $current_site->site_name ) );
@@ -1420,7 +1483,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-admin/ms-delete-site.php',$aq);
 #Arquivo /var/www/wordpress/wp-signup.php
 $aq = file_get_contents('/var/www/wordpress/wp-signup.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 	wpmu_create_blog( $domain, $path, $blog_title, $current_user->ID, $meta, $wpdb->siteid );
 	confirm_another_blog_signup($domain, $path, $blog_title, $current_user->user_login, $current_user->user_email, $meta);
@@ -1429,7 +1492,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-signup.php',$aq);
 #Arquivo /var/www/wordpress/wp-content/plugins/akismet/legacy.php
 $aq = file_get_contents('/var/www/wordpress/wp-content/plugins/akismet/legacy.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 			$type = $wpdb->escape( $type );
 		return $wpdb->get_results( "SELECT * FROM $wpdb->comments WHERE comment_approved = 'spam' AND comment_type='$type' ORDER BY comment_date DESC LIMIT $start, $end");
@@ -1468,7 +1531,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-content/plugins/akismet/legacy.php',$aq);
 #Arquivo /var/www/wordpress/wp-content/plugins/akismet/akismet.php
 $aq = file_get_contents('/var/www/wordpress/wp-content/plugins/akismet/akismet.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->comments WHERE user_id = %d AND comment_approved = 1", $user_id ) );
 		
@@ -1515,7 +1578,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-content/plugins/akismet/akismet.php',$aq);
 #Arquivo /var/www/wordpress/wp-content/plugins/akismet/admin.php
 $aq = file_get_contents('/var/www/wordpress/wp-content/plugins/akismet/admin.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 				$waiting = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->commentmeta WHERE meta_key = 'akismet_error'" );
 				$next_check = wp_next_scheduled('akismet_schedule_cron_recheck');
@@ -1547,7 +1610,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-content/plugins/akismet/admin.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/formatting.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/formatting.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 	return $wpdb->_escape( $data );
 }
@@ -1556,7 +1619,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/formatting.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/user.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/user.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 	$count = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->posts $where" );
 
@@ -1687,7 +1750,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/user.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/class-wp-xmlrpc-server.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/class-wp-xmlrpc-server.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		$page_list = $wpdb->get_results("
 			SELECT ID page_id,
@@ -1731,7 +1794,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/class-wp-xmlrpc-server.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/post.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/post.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 			$_post = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->posts WHERE ID = %d LIMIT 1", $post_id ) );
 
@@ -2006,7 +2069,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/post.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/load.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/load.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 	if ( !empty( $wpdb->error ) )
 		dead_db();
@@ -2015,14 +2078,14 @@ $aq = convertSQL2pg($aq);
 		'parent' => '%d', 'count' => '%d','object_id' => '%d', 'term_order' => '%d', 'ID' => '%d', 'comment_ID' => '%d', 'comment_post_ID' => '%d', 'comment_parent' => '%d',
 		'user_id' => '%d', 'link_id' => '%d', 'link_owner' => '%d', 'link_rating' => '%d', 'option_id' => '%d', 'blog_id' => '%d', 'meta_id' => '%d', 'post_id' => '%d',
 --
-	$prefix = $wpdb->set_prefix( $table_prefix );
+	$prefix = $wpdb->set_prefix(DB_SCHEMA, $table_prefix );
 
 	if ( is_wp_error( $prefix ) ) {
 */
 file_put_contents('/var/www/wordpress/wppg/wp-includes/load.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/ms-deprecated.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/ms-deprecated.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 	$blogs = $wpdb->get_results( $wpdb->prepare("SELECT blog_id, domain, path FROM $wpdb->blogs WHERE site_id = %d AND public = '1' AND archived = '0' AND mature = '0' AND spam = '0' AND deleted = '0' ORDER BY registered DESC", $wpdb->siteid), ARRAY_A );
 
@@ -2035,7 +2098,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/ms-deprecated.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/capabilities.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/capabilities.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		$this->role_key = $wpdb->get_blog_prefix() . 'user_roles';
 		if ( ! empty( $wp_user_roles ) ) {
@@ -2069,7 +2132,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/capabilities.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/query.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/query.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 				$q['search_orderby_title'][] = "$wpdb->posts.post_title LIKE '%$term%'";
 
@@ -2344,7 +2407,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/query.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/author-template.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/author-template.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 	foreach ( (array) $wpdb->get_results("SELECT DISTINCT post_author, COUNT(ID) AS count FROM $wpdb->posts WHERE post_type = 'post' AND " . get_private_posts_cap_sql( 'post' ) . " GROUP BY post_author") as $row )
 		$author_count[$row->post_author] = $row->count;
@@ -2357,7 +2420,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/author-template.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/comment-template.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/comment-template.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		$comments = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->comments WHERE comment_post_ID = %d AND (comment_approved = '1' OR ( user_id = %d AND comment_approved = '0' ) )  ORDER BY comment_date_gmt", $post->ID, $user_ID));
 	} else if ( empty($comment_author) ) {
@@ -2370,7 +2433,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/comment-template.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/general-template.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/general-template.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		$query = "SELECT YEAR(post_date) AS `year`, MONTH(post_date) AS `month`, count(ID) as posts FROM $wpdb->posts $join $where GROUP BY YEAR(post_date), MONTH(post_date) ORDER BY post_date $order $limit";
 		$key = md5( $query );
@@ -2443,7 +2506,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/general-template.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/option.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/option.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 				$row = $wpdb->get_row( $wpdb->prepare( "SELECT option_value FROM $wpdb->options WHERE option_name = %s LIMIT 1", $option ) );
 
@@ -2534,7 +2597,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/option.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/rewrite.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/rewrite.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		$pages = $wpdb->get_results("SELECT ID, post_name, post_parent FROM $wpdb->posts WHERE post_type = 'page' AND post_status != 'auto-draft'");
 		$posts = get_page_hierarchy( $pages );
@@ -2547,7 +2610,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/rewrite.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/pluggable.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/pluggable.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 	$users = $wpdb->get_results( "SELECT * FROM $wpdb->users WHERE ID IN ($list)" );
 
@@ -2564,7 +2627,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/pluggable.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/ms-default-constants.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/ms-default-constants.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		define( 'UPLOADS', UPLOADBLOGSDIR . "/{$wpdb->blogid}/files/" );
 
@@ -2577,7 +2640,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/ms-default-constants.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/link-template.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/link-template.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		$join = " INNER JOIN $wpdb->term_relationships AS tr ON p.ID = tr.object_id INNER JOIN $wpdb->term_taxonomy tt ON tr.term_taxonomy_id = tt.term_taxonomy_id";
 
@@ -2608,7 +2671,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/link-template.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/canonical.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/canonical.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		$vars = $wpdb->get_results( $wpdb->prepare("SELECT post_type, post_parent FROM $wpdb->posts WHERE ID = %d", $id) );
 
@@ -2639,7 +2702,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/canonical.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/date.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/date.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 			$where_parts[] = $wpdb->prepare( "$column $gt %s", $this->build_mysql_datetime( $query['after'], true ) );
 
@@ -2655,7 +2718,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/date.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/functions.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/functions.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 			$mids = $wpdb->get_col( $wpdb->prepare("SELECT meta_id FROM $wpdb->postmeta WHERE post_id = %d AND meta_key = 'enclosure' AND meta_value LIKE (%s)", $post_ID, like_escape( $link_test ) . '%') );
 			foreach ( $mids as $mid )
@@ -2719,7 +2782,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/functions.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/deprecated.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/deprecated.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
  * $wpdb->linkcategories and output it as a nested HTML unordered list.
  *
@@ -2763,7 +2826,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/deprecated.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/ms-load.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/ms-load.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		$current_site->site_name = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM $wpdb->sitemeta WHERE site_id = %d AND meta_key = 'site_name'", $current_site->id ) );
 		if ( ! $current_site->site_name )
@@ -2815,7 +2878,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/ms-load.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/revision.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/revision.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 	$result = $wpdb->query( $wpdb->prepare( "INSERT IGNORE INTO `$wpdb->options` (`option_name`, `option_value`, `autoload`) VALUES (%s, %s, 'no') /* LOCK */", $lock, $now ) );
 	if ( ! $result ) {
@@ -2828,7 +2891,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/revision.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/comment.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/comment.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 			$ok_to_comment = $wpdb->get_var("SELECT comment_approved FROM $wpdb->comments WHERE comment_author = '$author' AND comment_author_email = '$email' and comment_approved = '1' LIMIT 1");
 			if ( ( 1 == $ok_to_comment ) &&
@@ -2999,7 +3062,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/comment.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/meta.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/meta.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 	if ( $unique && $wpdb->get_var( $wpdb->prepare(
 		"SELECT COUNT(*) FROM $table WHERE meta_key = %s AND $column = %d",
@@ -3079,7 +3142,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/meta.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/update.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/update.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		$mysql_version = preg_replace('/[^0-9.].*/', '', $wpdb->db_version());
 	else
@@ -3088,7 +3151,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/update.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/ms-functions.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/ms-functions.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		$site_id = $wpdb->siteid;
 	else
@@ -3294,7 +3357,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/ms-functions.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/ms-blogs.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/ms-blogs.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 	update_blog_details( $wpdb->blogid, array('last_updated' => current_time('mysql', true)) );
 	/**
@@ -3355,7 +3418,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/ms-blogs.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/post-template.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/post-template.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		if ( $wpdb->get_var( $wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE post_parent = %d AND post_type = 'page' AND post_status = 'publish' LIMIT 1", $page_id) ) )
 			$classes[] = 'page-parent';
@@ -3364,7 +3427,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/post-template.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/taxonomy.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/taxonomy.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 	$object_ids = $wpdb->get_col("SELECT tr.object_id FROM $wpdb->term_relationships AS tr INNER JOIN $wpdb->term_taxonomy AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy IN ($taxonomies) AND tt.term_id IN ($term_ids) ORDER BY tr.object_id $order");
 
@@ -3633,7 +3696,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/taxonomy.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/bookmark.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/bookmark.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 			$_bookmark = $wpdb->get_row($wpdb->prepare("SELECT * FROM $wpdb->links WHERE link_id = %d LIMIT 1", $bookmark));
 			if ( $_bookmark ) {
@@ -3658,7 +3721,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/bookmark.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/http.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/http.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 	$queried[ $host ] = (bool) $wpdb->get_var( $wpdb->prepare( "SELECT domain FROM $wpdb->blogs WHERE domain = %s LIMIT 1", $host ) );
 	return $queried[ $host ];
@@ -3667,7 +3730,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-includes/http.php',$aq);
 #Arquivo /var/www/wordpress/wp-includes/ms-settings.php
 $aq = file_get_contents('/var/www/wordpress/wp-includes/ms-settings.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		$current_site->blog_id = $wpdb->get_var( $wpdb->prepare( "SELECT blog_id FROM $wpdb->blogs WHERE domain = %s AND path = %s", $current_site->domain, $current_site->path ) );
 
@@ -3692,7 +3755,7 @@ $switched = false;
 file_put_contents('/var/www/wordpress/wppg/wp-includes/ms-settings.php',$aq);
 #Arquivo /var/www/wordpress/wp-login.php
 $aq = file_get_contents('/var/www/wordpress/wp-login.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 	$wpdb->update( $wpdb->users, array( 'user_activation_key' => $hashed ), array( 'user_login' => $user_login ) );
 
@@ -3701,7 +3764,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-login.php',$aq);
 #Arquivo /var/www/wordpress/wp-cron.php
 $aq = file_get_contents('/var/www/wordpress/wp-cron.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 		$row = $wpdb->get_row( $wpdb->prepare( "SELECT option_value FROM $wpdb->options WHERE option_name = %s LIMIT 1", '_transient_doing_cron' ) );
 		if ( is_object( $row ) )
@@ -3710,7 +3773,7 @@ $aq = convertSQL2pg($aq);
 file_put_contents('/var/www/wordpress/wppg/wp-cron.php',$aq);
 #Arquivo /var/www/wordpress/wp-trackback.php
 $aq = file_get_contents('/var/www/wordpress/wp-trackback.php');
-$aq = convertSQL2pg($aq);
+#$aq = convertSQL2pg($aq);
 /*
 	$dupe = $wpdb->get_results( $wpdb->prepare("SELECT * FROM $wpdb->comments WHERE comment_post_ID = %d AND comment_author_url = %s", $comment_post_ID, $comment_author_url) );
 	if ( $dupe )

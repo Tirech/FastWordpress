@@ -79,7 +79,9 @@ require( ABSPATH . WPINC . '/pomo/mo.php' );
 require_wp_db();
 
 // Set the database table prefix and the format specifiers for database table columns.
+$GLOBALS['database_schema'] = DB_SCHEMA;
 $GLOBALS['table_prefix'] = $table_prefix;
+$GLOBALS['dbport'] = DB_PORT;
 wp_set_wpdb_vars();
 
 // Start the WordPress object cache, or an external object cache if the drop-in is present.
