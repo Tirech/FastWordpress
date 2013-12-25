@@ -612,13 +612,34 @@ CREATE INDEX domain_path ON $wpdb->signups USING btree (domain,path);
 
     // Deletes all expired transients.
 --
-    $wpdb->query("DELETE a, b FROM $wpdb->options a, $wpdb->options b WHERE
-	        a.option_name ILIKE '\_transient\_%' AND
-	        a.option_name NOT ILIKE '\_transient\_timeout\_%' AND
+//    $wpdb->query("DELETE a, b FROM $wpdb->options a, $wpdb->options b WHERE
+//	        a.option_name ILIKE '\_transient\_%' AND
+//	        a.option_name NOT ILIKE '\_transient\_timeout\_%' AND
 --
-        $wpdb->query("DELETE a, b FROM $wpdb->options a, $wpdb->options b WHERE
-			a.option_name ILIKE '\_site\_transient\_%' AND
-			a.option_name NOT ILIKE '\_site\_transient\_timeout\_%' AND
+    $wpdb->query("DELETE  FROM $wpdb->options WHERE option_id IN(
+              SELECT a.option_id
+              FROM $wpdb->options a, $wpdb->options b
+              WHERE a.option_name ILIKE '_transient_%'
+              AND a.option_name NOT ILIKE '_transient_timeout_%'
+--
+              FROM $wpdb->options a, $wpdb->options b
+              WHERE a.option_name ILIKE '_transient_%'
+              AND a.option_name NOT ILIKE '_transient_timeout_%'
+--
+//        $wpdb->query("DELETE a, b FROM $wpdb->options a, $wpdb->options b WHERE
+//			a.option_name ILIKE '\_site\_transient\_%' AND
+//			a.option_name NOT ILIKE '\_site\_transient\_timeout\_%' AND
+--
+        $wpdb->query("DELETE FROM $wpdb->options
+            WHERE option_id IN (
+			SELECT a.option_id
+			FROM $wpdb->options a, $wpdb->options b
+			 WHERE a.option_name ILIKE '_site_transient_%'
+			  AND a.option_name NOT ILIKE '_site_transient_timeout_%'
+--
+			FROM $wpdb->options a, $wpdb->options b
+			 WHERE a.option_name ILIKE '_site_transient_%'
+			  AND a.option_name NOT ILIKE '_site_transient_timeout_%'
 --
     if ($network_id == $wpdb->get_var($wpdb->prepare("SELECT id FROM $wpdb->site WHERE id = %d", $network_id)))
         $errors->add('siteid_exists', __('The network already exists.'));
@@ -1035,20 +1056,30 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/upgrade.php');
 		}
 	}
 --
-		$wpdb->query("DELETE a, b FROM $wpdb->sitemeta a, $wpdb->sitemeta b WHERE
-			a.meta_key ILIKE '\_site\_transient\_%' AND
-			a.meta_key NOT ILIKE '\_site\_transient\_timeout\_%' AND
+//		$wpdb->query("DELETE a, b FROM $wpdb->sitemeta a, $wpdb->sitemeta b WHERE
+//			a.meta_key ILIKE '\_site\_transient\_%' AND
+//			a.meta_key NOT ILIKE '\_site\_transient\_timeout\_%' AND
+--
+        $wpdb->query("DELETE FROM $wpdb->sitemeta
+            WHERE meta_id in (
+              SELECT a.meta_id FROM $wpdb->sitemeta a, $wpdb->sitemeta b
+              WHERE a.meta_key ILIKE '_site_transient_%'
+              AND a.meta_key NOT ILIKE '_site_transient_timeout_%'
+--
+			  SELECT b.meta_id FROM $wpdb->sitemeta a, $wpdb->sitemeta b
+              WHERE a.meta_key ILIKE '_site_transient_%'
+              AND a.meta_key NOT ILIKE '_site_transient_timeout_%'
 --
 		while( $rows = $wpdb->get_results( "SELECT meta_key, meta_value FROM {$wpdb->sitemeta} ORDER BY meta_id LIMIT $start, 20" ) ) {
 			foreach( $rows as $row ) {
 				$value = $row->meta_value;
 --
-	if ( $wpdb->get_var("SHOW TABLES ILIKE '$table_name'") == $table_name )
+	if ( $wpdb->get_var($wpdb->ShowTables($table_name)) == $table_name )
 		return true;
 	//didn't find it try to create it.
 	$q = $wpdb->query($create_ddl);
 	// we cannot directly tell that whether this succeeded!
-	if ( $wpdb->get_var("SHOW TABLES ILIKE '$table_name'") == $table_name )
+	if ( $wpdb->get_var($wpdb->ShowTables($table_name)) == $table_name)
 		return true;
 	return false;
 --
@@ -1134,8 +1165,13 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/upgrade.php');
 	}
 --
 CREATE TABLE $wpdb->sitecategories (
-  cat_ID bigint(20) NOT NULL auto_increment,
+  cat_ID bigserial,
   cat_name varchar(55) NOT NULL default '',
+--
+CREATE INDEX category_nicename ON $wpdb->sitecategories USING btree (category_nicename);
+CREATE INDEX last_update ON $wpdb->sitecategories USING btree (last_updated);
+";
+// now create tables
 */
 file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/upgrade.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/includes/deprecated.php
@@ -3787,3 +3823,46 @@ $aq = file_get_contents('/var/www/wordpress/wp-trackback.php');
 	/**
 */
 file_put_contents('/var/www/wordpress/wppg/wp-trackback.php',$aq);
+#Arquivo /var/www/wordpress/pg4wp/driver_pgsql.php
+$aq = file_get_contents('/var/www/wordpress/pg4wp/driver_pgsql.php');
+#$aq = convertSQL2pg($aq);
+/*
+		if( $table == $wpdb->term_relationships)
+		{
+			$sql = 'NO QUERY';
+--
+			$sql = str_replace('GROUP BY '.$wpdb->prefix.'posts.ID', '' , $sql);
+			$sql = str_replace("!= ''", '<> 0', $sql);
+			
+--
+			if( false !== strpos( $sql, $wpdb->comments))
+				$sql = str_replace(' comment_id ', ' comment_ID ', $sql);
+			
+--
+			if( false !== strpos($sql, 'INSERT INTO '.$wpdb->categories))
+			{
+				$sql = str_replace('"cat_ID",', '', $sql);
+--
+			if( false !== strpos( $sql, $wpdb->options) && false !== strpos( $sql, '), ('))
+			{
+				$pattern = '/INSERT INTO.+VALUES/';
+--
+				if( !in_array(trim($matches[1],'` '), array($wpdb->posts,$wpdb->comments)))
+				{
+					// Remove 'ON DUPLICATE KEY UPDATE...' and following
+--
+			if( defined('WP_INSTALLING') && WP_INSTALLING && false !== strpos($sql, 'INSERT INTO `'.$wpdb->terms.'`'))
+				$end .= ';SELECT setval(\''.$wpdb->terms.'_seq\', (SELECT MAX(term_id) FROM '.$wpdb->terms.')+1);';
+			
+		} // INSERT
+--
+				$sql = "DELETE FROM $wpdb->options WHERE option_id IN " .
+					"(SELECT o1.option_id FROM $wpdb->options AS o1, $wpdb->options AS o2 " .
+					"WHERE o1.option_name = o2.option_name " .
+					"AND o1.option_id < o2.option_id)";
+--
+			if( false !== strpos( $sql, $wpdb->comments))
+				$sql = str_replace(' comment_id ', ' comment_ID ', $sql);
+		}
+*/
+file_put_contents('/var/www/wordpress/wppg/pg4wp/driver_pgsql.php',$aq);
