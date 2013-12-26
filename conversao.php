@@ -68,7 +68,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/export.php');
 #$aq = convertSQL2pg($aq);
 /*
 	$months = $wpdb->get_results( $wpdb->prepare( "
-		SELECT DISTINCT YEAR( post_date ) AS year, MONTH( post_date ) AS month
+		SELECT DISTINCT extract( YEAR from post_date ) AS year, extract(MONTH from post_date ) AS month
 		FROM $wpdb->posts
 		WHERE post_type = %s AND post_status != 'auto-draft'
 		ORDER BY post_date DESC
@@ -86,7 +86,7 @@ file_put_contents('/var/www/wordpress/wppg/wp-admin/export.php',$aq);
 $aq = file_get_contents('/var/www/wordpress/wp-admin/network/upgrade.php');
 #$aq = convertSQL2pg($aq);
 /*
-		$blogs = $wpdb->get_results( "SELECT * FROM {$wpdb->blogs} WHERE site_id = '{$wpdb->siteid}' AND spam = '0' AND deleted = '0' AND archived = '0' ORDER BY registered DESC LIMIT {$n}, 5", ARRAY_A );
+		$blogs = $wpdb->get_results( "SELECT * FROM {$wpdb->blogs} WHERE site_id = '{$wpdb->siteid}' AND spam = '0' AND deleted = '0' AND archived = '0' ORDER BY registered DESC LIMIT  5 OFFSET {$n}", ARRAY_A );
 		if ( empty( $blogs ) ) {
 			echo '<p>' . __( 'All done!' ) . '</p>';
 */
@@ -272,7 +272,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/class-wp-list-tabl
 #$aq = convertSQL2pg($aq);
 /*
 		$months = $wpdb->get_results( $wpdb->prepare( "
-			SELECT DISTINCT YEAR( post_date ) AS year, MONTH( post_date ) AS month
+			SELECT DISTINCT extract(YEAR from post_date ) AS year, extract( MONTH from post_date ) AS month
 			FROM $wpdb->posts
 			WHERE post_type = %s
 			ORDER BY post_date DESC
@@ -304,7 +304,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/media.php');
 
 	if ( empty($attachments) ) {
 --
-$arc_query = "SELECT DISTINCT YEAR(post_date) AS yyear, MONTH(post_date) AS mmonth FROM $wpdb->posts WHERE post_type = 'attachment' ORDER BY post_date DESC";
+$arc_query = "SELECT DISTINCT extract(YEAR from post_date) AS yyear, extract(MONTH from post_date) AS mmonth FROM $wpdb->posts WHERE post_type = 'attachment' ORDER BY post_date DESC";
 
 $arc_result = $wpdb->get_results( $arc_query );
 
@@ -400,7 +400,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/class-wp-ms-sites-
 --
 			$total = $wpdb->get_var( str_replace( 'SELECT *', 'SELECT COUNT( blog_id )', $query ) );
 
-		$query .= " LIMIT " . intval( ( $pagenum - 1 ) * $per_page ) . ", " . intval( $per_page );
+		$query .= " LIMIT ". intval( $per_page )." OFFSET ".intval( ( $pagenum - 1 ) * $per_page );
 		$this->items = $wpdb->get_results( $query, ARRAY_A );
 
 		if ( wp_is_large_network() )
@@ -1011,7 +1011,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/upgrade.php');
 }
 
 --
-		while( $rows = $wpdb->get_results( "SELECT option_name, option_value FROM $wpdb->options ORDER BY option_id LIMIT $start, 20" ) ) {
+		while( $rows = $wpdb->get_results( "SELECT option_name, option_value FROM $wpdb->options ORDER BY option_id LIMIT 20 OFFSET $start" ) ) {
 			foreach( $rows as $row ) {
 				$value = $row->option_value;
 --
@@ -1070,7 +1070,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/upgrade.php');
               WHERE a.meta_key ILIKE '_site_transient_%'
               AND a.meta_key NOT ILIKE '_site_transient_timeout_%'
 --
-		while( $rows = $wpdb->get_results( "SELECT meta_key, meta_value FROM {$wpdb->sitemeta} ORDER BY meta_id LIMIT $start, 20" ) ) {
+		while( $rows = $wpdb->get_results( "SELECT meta_key, meta_value FROM {$wpdb->sitemeta} ORDER BY meta_id LIMIT 20 OFFSET $start" ) ) {
 			foreach( $rows as $row ) {
 				$value = $row->meta_value;
 --
@@ -1210,7 +1210,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/deprecated.php');
 }
 
 --
-		$this->query_limit = $wpdb->prepare(" LIMIT %d, %d", $this->first_user, $this->users_per_page);
+		$this->query_limit = $wpdb->prepare(" LIMIT %d OFFSET %d",  $this->users_per_page, $this->first_user);
 		$this->query_orderby = ' ORDER BY user_login';
 
 --
@@ -1273,7 +1273,7 @@ file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/comment.php',$aq);
 $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/class-wp-importer.php');
 #$aq = convertSQL2pg($aq);
 /*
-			$sql = $wpdb->prepare( "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = '%s' LIMIT %d,%d", $meta_key, $offset, $limit );
+			$sql = $wpdb->prepare( "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = '%s' LIMIT %d OFFSET %d", $meta_key, $limit, $offset );
 			$results = $wpdb->get_results( $sql );
 
 			// Increment offset
@@ -1284,7 +1284,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/class-wp-importer.
 
 		if ( !empty( $result ) )
 --
-			$sql = $wpdb->prepare( "SELECT comment_ID, comment_agent FROM $wpdb->comments LIMIT %d,%d", $offset, $limit );
+			$sql = $wpdb->prepare( "SELECT comment_ID, comment_agent FROM $wpdb->comments LIMIT %d OFFSET %d", $limit, $offset );
 			$results = $wpdb->get_results( $sql );
 
 			// Increment offset
@@ -1534,11 +1534,11 @@ $aq = file_get_contents('/var/www/wordpress/wp-content/plugins/akismet/legacy.ph
 #$aq = convertSQL2pg($aq);
 /*
 			$type = $wpdb->escape( $type );
-		return $wpdb->get_results( "SELECT * FROM $wpdb->comments WHERE comment_approved = 'spam' AND comment_type='$type' ORDER BY comment_date DESC LIMIT $start, $end");
+		return $wpdb->get_results( "SELECT * FROM $wpdb->comments WHERE comment_approved = 'spam' AND comment_type='$type' ORDER BY comment_date DESC LIMIT $end OFFSET $start ");
 	}
 
 --
-	return $wpdb->get_results( "SELECT * FROM $wpdb->comments WHERE comment_approved = 'spam' ORDER BY comment_date DESC LIMIT $start, $end");
+	return $wpdb->get_results( "SELECT * FROM $wpdb->comments WHERE comment_approved = 'spam' ORDER BY comment_date DESC LIMIT $end OFFSET $start");
 }
 
 --
@@ -1592,7 +1592,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-content/plugins/akismet/akismet.p
 
 }
 --
-		$comment_ids = $wpdb->get_col( "SELECT $wpdb->comments.comment_id FROM $wpdb->commentmeta INNER JOIN $wpdb->comments USING(comment_id) WHERE meta_key = 'akismet_as_submitted' AND DATE_SUB('$now_gmt', INTERVAL {$interval} DAY) > comment_date_gmt LIMIT 10000" ); 
+		$comment_ids = $wpdb->get_col( "SELECT $wpdb->comments.comment_id FROM $wpdb->commentmeta INNER JOIN $wpdb->comments USING(comment_id) WHERE meta_key = 'akismet_as_submitted' AND DATE_SUB('$now_gmt', INTERVAL {$interval} DAY) > comment_date_gmt LIMIT 10000 OFFSET 0" );
 
 		if ( empty( $comment_ids ) ) {
 --
@@ -1705,7 +1705,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/user.php');
 			} else {
 				$orderby = 'user_login';
 --
-				$this->query_limit = $wpdb->prepare("LIMIT %d, %d", $qv['offset'], $qv['number']);
+				$this->query_limit = $wpdb->prepare("LIMIT %d OFFSET %d", $qv['number'], $qv['offset']);
 			else
 				$this->query_limit = $wpdb->prepare("LIMIT %d", $qv['number']);
 		}
@@ -2205,11 +2205,11 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/query.php');
 
 		// The "m" parameter is meant for months but accepts datetimes of varying specificity
 --
-			$where .= " AND YEAR($wpdb->posts.post_date)=" . substr($q['m'], 0, 4);
+			$where .= " AND extract(YEAR from $wpdb->posts.post_date)=" . substr($q['m'], 0, 4);
 			if ( strlen($q['m']) > 5 )
-				$where .= " AND MONTH($wpdb->posts.post_date)=" . substr($q['m'], 4, 2);
+				$where .= " AND extract(MONTH from $wpdb->posts.post_date)=" . substr($q['m'], 4, 2);
 			if ( strlen($q['m']) > 7 )
-				$where .= " AND DAYOFMONTH($wpdb->posts.post_date)=" . substr($q['m'], 6, 2);
+				$where .= " AND extract(DAYOFMONTH from $wpdb->posts.post_date)=" . substr($q['m'], 6, 2);
 			if ( strlen($q['m']) > 9 )
 				$where .= " AND HOUR($wpdb->posts.post_date)=" . substr($q['m'], 8, 2);
 			if ( strlen($q['m']) > 11 )
@@ -2392,7 +2392,8 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/query.php');
 			else
 				$where = "AND 0";
 --
-		$this->request = $old_request = "SELECT $found_rows $distinct $fields FROM $wpdb->posts $join WHERE 1=1 $where $groupby $orderby $limits";
+		$this->request = $old_request = "SELECT count($found_rows2)   FROM $wpdb->posts $join WHERE 1=1 $where $groupby $orderby $limits";
+//		$this->request = $old_request = "SELECT $found_rows $distinct $fields FROM $wpdb->posts $join WHERE 1=1 $where $groupby $orderby $limits";
 
 		if ( !$q['suppress_filters'] ) {
 --
@@ -2408,7 +2409,9 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/query.php');
 		$split_the_query = apply_filters( 'split_the_query', $split_the_query, $this );
 
 --
-			$this->request = "SELECT $found_rows $distinct $wpdb->posts.ID FROM $wpdb->posts $join WHERE 1=1 $where $groupby $orderby $limits";
+            $this->request = "SELECT count($found_rows2) FROM $wpdb->posts $join WHERE 1=1 $where $groupby $orderby $limits";
+//            echo "2951:SELECT count($found_rows) FROM $wpdb->posts $join WHERE 1=1 $where $groupby $orderby $limits";
+//			$this->request = "SELECT $found_rows $distinct $wpdb->posts.ID FROM $wpdb->posts $join WHERE 1=1 $where $groupby $orderby $limits";
 
 			$this->request = apply_filters( 'posts_request_ids', $this->request, $this );
 --
@@ -2425,7 +2428,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/query.php');
 			$this->comment_count = count($this->comments);
 		}
 --
-			$this->found_posts = $wpdb->get_var( apply_filters_ref_array( 'found_posts_query', array( 'SELECT FOUND_ROWS()', &$this ) ) );
+			$this->found_posts = $wpdb->get_var( apply_filters_ref_array( 'found_posts_query', array( 'SELECT count(*)', &$this ) ) );
 		else
 			$this->found_posts = count( $this->posts );
 --
@@ -2433,11 +2436,11 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/query.php');
 
 		// if year, monthnum, or day have been specified, make our query more precise
 --
-			$query .= $wpdb->prepare(" AND YEAR(post_date) = %d", $wp_query->query_vars['year']);
+			$query .= $wpdb->prepare(" AND extract(YEAR from post_date) = %d", $wp_query->query_vars['year']);
 		if ( '' != $wp_query->query_vars['monthnum'] )
-			$query .= $wpdb->prepare(" AND MONTH(post_date) = %d", $wp_query->query_vars['monthnum']);
+			$query .= $wpdb->prepare(" AND extract(MONTH from post_date) = %d", $wp_query->query_vars['monthnum']);
 		if ( '' != $wp_query->query_vars['day'] )
-			$query .= $wpdb->prepare(" AND DAYOFMONTH(post_date) = %d", $wp_query->query_vars['day']);
+			$query .= $wpdb->prepare(" AND extract(DAYOFMONTH from post_date) = %d", $wp_query->query_vars['day']);
 
 		$id = (int) $wpdb->get_var($query);
 
@@ -2474,7 +2477,7 @@ file_put_contents('/var/www/wordpress/wppg/wp-includes/comment-template.php',$aq
 $aq = file_get_contents('/var/www/wordpress/wp-includes/general-template.php');
 #$aq = convertSQL2pg($aq);
 /*
-		$query = "SELECT YEAR(post_date) AS \"year\", MONTH(post_date) AS \"month\", count(ID) as posts FROM $wpdb->posts $join $where GROUP BY YEAR(post_date), MONTH(post_date) ORDER BY post_date $order $limit";
+		$query = "SELECT extract(YEAR from post_date) AS \"year\", extract(MONTH from post_date) AS \"month\", count(ID) as posts FROM $wpdb->posts $join $where GROUP BY extract(YEAR from post_date), extract(MONTH from post_date),post_date ORDER BY post_date $order $limit";
 		$key = md5( $query );
 		$key = "wp_get_archives:$key:$last_changed";
 --
@@ -2482,7 +2485,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/general-template.php');
 			wp_cache_set( $key, $results, 'posts' );
 		}
 --
-		$query = "SELECT YEAR(post_date) AS \"year\", count(ID) as posts FROM $wpdb->posts $join $where GROUP BY YEAR(post_date) ORDER BY post_date $order $limit";
+		$query = "SELECT extract(YEAR from post_date) AS \"year\", count(ID) as posts FROM $wpdb->posts $join $where GROUP BY extract(YEAR from post_date),post_date ORDER BY post_date $order $limit";
 		$key = md5( $query );
 		$key = "wp_get_archives:$key:$last_changed";
 --
@@ -2490,7 +2493,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/general-template.php');
 			wp_cache_set( $key, $results, 'posts' );
 		}
 --
-		$query = "SELECT YEAR(post_date) AS \"year\", MONTH(post_date) AS \"month\", DAYOFMONTH(post_date) AS \"dayofmonth\", count(ID) as posts FROM $wpdb->posts $join $where GROUP BY YEAR(post_date), MONTH(post_date), DAYOFMONTH(post_date) ORDER BY post_date $order $limit";
+		$query = "SELECT extract(YEAR from post_date) AS \"year\", extract(MONTH from post_date) AS \"month\", extract(DAYOFMONTH from post_date) AS \"dayofmonth\", count(ID) as posts FROM $wpdb->posts $join $where GROUP BY extract(YEAR from post_date), extract(MONTH from post_date), extract(DAYOFMONTH from post_date),post_date ORDER BY post_date $order $limit";
 		$key = md5( $query );
 		$key = "wp_get_archives:$key:$last_changed";
 --
@@ -2498,7 +2501,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/general-template.php');
 			$cache[ $key ] = $results;
 			wp_cache_set( $key, $results, 'posts' );
 --
-		$query = "SELECT DISTINCT $week AS \"week\", YEAR( \"post_date\" ) AS \"yr\", DATE_FORMAT( \"post_date\", '%Y-%m-%d' ) AS \"yyyymmdd\", count( \"ID\" ) AS \"posts\" FROM \"$wpdb->posts\" $join $where GROUP BY $week, YEAR( \"post_date\" ) ORDER BY \"post_date\" $order $limit";
+		$query = "SELECT DISTINCT $week AS \"week\", extract(YEAR from post_date ) AS \"yr\", DATE_FORMAT( \"post_date\", '%Y-%m-%d' ) AS \"yyyymmdd\", count( \"ID\" ) AS \"posts\" FROM \"$wpdb->posts\" $join $where GROUP BY $week, extract(YEAR from post_date ),post_date ORDER BY \"post_date\" $order $limit";
 		$key = md5( $query );
 		$key = "wp_get_archives:$key:$last_changed";
 --
@@ -2537,7 +2540,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/general-template.php');
 		AND post_type = 'post' AND post_status = 'publish'
 		AND post_date <= '{$thisyear}-{$thismonth}-{$last_day} 23:59:59'", ARRAY_N);
 --
-	$ak_post_titles = $wpdb->get_results("SELECT ID, post_title, DAYOFMONTH(post_date) as dom "
+	$ak_post_titles = $wpdb->get_results("SELECT ID, post_title, extract(DAYOFMONTH from post_date) as dom "
 		."FROM $wpdb->posts "
 		."WHERE post_date >= '{$thisyear}-{$thismonth}-01 00:00:00' "
 		."AND post_date <= '{$thisyear}-{$thismonth}-{$last_day} 23:59:59' "
@@ -2576,9 +2579,16 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/option.php');
 	if ( ! $result )
 		return false;
 --
-	$result = $wpdb->query( $wpdb->prepare( "INSERT INTO \"$wpdb->options\" (\"option_name\", \"option_value\", \"autoload\") VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE \"option_name\" = VALUES(\"option_name\"), \"option_value\" = VALUES(\"option_value\"), \"autoload\" = VALUES(\"autoload\")", $option, $serialized_value, $autoload ) );
-	if ( ! $result )
-		return false;
+/*	$result = $wpdb->query( $wpdb->prepare(
+        "INSERT INTO \"$wpdb->options\" (\"option_name\", \"option_value\", \"autoload\")
+        VALUES (%s, %s, %s)
+        ON DUPLICATE KEY
+--
+    $wpdb->query($wpdb->prepare("DELETE FROM $wpdb->options WHERE option_name ilike '%s';",$option));
+    $result = $wpdb->query( $wpdb->prepare(
+        "INSERT INTO $wpdb->options (\"option_name\", \"option_value\", \"autoload\")
+        VALUES (%s, %s, %s);",$option, $serialized_value, $autoload ) );
+
 --
 	$row = $wpdb->get_row( $wpdb->prepare( "SELECT autoload FROM $wpdb->options WHERE option_name = %s", $option ) );
 	if ( is_null( $row ) )
@@ -2728,11 +2738,11 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/canonical.php');
 		else
 			$where .= " AND post_type IN ('" . implode( "', '", get_post_types( array( 'public' => true ) ) ) . "')";
 --
-			$where .= $wpdb->prepare(" AND YEAR(post_date) = %d", get_query_var('year'));
+			$where .= $wpdb->prepare(" AND extract(YEAR from post_date) = %d", get_query_var('year'));
 		if ( get_query_var('monthnum') )
-			$where .= $wpdb->prepare(" AND MONTH(post_date) = %d", get_query_var('monthnum'));
+			$where .= $wpdb->prepare(" AND extract(MONTH from post_date) = %d", get_query_var('monthnum'));
 		if ( get_query_var('day') )
-			$where .= $wpdb->prepare(" AND DAYOFMONTH(post_date) = %d", get_query_var('day'));
+			$where .= $wpdb->prepare(" AND extract(DAYOFMONTH from post_date) = %d", get_query_var('day'));
 
 		$post_id = $wpdb->get_var("SELECT ID FROM $wpdb->posts WHERE $where AND post_status = 'publish'");
 		if ( ! $post_id )
@@ -3384,7 +3394,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/ms-functions.php');
 
 	if ( isset( $args['limit'] ) && $args['limit'] ) {
 --
-			$query .= $wpdb->prepare( "LIMIT %d , %d ", $args['offset'], $args['limit'] );
+			$query .= $wpdb->prepare( "LIMIT %d OFFSET %d ", $args['limit'],$args['offset'] );
 		else
 			$query .= $wpdb->prepare( "LIMIT %d ", $args['limit'] );
 	}
@@ -3659,7 +3669,8 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/taxonomy.php');
 --
 				$values[] = $wpdb->prepare( "(%d, %d, %d)", $object_id, $tt_id, ++$term_order);
 		if ( $values )
-			if ( false === $wpdb->query( "INSERT INTO $wpdb->term_relationships (object_id, term_taxonomy_id, term_order) VALUES " . join( ',', $values ) . " ON DUPLICATE KEY UPDATE term_order = VALUES(term_order)" ) )
+//			$wpdb->query("DELETE FROM $wpdb->term_relationships WHERE object_id = ");
+            if ( false === $wpdb->query( "INSERT INTO $wpdb->term_relationships (object_id, term_taxonomy_id, term_order) VALUES " . join( ',', $values ) . " ON DUPLICATE KEY UPDATE term_order = VALUES(term_order)" ) )
 				return new WP_Error( 'db_insert_error', __( 'Could not insert term relationship into the database' ), $wpdb->last_error );
 	}
 
