@@ -19,7 +19,7 @@ foreach ( $wpdb->tables( 'ms_global' ) as $table => $prefixed_table )
 
 /**
 --
-	if ( $wpdb->get_var( "SHOW TABLES ILIKE '$wpdb->site'" ) )
+	if ( $wpdb->get_var( $wpdb->ShowTables($wpdb->site)) )
 		return $wpdb->get_var( "SELECT domain FROM $wpdb->site ORDER BY id ASC LIMIT 1" );
 	return false;
 }
@@ -116,7 +116,7 @@ file_put_contents('/var/www/wordpress/wppg/wp-admin/network/site-new.php',$aq);
 $aq = file_get_contents('/var/www/wordpress/wp-admin/install.php');
 #$aq = convertSQL2pg($aq);
 /*
-	$user_table = ( $wpdb->get_var("SHOW TABLES ILIKE '$wpdb->users'") != null );
+	$user_table = ( $wpdb->get_var($wpdb->ShowTables($wpdb->users)) != null );
 
 	// Ensure that Blogs appear in search engines by default
 --
@@ -186,7 +186,7 @@ file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/ms.php',$aq);
 $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/user.php');
 #$aq = convertSQL2pg($aq);
 /*
-	$query = $wpdb->prepare("SELECT ID, post_title FROM $wpdb->posts WHERE post_type = 'post' AND post_status = 'draft' AND post_author = %d ORDER BY post_modified DESC", $user_id);
+	$query = $wpdb->prepare("SELECT \"ID\", post_title FROM $wpdb->posts WHERE post_type = 'post' AND post_status = 'draft' AND post_author = %d ORDER BY post_modified DESC", $user_id);
 
 	/**
 --
@@ -194,7 +194,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/user.php');
 }
 
 --
-		$post_ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_author = %d AND post_type IN ('$post_types_to_delete')", $id ) );
+		$post_ids = $wpdb->get_col( $wpdb->prepare( "SELECT \"ID\" FROM $wpdb->posts WHERE post_author = %d AND post_type IN ('$post_types_to_delete')", $id ) );
 		if ( $post_ids ) {
 			foreach ( $post_ids as $post_id )
 --
@@ -202,7 +202,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/user.php');
 
 		if ( $link_ids ) {
 --
-		$post_ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_author = %d", $id ) );
+		$post_ids = $wpdb->get_col( $wpdb->prepare( "SELECT \"ID\" FROM $wpdb->posts WHERE post_author = %d", $id ) );
 		$wpdb->update( $wpdb->posts, array('post_author' => $reassign), array('post_author' => $id) );
 		if ( ! empty( $post_ids ) ) {
 			foreach ( $post_ids as $post_id )
@@ -272,10 +272,10 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/class-wp-list-tabl
 #$aq = convertSQL2pg($aq);
 /*
 		$months = $wpdb->get_results( $wpdb->prepare( "
-			SELECT DISTINCT extract(YEAR from post_date ) AS year, extract( MONTH from post_date ) AS month
+			SELECT DISTINCT extract(YEAR from post_date ) AS year, extract( MONTH from post_date ) AS month,post_date
 			FROM $wpdb->posts
 			WHERE post_type = %s
-			ORDER BY post_date DESC
+		    ORDER BY post_date DESC
 */
 file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/class-wp-list-table.php',$aq);
 #Arquivo /var/www/wordpress/wp-admin/includes/class-wp-ms-users-list-table.php
@@ -484,10 +484,10 @@ CREATE INDEX p4meta_key ON $wpdb->commentmeta USING btree (meta_key);
 
 
 CREATE TABLE $wpdb->comments (
-  comment_ID bigserial,
-  comment_post_ID bigint NOT NULL default '0',
+  \"comment_ID\" bigserial,
+  \"comment_post_ID\" bigint NOT NULL default '0',
 --
-CREATE INDEX comment_post_ID ON $wpdb->comments USING btree (comment_post_ID);
+CREATE INDEX \"comment_post_ID\" ON $wpdb->comments USING btree (\"comment_post_ID\");
 CREATE INDEX comment_approved_date_gmt ON $wpdb->comments USING btree (comment_approved,comment_date_gmt);
 CREATE INDEX comment_date_gmt ON $wpdb->comments USING btree (comment_date_gmt);
 CREATE INDEX comment_parent ON $wpdb->comments USING btree (comment_parent);
@@ -511,18 +511,18 @@ CREATE INDEX post_id ON $wpdb->postmeta USING btree (post_id);
 CREATE INDEX p3meta_key ON $wpdb->postmeta USING btree (meta_key);
 
 CREATE TABLE $wpdb->posts (
-  ID bigserial,
+  \"ID\" bigserial,
   post_author bigint NOT NULL default '0',
 --
 CREATE INDEX post_name ON $wpdb->posts USING btree (post_name);
-CREATE INDEX type_status_date ON $wpdb->posts USING btree (post_type,post_status,post_date,ID);
+CREATE INDEX type_status_date ON $wpdb->posts USING btree (post_type,post_status,post_date,\"ID\");
 CREATE INDEX post_parent ON $wpdb->posts USING btree (post_parent);
 CREATE INDEX post_author ON $wpdb->posts USING btree (post_author);
 ";
 
 --
     $users_single_table = "CREATE TABLE $wpdb->users (
-  ID bigserial,
+  \"ID\" bigserial,
   user_login varchar(60) NOT NULL default '',
 --
 CREATE INDEX user_login_key ON $wpdb->users USING btree (user_login);
@@ -531,7 +531,7 @@ CREATE INDEX user_nicename ON $wpdb->users USING btree (user_nicename);
 ";
 --
     $users_multi_table = "CREATE TABLE $wpdb->users (
-  ID bigserial,
+  \"ID\" bigserial,
   user_login varchar(60) NOT NULL default '',
 --
 CREATE INDEX user_login_key ON $wpdb->users USING btree (user_login);
@@ -562,10 +562,10 @@ CREATE TABLE $wpdb->blog_versions (
 CREATE INDEX db_version ON $wpdb->blog_versions USING btree (db_version);
 
 CREATE TABLE $wpdb->registration_log (
-  ID bigserial,
+  \"ID\" bigserial,
   email varchar(255) NOT NULL default '',
 --
-CREATE INDEX IP ON $wpdb->registration_log USING btree (IP);
+CREATE INDEX \"IP\" ON $wpdb->registration_log USING btree (\"IP\");
 
 CREATE TABLE $wpdb->site (
   id bigserial,
@@ -668,7 +668,7 @@ file_put_contents('/var/www/wordpress/wppg/wp-admin/includes/schema.php',$aq);
 $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/upgrade.php');
 #$aq = convertSQL2pg($aq);
 /*
-		$cat_id = $wpdb->get_var( $wpdb->prepare( "SELECT cat_ID FROM {$wpdb->sitecategories} WHERE category_nicename = %s", $cat_slug ) );
+		$cat_id = $wpdb->get_var( $wpdb->prepare( "SELECT \"cat_ID\" FROM {$wpdb->sitecategories} WHERE category_nicename = %s", $cat_slug ) );
 		if ( $cat_id == null ) {
 			$wpdb->insert( $wpdb->sitecategories, array('cat_ID' => 0, 'cat_name' => $cat_name, 'category_nicename' => $cat_slug, 'last_updated' => current_time('mysql', true)) );
 			$cat_id = $wpdb->insert_id;
@@ -720,11 +720,11 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/upgrade.php');
 	}
 }
 --
-	$posts = $wpdb->get_results("SELECT ID, post_title, post_name FROM $wpdb->posts WHERE post_name = ''");
+	$posts = $wpdb->get_results("SELECT \"ID\", post_title, post_name FROM $wpdb->posts WHERE post_name = ''");
 	if ($posts) {
 		foreach($posts as $post) {
 --
-				$wpdb->query( $wpdb->prepare("UPDATE $wpdb->posts SET post_name = %s WHERE ID = %d", $newtitle, $post->ID) );
+				$wpdb->query( $wpdb->prepare("UPDATE $wpdb->posts SET post_name = %s WHERE \"ID\" = %d", $newtitle, $post->ID) );
 			}
 		}
 --
@@ -744,7 +744,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/upgrade.php');
 	if ($done_ids) :
 		foreach ($done_ids as $done_id) :
 --
-	$allposts = $wpdb->get_results("SELECT ID, post_category FROM $wpdb->posts WHERE post_category != '0' $catwhere");
+	$allposts = $wpdb->get_results("SELECT \"ID\", post_category FROM $wpdb->posts WHERE post_category != '0' $catwhere");
 	if ($allposts) :
 		foreach ($allposts as $post) {
 --
@@ -764,18 +764,18 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/upgrade.php');
 }
 
 --
-	$users = $wpdb->get_results("SELECT ID, user_nickname, user_nicename FROM $wpdb->users");
+	$users = $wpdb->get_results("SELECT \"ID\", user_nickname, user_nicename FROM $wpdb->users");
 	foreach ($users as $user) {
 		if ('' == $user->user_nicename) {
 --
-			$wpdb->update( $wpdb->users, array('user_nicename' => $newname), array('ID' => $user->ID) );
+			$wpdb->update( $wpdb->users, array('user_nicename' => $newname), array('"ID"' => $user->ID) );
 		}
 	}
 --
-	$users = $wpdb->get_results("SELECT ID, user_pass from $wpdb->users");
+	$users = $wpdb->get_results("SELECT \"ID\", user_pass from $wpdb->users");
 	foreach ($users as $row) {
 		if (!preg_match('/^[A-Fa-f0-9]{32}$/', $row->user_pass)) {
-			$wpdb->update( $wpdb->users, array('user_pass' => md5($row->user_pass)), array('ID' => $row->ID) );
+			$wpdb->update( $wpdb->users, array('user_pass' => md5($row->user_pass)), array('"ID"' => $row->ID) );
 		}
 	}
 --
@@ -791,11 +791,11 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/upgrade.php');
 	}
 
 --
-	$posts = $wpdb->get_results("SELECT ID, post_title, post_content, post_excerpt, guid, post_date, post_name, post_status, post_author FROM $wpdb->posts");
+	$posts = $wpdb->get_results("SELECT \"ID\", post_title, post_content, post_excerpt, guid, post_date, post_name, post_status, post_author FROM $wpdb->posts");
 	if ($posts) {
 		foreach($posts as $post) {
 --
-			$wpdb->update( $wpdb->posts, compact('post_title', 'post_content', 'post_excerpt', 'guid'), array('ID' => $post->ID) );
+			$wpdb->update( $wpdb->posts, compact('post_title', 'post_content', 'post_excerpt', 'guid'), array('"ID"' => $post->ID) );
 
 		}
 --
@@ -844,7 +844,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/upgrade.php');
 		if ( !empty( $user->user_icq ) )
 			update_user_meta( $user->ID, 'icq', wp_slash($user->user_icq) );
 --
-			$wpdb->update( $wpdb->users, array('display_name' => $id), array('ID' => $user->ID) );
+			$wpdb->update( $wpdb->users, array('display_name' => $id), array('"ID"' => $user->ID) );
 		endif;
 
 --
@@ -865,27 +865,27 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/upgrade.php');
 	$comments = $wpdb->get_results( "SELECT comment_post_ID, COUNT(*) as c FROM $wpdb->comments WHERE comment_approved = '1' GROUP BY comment_post_ID" );
 	if ( is_array( $comments ) )
 		foreach ($comments as $comment)
-			$wpdb->update( $wpdb->posts, array('comment_count' => $comment->c), array('ID' => $comment->comment_post_ID) );
+			$wpdb->update( $wpdb->posts, array('comment_count' => $comment->c), array('"ID"' => $comment->comment_post_ID) );
 
 	// Some alpha versions used a post status of object instead of attachment and put
 --
-		$objects = $wpdb->get_results("SELECT ID, post_type FROM $wpdb->posts WHERE post_status = 'object'");
+		$objects = $wpdb->get_results("SELECT \"ID\", post_type FROM $wpdb->posts WHERE post_status = 'object'");
 		foreach ($objects as $object) {
 			$wpdb->update( $wpdb->posts, array(	'post_status' => 'attachment',
 												'post_mime_type' => $object->post_type,
 												'post_type' => ''),
 --
-		$posts = $wpdb->get_results("SELECT ID, post_status FROM $wpdb->posts");
+		$posts = $wpdb->get_results("SELECT \"ID\", post_status FROM $wpdb->posts");
 
 		if ( ! empty($posts) ) foreach ($posts as $post) {
 --
-			$wpdb->query( $wpdb->prepare("UPDATE $wpdb->posts SET post_status = %s, post_type = %s WHERE ID = %d", $status, $type, $post->ID) );
+			$wpdb->query( $wpdb->prepare("UPDATE $wpdb->posts SET post_status = %s, post_type = %s WHERE \"ID\" = %d", $status, $type, $post->ID) );
 		}
 	}
 --
 		$wpdb->query ("UPDATE $wpdb->posts SET post_status = 'future' WHERE post_status = 'publish' AND post_date_gmt > '$now'");
 
-		$posts = $wpdb->get_results("SELECT ID, post_date FROM $wpdb->posts WHERE post_status ='future'");
+		$posts = $wpdb->get_results("SELECT \"ID\", post_date FROM $wpdb->posts WHERE post_status ='future'");
 		if ( !empty($posts) )
 			foreach ( $posts as $post )
 --
@@ -1264,7 +1264,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/includes/comment.php');
 			WHERE comment_author = %s AND comment_date = %s", $comment_author, $comment_date) );
 }
 --
-	$pending = $wpdb->get_results( "SELECT comment_post_ID, COUNT(comment_ID) as num_comments FROM $wpdb->comments WHERE comment_post_ID IN ( $post_id_in ) AND comment_approved = '0' GROUP BY comment_post_ID", ARRAY_A );
+	$pending = $wpdb->get_results( "SELECT \"comment_post_ID\", COUNT(\"comment_ID\") as num_comments FROM $wpdb->comments WHERE \"comment_post_ID\" IN ( $post_id_in ) AND comment_approved = '0' GROUP BY \"comment_post_ID\"", ARRAY_A );
 
 	if ( $single ) {
 */
@@ -1472,11 +1472,11 @@ $aq = file_get_contents('/var/www/wordpress/wp-admin/maint/repair.php');
 
 			echo '<br />&nbsp;&nbsp;&nbsp;&nbsp;';
 --
-			$check = $wpdb->get_row( "ANALYZE TABLE $table" );
+			$check = $wpdb->get_row( "VACUUM ANALYZE  $table" );
 
 			echo '<br />&nbsp;&nbsp;&nbsp;&nbsp;';
 --
-				$check = $wpdb->get_row( "OPTIMIZE TABLE $table" );
+				$check = $wpdb->get_row( "VACUUM $table" );
 
 				echo '<br />&nbsp;&nbsp;&nbsp;&nbsp;';
 */
@@ -1686,7 +1686,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/user.php');
 --
 			$this->query_fields = "$wpdb->users.*";
 		} else {
-			$this->query_fields = "$wpdb->users.ID";
+			$this->query_fields = "$wpdb->users.\"ID\"";
 		}
 
 --
@@ -1697,7 +1697,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/user.php');
 					FROM $wpdb->posts
 					$where
 					GROUP BY post_author
-				) p ON ({$wpdb->users}.ID = p.post_author)
+				) p ON ({$wpdb->users}.\"ID\" = p.post_author)
 				";
 				$orderby = 'post_count';
 --
@@ -1719,14 +1719,14 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/user.php');
 
 			if ( $role ) {
 --
-			$clauses = $meta_query->get_sql( 'user', $wpdb->users, 'ID', $this );
+			$clauses = $meta_query->get_sql( 'user', $wpdb->users, '"ID"', $this );
 			$this->query_from .= $clauses['join'];
 			$this->query_where .= $clauses['where'];
 --
-			$this->query_where .= " AND $wpdb->users.ID IN ($ids)";
+			$this->query_where .= " AND $wpdb->users.\"ID\" IN ($ids)";
 		} elseif ( ! empty( $qv['exclude'] ) ) {
 			$ids = implode( ',', wp_parse_id_list( $qv['exclude'] ) );
-			$this->query_where .= " AND $wpdb->users.ID NOT IN ($ids)";
+			$this->query_where .= " AND $wpdb->users.\"ID\" NOT IN ($ids)";
 		}
 
 --
@@ -1766,11 +1766,11 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/user.php');
 
 		foreach ( $users_of_blog as $caps_meta ) {
 --
-	$user_nicename_check = $wpdb->get_var( $wpdb->prepare("SELECT ID FROM $wpdb->users WHERE user_nicename = %s AND user_login != %s LIMIT 1" , $user_nicename, $user_login));
+	$user_nicename_check = $wpdb->get_var( $wpdb->prepare("SELECT \"ID\" FROM $wpdb->users WHERE user_nicename = %s AND user_login != %s LIMIT 1" , $user_nicename, $user_login));
 
 	if ( $user_nicename_check ) {
 --
-			$user_nicename_check = $wpdb->get_var( $wpdb->prepare("SELECT ID FROM $wpdb->users WHERE user_nicename = %s AND user_login != %s LIMIT 1" , $alt_user_nicename, $user_login));
+			$user_nicename_check = $wpdb->get_var( $wpdb->prepare("SELECT \"ID\" FROM $wpdb->users WHERE user_nicename = %s AND user_login != %s LIMIT 1" , $alt_user_nicename, $user_login));
 			$suffix++;
 		}
 --
@@ -1782,7 +1782,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/user.php');
 	}
 
 --
-	$row = $wpdb->get_row( $wpdb->prepare( "SELECT ID, user_activation_key FROM $wpdb->users WHERE user_login = %s", $login ) );
+	$row = $wpdb->get_row( $wpdb->prepare( "SELECT \"ID\", user_activation_key FROM $wpdb->users WHERE user_login = %s", $login ) );
 	if ( ! $row )
 		return new WP_Error('invalid_key', __('Invalid key'));
 */
@@ -1835,7 +1835,7 @@ file_put_contents('/var/www/wordpress/wppg/wp-includes/class-wp-xmlrpc-server.ph
 $aq = file_get_contents('/var/www/wordpress/wp-includes/post.php');
 #$aq = convertSQL2pg($aq);
 /*
-			$_post = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->posts WHERE ID = %d LIMIT 1", $post_id ) );
+			$_post = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->posts WHERE \"ID\" = %d LIMIT 1", $post_id ) );
 
 			if ( ! $_post )
 --
@@ -2097,11 +2097,11 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/post.php');
 		do_action('private_to_published', $post->ID);  // Deprecated, use private_to_publish
 	}
 --
-	$old_posts = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_status = 'auto-draft' AND DATE_SUB( NOW(), INTERVAL 7 DAY ) > post_date" );
+	$old_posts = $wpdb->get_col( "SELECT \"ID\" FROM $wpdb->posts WHERE post_status = 'auto-draft' AND DATE_SUB( NOW(), INTERVAL 7 DAY ) > post_date" );
 	foreach ( (array) $old_posts as $delete )
 		wp_delete_post( $delete, true ); // Force delete
 --
-		$fresh_posts = $wpdb->get_results( sprintf( "SELECT $wpdb->posts.* FROM $wpdb->posts WHERE ID IN (%s)", join( ",", $non_cached_ids ) ) );
+		$fresh_posts = $wpdb->get_results( sprintf( "SELECT $wpdb->posts.* FROM $wpdb->posts WHERE \"ID\" IN (%s)", join( ",", $non_cached_ids ) ) );
 
 		update_post_caches( $fresh_posts, 'any', $update_term_cache, $update_meta_cache );
 */
@@ -2409,7 +2409,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/query.php');
 		$split_the_query = apply_filters( 'split_the_query', $split_the_query, $this );
 
 --
-            $this->request = "SELECT count($found_rows2) FROM $wpdb->posts $join WHERE 1=1 $where $groupby $orderby $limits";
+            $this->request = "SELECT count($found_rows) FROM $wpdb->posts $join WHERE 1=1 $where $groupby $orderby $limits";
 //            echo "2951:SELECT count($found_rows) FROM $wpdb->posts $join WHERE 1=1 $where $groupby $orderby $limits";
 //			$this->request = "SELECT $found_rows $distinct $wpdb->posts.ID FROM $wpdb->posts $join WHERE 1=1 $where $groupby $orderby $limits";
 
@@ -2661,7 +2661,7 @@ file_put_contents('/var/www/wordpress/wppg/wp-includes/rewrite.php',$aq);
 $aq = file_get_contents('/var/www/wordpress/wp-includes/pluggable.php');
 #$aq = convertSQL2pg($aq);
 /*
-	$users = $wpdb->get_results( "SELECT * FROM $wpdb->users WHERE ID IN ($list)" );
+	$users = $wpdb->get_results( "SELECT * FROM $wpdb->users WHERE \"ID\" IN ($list)" );
 
 	$ids = array();
 --
@@ -2913,7 +2913,7 @@ $aq = file_get_contents('/var/www/wordpress/wp-includes/ms-load.php');
  *
  * @access private
 --
-	if ( ! $wpdb->get_var( "SHOW TABLES ILIKE '$wpdb->site'" ) )
+	if ( ! $wpdb->get_var( $wpdb->ShowTables($wpdb->site)) )
 		$msg .= '<p>' . sprintf( __( '<strong>Database tables are missing.</strong> This means that MySQL is not running, WordPress was not installed properly, or someone deleted <code>%s</code>. You really should look at your database now.' ), $wpdb->site ) . '</p>';
 	else
 		$msg .= '<p>' . sprintf( __( '<strong>Could not find site <code>%1$s</code>.</strong> Searched for table <code>%2$s</code> in database <code>%3$s</code>. Is that right?' ), rtrim( $domain . $path, '/' ), $wpdb->blogs, DB_NAME ) . '</p>';
@@ -3834,46 +3834,3 @@ $aq = file_get_contents('/var/www/wordpress/wp-trackback.php');
 	/**
 */
 file_put_contents('/var/www/wordpress/wppg/wp-trackback.php',$aq);
-#Arquivo /var/www/wordpress/pg4wp/driver_pgsql.php
-$aq = file_get_contents('/var/www/wordpress/pg4wp/driver_pgsql.php');
-#$aq = convertSQL2pg($aq);
-/*
-		if( $table == $wpdb->term_relationships)
-		{
-			$sql = 'NO QUERY';
---
-			$sql = str_replace('GROUP BY '.$wpdb->prefix.'posts.ID', '' , $sql);
-			$sql = str_replace("!= ''", '<> 0', $sql);
-			
---
-			if( false !== strpos( $sql, $wpdb->comments))
-				$sql = str_replace(' comment_id ', ' comment_ID ', $sql);
-			
---
-			if( false !== strpos($sql, 'INSERT INTO '.$wpdb->categories))
-			{
-				$sql = str_replace('"cat_ID",', '', $sql);
---
-			if( false !== strpos( $sql, $wpdb->options) && false !== strpos( $sql, '), ('))
-			{
-				$pattern = '/INSERT INTO.+VALUES/';
---
-				if( !in_array(trim($matches[1],'` '), array($wpdb->posts,$wpdb->comments)))
-				{
-					// Remove 'ON DUPLICATE KEY UPDATE...' and following
---
-			if( defined('WP_INSTALLING') && WP_INSTALLING && false !== strpos($sql, 'INSERT INTO `'.$wpdb->terms.'`'))
-				$end .= ';SELECT setval(\''.$wpdb->terms.'_seq\', (SELECT MAX(term_id) FROM '.$wpdb->terms.')+1);';
-			
-		} // INSERT
---
-				$sql = "DELETE FROM $wpdb->options WHERE option_id IN " .
-					"(SELECT o1.option_id FROM $wpdb->options AS o1, $wpdb->options AS o2 " .
-					"WHERE o1.option_name = o2.option_name " .
-					"AND o1.option_id < o2.option_id)";
---
-			if( false !== strpos( $sql, $wpdb->comments))
-				$sql = str_replace(' comment_id ', ' comment_ID ', $sql);
-		}
-*/
-file_put_contents('/var/www/wordpress/wppg/pg4wp/driver_pgsql.php',$aq);
