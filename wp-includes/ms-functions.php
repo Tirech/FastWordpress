@@ -2453,7 +2453,7 @@ function wp_get_sites( $args = array() ) {
 
 	if ( isset( $args['limit'] ) && $args['limit'] ) {
 		if ( isset( $args['offset'] ) && $args['offset'] )
-			$query .= $wpdb->prepare( "LIMIT %d , %d ", $args['offset'], $args['limit'] );
+			$query .= $wpdb->prepare( "LIMIT %d OFFSET %d ", $args['limit'],$args['offset'] );
 		else
 			$query .= $wpdb->prepare( "LIMIT %d ", $args['limit'] );
 	}

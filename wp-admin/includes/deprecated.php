@@ -510,7 +510,7 @@ class WP_User_Search {
 		global $wpdb;
 		$this->first_user = ($this->page - 1) * $this->users_per_page;
 
-		$this->query_limit = $wpdb->prepare(" LIMIT %d, %d", $this->first_user, $this->users_per_page);
+		$this->query_limit = $wpdb->prepare(" LIMIT %d OFFSET %d",  $this->users_per_page, $this->first_user);
 		$this->query_orderby = ' ORDER BY user_login';
 
 		$search_sql = '';
@@ -518,7 +518,7 @@ class WP_User_Search {
 			$searches = array();
 			$search_sql = 'AND (';
 			foreach ( array('user_login', 'user_nicename', 'user_email', 'user_url', 'display_name') as $col )
-				$searches[] = $wpdb->prepare( $col . ' LIKE %s', '%' . like_escape($this->search_term) . '%' );
+				$searches[] = $wpdb->prepare( $col . ' ILIKE %s', '%' . like_escape($this->search_term) . '%' );
 			$search_sql .= implode(' OR ', $searches);
 			$search_sql .= ')';
 		}
@@ -528,7 +528,7 @@ class WP_User_Search {
 
 		if ( $this->role ) {
 			$this->query_from .= " INNER JOIN $wpdb->usermeta ON $wpdb->users.ID = $wpdb->usermeta.user_id";
-			$this->query_where .= $wpdb->prepare(" AND $wpdb->usermeta.meta_key = '{$wpdb->prefix}capabilities' AND $wpdb->usermeta.meta_value LIKE %s", '%' . $this->role . '%');
+			$this->query_where .= $wpdb->prepare(" AND $wpdb->usermeta.meta_key = '{$wpdb->prefix}capabilities' AND $wpdb->usermeta.meta_value ILIKE %s", '%' . $this->role . '%');
 		} elseif ( is_multisite() ) {
 			$level_key = $wpdb->prefix . 'capabilities'; // wpmu site admins don't have user_levels
 			$this->query_from .= ", $wpdb->usermeta";

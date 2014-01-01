@@ -252,14 +252,14 @@ class WP_Date_Query {
 		// Specific value queries
 
 		if ( isset( $query['year'] ) && $value = $this->build_value( $compare, $query['year'] ) )
-			$where_parts[] = "YEAR( $column ) $compare $value";
+			$where_parts[] = "extract(YEAR from $column ) $compare $value";
 
 		if ( isset( $query['month'] ) && $value = $this->build_value( $compare, $query['month'] ) )
-			$where_parts[] = "MONTH( $column ) $compare $value";
+			$where_parts[] = "extract(MONTH from $column ) $compare $value";
 
 		// Legacy
 		if ( isset( $query['monthnum'] ) && $value = $this->build_value( $compare, $query['monthnum'] ) )
-			$where_parts[] = "MONTH( $column ) $compare $value";
+			$where_parts[] = "extract(MONTH from $column ) $compare $value";
 
 		if ( isset( $query['week'] ) && false !== ( $value = $this->build_value( $compare, $query['week'] ) ) )
 			$where_parts[] = _wp_mysql_week( $column ) . " $compare $value";
@@ -269,13 +269,13 @@ class WP_Date_Query {
 			$where_parts[] = _wp_mysql_week( $column ) . " $compare $value";
 
 		if ( isset( $query['dayofyear'] ) && $value = $this->build_value( $compare, $query['dayofyear'] ) )
-			$where_parts[] = "DAYOFYEAR( $column ) $compare $value";
+			$where_parts[] = "extract(DAYOFYEAR from $column ) $compare $value";
 
 		if ( isset( $query['day'] ) && $value = $this->build_value( $compare, $query['day'] ) )
-			$where_parts[] = "DAYOFMONTH( $column ) $compare $value";
+			$where_parts[] = "extract(DAYOFMONTH from $column ) $compare $value";
 
 		if ( isset( $query['dayofweek'] ) && $value = $this->build_value( $compare, $query['dayofweek'] ) )
-			$where_parts[] = "DAYOFWEEK( $column ) $compare $value";
+			$where_parts[] = "extract(DAYOFWEEK from $column ) $compare $value";
 
 		if ( isset( $query['hour'] ) || isset( $query['minute'] ) || isset( $query['second'] ) ) {
 			// Avoid notices

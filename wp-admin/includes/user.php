@@ -241,7 +241,7 @@ function get_user_to_edit( $user_id ) {
  */
 function get_users_drafts( $user_id ) {
 	global $wpdb;
-	$query = $wpdb->prepare("SELECT ID, post_title FROM $wpdb->posts WHERE post_type = 'post' AND post_status = 'draft' AND post_author = %d ORDER BY post_modified DESC", $user_id);
+	$query = $wpdb->prepare("SELECT \"ID\", post_title FROM $wpdb->posts WHERE post_type = 'post' AND post_status = 'draft' AND post_author = %d ORDER BY post_modified DESC", $user_id);
 
 	/**
 	 * Filter the user's drafts query string.
@@ -306,7 +306,7 @@ function wp_delete_user( $id, $reassign = 'novalue' ) {
 		 */
 		$post_types_to_delete = apply_filters( 'post_types_to_delete_with_user', $post_types_to_delete, $id );
 		$post_types_to_delete = implode( "', '", $post_types_to_delete );
-		$post_ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_author = %d AND post_type IN ('$post_types_to_delete')", $id ) );
+		$post_ids = $wpdb->get_col( $wpdb->prepare( "SELECT \"ID\" FROM $wpdb->posts WHERE post_author = %d AND post_type IN ('$post_types_to_delete')", $id ) );
 		if ( $post_ids ) {
 			foreach ( $post_ids as $post_id )
 				wp_delete_post( $post_id );
@@ -321,7 +321,7 @@ function wp_delete_user( $id, $reassign = 'novalue' ) {
 		}
 	} else {
 		$reassign = (int) $reassign;
-		$post_ids = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_author = %d", $id ) );
+		$post_ids = $wpdb->get_col( $wpdb->prepare( "SELECT \"ID\" FROM $wpdb->posts WHERE post_author = %d", $id ) );
 		$wpdb->update( $wpdb->posts, array('post_author' => $reassign), array('post_author' => $id) );
 		if ( ! empty( $post_ids ) ) {
 			foreach ( $post_ids as $post_id )

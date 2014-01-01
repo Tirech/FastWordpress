@@ -58,7 +58,7 @@ class WP_MS_Sites_List_Table extends WP_List_Table {
 					preg_match( '/^[0-9]{1,3}\.[0-9]{1,3}\.?$/', $s ) ||
 					preg_match( '/^[0-9]{1,3}\.$/', $s ) ) {
 			// IPv4 address
-			$reg_blog_ids = $wpdb->get_col( "SELECT blog_id FROM {$wpdb->registration_log} WHERE {$wpdb->registration_log}.IP LIKE ( '{$like_s}$wild' )" );
+			$reg_blog_ids = $wpdb->get_col( "SELECT blog_id FROM {$wpdb->registration_log} WHERE {$wpdb->registration_log}.IP ILIKE ( '{$like_s}$wild' )" );
 
 			if ( !$reg_blog_ids )
 				$reg_blog_ids = array( 0 );
@@ -73,13 +73,13 @@ class WP_MS_Sites_List_Table extends WP_List_Table {
 			} elseif ( is_subdomain_install() ) {
 				$blog_s = str_replace( '.' . $current_site->domain, '', $like_s );
 				$blog_s .= $wild . '.' . $current_site->domain;
-				$query .= " AND ( {$wpdb->blogs}.domain LIKE '$blog_s' ) ";
+				$query .= " AND ( {$wpdb->blogs}.domain ILIKE '$blog_s' ) ";
 			} else {
 				if ( $like_s != trim('/', $current_site->path) )
 					$blog_s = $current_site->path . $like_s . $wild . '/';
 				else
 					$blog_s = $like_s;
-				$query .= " AND  ( {$wpdb->blogs}.path LIKE '$blog_s' )";
+				$query .= " AND  ( {$wpdb->blogs}.path ILIKE '$blog_s' )";
 			}
 		}
 
@@ -108,7 +108,7 @@ class WP_MS_Sites_List_Table extends WP_List_Table {
 		if ( ! wp_is_large_network() )
 			$total = $wpdb->get_var( str_replace( 'SELECT *', 'SELECT COUNT( blog_id )', $query ) );
 
-		$query .= " LIMIT " . intval( ( $pagenum - 1 ) * $per_page ) . ", " . intval( $per_page );
+		$query .= " LIMIT ". intval( $per_page )." OFFSET ".intval( ( $pagenum - 1 ) * $per_page );
 		$this->items = $wpdb->get_results( $query, ARRAY_A );
 
 		if ( wp_is_large_network() )

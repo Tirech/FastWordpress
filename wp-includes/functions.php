@@ -461,7 +461,7 @@ function do_enclose( $content, $post_ID ) {
 
 	foreach ( $pung as $link_test ) {
 		if ( ! in_array( $link_test, $post_links_temp ) ) { // link no longer in post
-			$mids = $wpdb->get_col( $wpdb->prepare("SELECT meta_id FROM $wpdb->postmeta WHERE post_id = %d AND meta_key = 'enclosure' AND meta_value LIKE (%s)", $post_ID, like_escape( $link_test ) . '%') );
+			$mids = $wpdb->get_col( $wpdb->prepare("SELECT meta_id FROM $wpdb->postmeta WHERE post_id = %d AND meta_key = 'enclosure' AND meta_value ILIKE (%s)", $post_ID, like_escape( $link_test ) . '%') );
 			foreach ( $mids as $mid )
 				delete_metadata_by_mid( 'post', $mid );
 		}
@@ -480,7 +480,7 @@ function do_enclose( $content, $post_ID ) {
 	}
 
 	foreach ( (array) $post_links as $url ) {
-		if ( $url != '' && !$wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE post_id = %d AND meta_key = 'enclosure' AND meta_value LIKE (%s)", $post_ID, like_escape( $url ) . '%' ) ) ) {
+		if ( $url != '' && !$wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE post_id = %d AND meta_key = 'enclosure' AND meta_value ILIKE (%s)", $post_ID, like_escape( $url ) . '%' ) ) ) {
 
 			if ( $headers = wp_get_http_headers( $url) ) {
 				$len = isset( $headers['content-length'] ) ? (int) $headers['content-length'] : 0;
@@ -622,7 +622,7 @@ function build_query( $data ) {
 	return _http_build_query( $data, null, '&', '', false );
 }
 
-// from php.net (modified by Mark Jaquith to behave like the native PHP5 function)
+// from php.net (modified by Mark Jaquith to behave ILIKE the native PHP5 function)
 function _http_build_query($data, $prefix=null, $sep=null, $key='', $urlencode=true) {
 	$ret = array();
 
@@ -1165,7 +1165,7 @@ function is_blog_installed() {
 		if ( defined( 'CUSTOM_USER_META_TABLE' ) && CUSTOM_USER_META_TABLE == $table )
 			continue;
 
-		if ( ! $wpdb->get_results( "DESCRIBE $table;" ) )
+		if ( ! $wpdb->get_results($wpdb->describe($table) ) )
 			continue;
 
 		// One or more tables exist. We are insane.
@@ -1407,7 +1407,7 @@ function path_is_absolute( $path ) {
 	if ( strlen($path) == 0 || $path[0] == '.' )
 		return false;
 
-	// windows allows absolute paths like this
+	// windows allows absolute paths ILIKE this
 	if ( preg_match('#^[a-zA-Z]:\\\\#', $path) )
 		return true;
 
@@ -1511,7 +1511,7 @@ function wp_is_writable( $path ) {
  */
 function win_is_writable( $path ) {
 
-	if ( $path[strlen( $path ) - 1] == '/' ) // if it looks like a directory, check a random file within the directory
+	if ( $path[strlen( $path ) - 1] == '/' ) // if it looks ILIKE a directory, check a random file within the directory
 		return win_is_writable( $path . uniqid( mt_rand() ) . '.tmp');
 	else if ( is_dir( $path ) ) // If it's a directory (and not a file) check a random file within the directory
 		return win_is_writable( $path . '/' . uniqid( mt_rand() ) . '.tmp' );
@@ -3422,7 +3422,7 @@ function wp_timezone_override_offset() {
 function _wp_timezone_choice_usort_callback( $a, $b ) {
 	// Don't use translated versions of Etc
 	if ( 'Etc' === $a['continent'] && 'Etc' === $b['continent'] ) {
-		// Make the order of these more like the old dropdown
+		// Make the order of these more ILIKE the old dropdown
 		if ( 'GMT+' === substr( $a['city'], 0, 4 ) && 'GMT+' === substr( $b['city'], 0, 4 ) ) {
 			return -1 * ( strnatcasecmp( $a['city'], $b['city'] ) );
 		}
@@ -3985,7 +3985,7 @@ function _device_can_upload() {
 	if ( strpos($ua, 'iPhone') !== false
 		|| strpos($ua, 'iPad') !== false
 		|| strpos($ua, 'iPod') !== false ) {
-			return preg_match( '#OS ([\d_]+) like Mac OS X#', $ua, $version ) && version_compare( $version[1], '6', '>=' );
+			return preg_match( '#OS ([\d_]+) ILIKE Mac OS X#', $ua, $version ) && version_compare( $version[1], '6', '>=' );
 	}
 
 	return true;

@@ -314,7 +314,19 @@ function add_option( $option, $value = '', $deprecated = '', $autoload = 'yes' )
 	$autoload = ( 'no' === $autoload ) ? 'no' : 'yes';
 	do_action( 'add_option', $option, $value );
 
-	$result = $wpdb->query( $wpdb->prepare( "INSERT INTO `$wpdb->options` (`option_name`, `option_value`, `autoload`) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE `option_name` = VALUES(`option_name`), `option_value` = VALUES(`option_value`), `autoload` = VALUES(`autoload`)", $option, $serialized_value, $autoload ) );
+/*	$result = $wpdb->query( $wpdb->prepare(
+        "INSERT INTO \"$wpdb->options\" (\"option_name\", \"option_value\", \"autoload\")
+        VALUES (%s, %s, %s)
+        ON DUPLICATE KEY
+        UPDATE \"option_name\" = VALUES(\"option_name\"),
+\"option_value\" = VALUES(\"option_value\"),
+\"autoload\" = VALUES(\"autoload\")", $option, $serialized_value, $autoload ) );
+*/
+    $wpdb->query($wpdb->prepare("DELETE FROM $wpdb->options WHERE option_name ilike '%s';",$option));
+    $result = $wpdb->query( $wpdb->prepare(
+        "INSERT INTO $wpdb->options (\"option_name\", \"option_value\", \"autoload\")
+        VALUES (%s, %s, %s);",$option, $serialized_value, $autoload ) );
+
 	if ( ! $result )
 		return false;
 

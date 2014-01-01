@@ -1998,7 +1998,7 @@ function media_upload_library_form($errors) {
 	$start = ( $_GET['paged'] - 1 ) * 10;
 	if ( $start < 1 )
 		$start = 0;
-	add_filter( 'post_limits', create_function( '$a', "return 'LIMIT $start, 10';" ) );
+	add_filter( 'post_limits', create_function( '$a', "return 'LIMIT  10 OFFSET $start';" ) );
 
 	list($post_mime_types, $avail_post_mime_types) = wp_edit_attachments_query();
 
@@ -2073,7 +2073,7 @@ if ( $page_links )
 <div class="alignleft actions">
 <?php
 
-$arc_query = "SELECT DISTINCT YEAR(post_date) AS yyear, MONTH(post_date) AS mmonth FROM $wpdb->posts WHERE post_type = 'attachment' ORDER BY post_date DESC";
+$arc_query = "SELECT DISTINCT extract(YEAR from post_date) AS yyear, extract(MONTH from post_date) AS mmonth FROM $wpdb->posts WHERE post_type = 'attachment' ORDER BY post_date DESC";
 
 $arc_result = $wpdb->get_results( $arc_query );
 

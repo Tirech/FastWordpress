@@ -109,7 +109,7 @@ function wp_install_defaults( $user_id ) {
 	$cat_slug = sanitize_title(_x('Uncategorized', 'Default category slug'));
 
 	if ( global_terms_enabled() ) {
-		$cat_id = $wpdb->get_var( $wpdb->prepare( "SELECT cat_ID FROM {$wpdb->sitecategories} WHERE category_nicename = %s", $cat_slug ) );
+		$cat_id = $wpdb->get_var( $wpdb->prepare( "SELECT \"cat_ID\" FROM {$wpdb->sitecategories} WHERE category_nicename = %s", $cat_slug ) );
 		if ( $cat_id == null ) {
 			$wpdb->insert( $wpdb->sitecategories, array('cat_ID' => 0, 'cat_name' => $cat_name, 'category_nicename' => $cat_slug, 'last_updated' => current_time('mysql', true)) );
 			$cat_id = $wpdb->insert_id;
@@ -180,11 +180,11 @@ To delete a comment, just log in and view the post&#039;s comments. There you wi
 								));
 
 	// First Page
-	$first_page = sprintf( __( "This is an example page. It's different from a blog post because it will stay in one place and will show up in your site navigation (in most themes). Most people start with an About page that introduces them to potential site visitors. It might say something like this:
+	$first_page = sprintf( __( "This is an example page. It's different from a blog post because it will stay in one place and will show up in your site navigation (in most themes). Most people start with an About page that introduces them to potential site visitors. It might say something ILIKE this:
 
-<blockquote>Hi there! I'm a bike messenger by day, aspiring actor by night, and this is my blog. I live in Los Angeles, have a great dog named Jack, and I like pi&#241;a coladas. (And gettin' caught in the rain.)</blockquote>
+<blockquote>Hi there! I'm a bike messenger by day, aspiring actor by night, and this is my blog. I live in Los Angeles, have a great dog named Jack, and I ILIKE pi&#241;a coladas. (And gettin' caught in the rain.)</blockquote>
 
-...or something like this:
+...or something ILIKE this:
 
 <blockquote>The XYZ Doohickey Company was founded in 1971, and has been providing quality doohickeys to the public ever since. Located in Gotham City, XYZ employs over 2,000 people and does all kinds of awesome things for the Gotham community.</blockquote>
 
@@ -315,7 +315,7 @@ function wp_upgrade() {
 		if ( $wpdb->get_row( "SELECT blog_id FROM {$wpdb->blog_versions} WHERE blog_id = '{$wpdb->blogid}'" ) )
 			$wpdb->query( "UPDATE {$wpdb->blog_versions} SET db_version = '{$wp_db_version}' WHERE blog_id = '{$wpdb->blogid}'" );
 		else
-			$wpdb->query( "INSERT INTO {$wpdb->blog_versions} ( `blog_id` , `db_version` , `last_updated` ) VALUES ( '{$wpdb->blogid}', '{$wp_db_version}', NOW());" );
+			$wpdb->query( "INSERT INTO {$wpdb->blog_versions} ( \"blog_id\" , \"db_version\" , \"last_updated\" ) VALUES ( '{$wpdb->blogid}', '{$wp_db_version}', NOW());" );
 	}
 }
 endif;
@@ -428,12 +428,12 @@ function upgrade_100() {
 	global $wpdb;
 
 	// Get the title and ID of every post, post_name to check if it already has a value
-	$posts = $wpdb->get_results("SELECT ID, post_title, post_name FROM $wpdb->posts WHERE post_name = ''");
+	$posts = $wpdb->get_results("SELECT \"ID\", post_title, post_name FROM $wpdb->posts WHERE post_name = ''");
 	if ($posts) {
 		foreach($posts as $post) {
 			if ('' == $post->post_name) {
 				$newtitle = sanitize_title($post->post_title);
-				$wpdb->query( $wpdb->prepare("UPDATE $wpdb->posts SET post_name = %s WHERE ID = %d", $newtitle, $post->ID) );
+				$wpdb->query( $wpdb->prepare("UPDATE $wpdb->posts SET post_name = %s WHERE \"ID\" = %d", $newtitle, $post->ID) );
 			}
 		}
 	}
@@ -447,20 +447,20 @@ function upgrade_100() {
 	}
 
 	$wpdb->query("UPDATE $wpdb->options SET option_value = REPLACE(option_value, 'wp-links/links-images/', 'wp-images/links/')
-	WHERE option_name LIKE 'links_rating_image%'
-	AND option_value LIKE 'wp-links/links-images/%'");
+	WHERE option_name ILIKE 'links_rating_image%'
+	AND option_value ILIKE 'wp-links/links-images/%'");
 
 	$done_ids = $wpdb->get_results("SELECT DISTINCT post_id FROM $wpdb->post2cat");
 	if ($done_ids) :
 		foreach ($done_ids as $done_id) :
 			$done_posts[] = $done_id->post_id;
 		endforeach;
-		$catwhere = ' AND ID NOT IN (' . implode(',', $done_posts) . ')';
+		$catwhere = ' AND \"ID\" NOT IN (' . implode(',', $done_posts) . ')';
 	else:
 		$catwhere = '';
 	endif;
 
-	$allposts = $wpdb->get_results("SELECT ID, post_category FROM $wpdb->posts WHERE post_category != '0' $catwhere");
+	$allposts = $wpdb->get_results("SELECT \"ID\", post_category FROM $wpdb->posts WHERE post_category != '0' $catwhere");
 	if ($allposts) :
 		foreach ($allposts as $post) {
 			// Check to see if it's already been imported
@@ -499,18 +499,18 @@ function upgrade_110() {
 	global $wpdb;
 
 	// Set user_nicename.
-	$users = $wpdb->get_results("SELECT ID, user_nickname, user_nicename FROM $wpdb->users");
+	$users = $wpdb->get_results("SELECT \"ID\", user_nickname, user_nicename FROM $wpdb->users");
 	foreach ($users as $user) {
 		if ('' == $user->user_nicename) {
 			$newname = sanitize_title($user->user_nickname);
-			$wpdb->update( $wpdb->users, array('user_nicename' => $newname), array('ID' => $user->ID) );
+			$wpdb->update( $wpdb->users, array('user_nicename' => $newname), array('"ID"' => $user->ID) );
 		}
 	}
 
-	$users = $wpdb->get_results("SELECT ID, user_pass from $wpdb->users");
+	$users = $wpdb->get_results("SELECT \"ID\", user_pass from $wpdb->users");
 	foreach ($users as $row) {
 		if (!preg_match('/^[A-Fa-f0-9]{32}$/', $row->user_pass)) {
-			$wpdb->update( $wpdb->users, array('user_pass' => md5($row->user_pass)), array('ID' => $row->ID) );
+			$wpdb->update( $wpdb->users, array('user_pass' => md5($row->user_pass)), array('"ID"' => $row->ID) );
 		}
 	}
 
@@ -559,7 +559,7 @@ function upgrade_130() {
 	global $wpdb;
 
 	// Remove extraneous backslashes.
-	$posts = $wpdb->get_results("SELECT ID, post_title, post_content, post_excerpt, guid, post_date, post_name, post_status, post_author FROM $wpdb->posts");
+	$posts = $wpdb->get_results("SELECT \"ID\", post_title, post_content, post_excerpt, guid, post_date, post_name, post_status, post_author FROM $wpdb->posts");
 	if ($posts) {
 		foreach($posts as $post) {
 			$post_content = addslashes(deslash($post->post_content));
@@ -570,7 +570,7 @@ function upgrade_130() {
 			else
 				$guid = $post->guid;
 
-			$wpdb->update( $wpdb->posts, compact('post_title', 'post_content', 'post_excerpt', 'guid'), array('ID' => $post->ID) );
+			$wpdb->update( $wpdb->posts, compact('post_title', 'post_content', 'post_excerpt', 'guid'), array('"ID"' => $post->ID) );
 
 		}
 	}
@@ -613,11 +613,11 @@ function upgrade_130() {
 	$wpdb->query('DROP TABLE IF EXISTS ' . $wpdb->prefix . 'optiongroup_options');
 
 	// Update comments table to use comment_type
-	$wpdb->query("UPDATE $wpdb->comments SET comment_type='trackback', comment_content = REPLACE(comment_content, '<trackback />', '') WHERE comment_content LIKE '<trackback />%'");
-	$wpdb->query("UPDATE $wpdb->comments SET comment_type='pingback', comment_content = REPLACE(comment_content, '<pingback />', '') WHERE comment_content LIKE '<pingback />%'");
+	$wpdb->query("UPDATE $wpdb->comments SET comment_type='trackback', comment_content = REPLACE(comment_content, '<trackback />', '') WHERE comment_content ILIKE '<trackback />%'");
+	$wpdb->query("UPDATE $wpdb->comments SET comment_type='pingback', comment_content = REPLACE(comment_content, '<pingback />', '') WHERE comment_content ILIKE '<pingback />%'");
 
 	// Some versions have multiple duplicate option_name rows with the same values
-	$options = $wpdb->get_results("SELECT option_name, COUNT(option_name) AS dupes FROM `$wpdb->options` GROUP BY option_name");
+	$options = $wpdb->get_results("SELECT option_name, COUNT(option_name) AS dupes FROM \"$wpdb->options\" GROUP BY option_name");
 	foreach ( $options as $option ) {
 		if ( 1 != $option->dupes ) { // Could this be done in the query?
 			$limit = $option->dupes - 1;
@@ -672,7 +672,7 @@ function upgrade_160() {
 			if ($idmode == 'namefl') $id = $user->user_firstname.' '.$user->user_lastname;
 			if ($idmode == 'namelf') $id = $user->user_lastname.' '.$user->user_firstname;
 			if (!$idmode) $id = $user->user_nickname;
-			$wpdb->update( $wpdb->users, array('display_name' => $id), array('ID' => $user->ID) );
+			$wpdb->update( $wpdb->users, array('display_name' => $id), array('"ID"' => $user->ID) );
 		endif;
 
 		// FIXME: RESET_CAPS is temporary code to reset roles and caps if flag is set.
@@ -694,17 +694,17 @@ function upgrade_160() {
 	$comments = $wpdb->get_results( "SELECT comment_post_ID, COUNT(*) as c FROM $wpdb->comments WHERE comment_approved = '1' GROUP BY comment_post_ID" );
 	if ( is_array( $comments ) )
 		foreach ($comments as $comment)
-			$wpdb->update( $wpdb->posts, array('comment_count' => $comment->c), array('ID' => $comment->comment_post_ID) );
+			$wpdb->update( $wpdb->posts, array('comment_count' => $comment->c), array('"ID"' => $comment->comment_post_ID) );
 
 	// Some alpha versions used a post status of object instead of attachment and put
 	// the mime type in post_type instead of post_mime_type.
 	if ( $wp_current_db_version > 2541 && $wp_current_db_version <= 3091 ) {
-		$objects = $wpdb->get_results("SELECT ID, post_type FROM $wpdb->posts WHERE post_status = 'object'");
+		$objects = $wpdb->get_results("SELECT \"ID\", post_type FROM $wpdb->posts WHERE post_status = 'object'");
 		foreach ($objects as $object) {
 			$wpdb->update( $wpdb->posts, array(	'post_status' => 'attachment',
 												'post_mime_type' => $object->post_type,
 												'post_type' => ''),
-										 array( 'ID' => $object->ID ) );
+										 array( '"ID"' => $object->ID ) );
 
 			$meta = get_post_meta($object->ID, 'imagedata', true);
 			if ( ! empty($meta['file']) )
@@ -723,7 +723,7 @@ function upgrade_210() {
 
 	if ( $wp_current_db_version < 3506 ) {
 		// Update status and type.
-		$posts = $wpdb->get_results("SELECT ID, post_status FROM $wpdb->posts");
+		$posts = $wpdb->get_results("SELECT \"ID\", post_status FROM $wpdb->posts");
 
 		if ( ! empty($posts) ) foreach ($posts as $post) {
 			$status = $post->post_status;
@@ -737,7 +737,7 @@ function upgrade_210() {
 				$type = 'attachment';
 			}
 
-			$wpdb->query( $wpdb->prepare("UPDATE $wpdb->posts SET post_status = %s, post_type = %s WHERE ID = %d", $status, $type, $post->ID) );
+			$wpdb->query( $wpdb->prepare("UPDATE $wpdb->posts SET post_status = %s, post_type = %s WHERE \"ID\" = %d", $status, $type, $post->ID) );
 		}
 	}
 
@@ -750,7 +750,7 @@ function upgrade_210() {
 		$now = gmdate('Y-m-d H:i:59');
 		$wpdb->query ("UPDATE $wpdb->posts SET post_status = 'future' WHERE post_status = 'publish' AND post_date_gmt > '$now'");
 
-		$posts = $wpdb->get_results("SELECT ID, post_date FROM $wpdb->posts WHERE post_status ='future'");
+		$posts = $wpdb->get_results("SELECT \"ID\", post_date FROM $wpdb->posts WHERE post_status ='future'");
 		if ( !empty($posts) )
 			foreach ( $posts as $post )
 				wp_schedule_single_event(mysql2date('U', $post->post_date, false), 'publish_future_post', array($post->ID));
@@ -1033,7 +1033,7 @@ function upgrade_280() {
 		populate_roles_280();
 	if ( is_multisite() ) {
 		$start = 0;
-		while( $rows = $wpdb->get_results( "SELECT option_name, option_value FROM $wpdb->options ORDER BY option_id LIMIT $start, 20" ) ) {
+		while( $rows = $wpdb->get_results( "SELECT option_name, option_value FROM $wpdb->options ORDER BY option_id LIMIT 20 OFFSET $start" ) ) {
 			foreach( $rows as $row ) {
 				$value = $row->option_value;
 				if ( !@unserialize( $value ) )
@@ -1082,7 +1082,7 @@ function upgrade_300() {
 	// 3.0 screen options key name changes.
 	if ( is_main_site() && !defined('DO_NOT_UPGRADE_GLOBAL_TABLES') ) {
 		$prefix = like_escape($wpdb->base_prefix);
-		$wpdb->query( "DELETE FROM $wpdb->usermeta WHERE meta_key LIKE '{$prefix}%meta-box-hidden%' OR meta_key LIKE '{$prefix}%closedpostboxes%' OR meta_key LIKE '{$prefix}%manage-%-columns-hidden%' OR meta_key LIKE '{$prefix}%meta-box-order%' OR meta_key LIKE '{$prefix}%metaboxorder%' OR meta_key LIKE '{$prefix}%screen_layout%'
+		$wpdb->query( "DELETE FROM $wpdb->usermeta WHERE meta_key ILIKE '{$prefix}%meta-box-hidden%' OR meta_key ILIKE '{$prefix}%closedpostboxes%' OR meta_key ILIKE '{$prefix}%manage-%-columns-hidden%' OR meta_key ILIKE '{$prefix}%meta-box-order%' OR meta_key ILIKE '{$prefix}%metaboxorder%' OR meta_key ILIKE '{$prefix}%screen_layout%'
 					 OR meta_key = 'manageedittagscolumnshidden' OR meta_key='managecategoriescolumnshidden' OR meta_key = 'manageedit-tagscolumnshidden' OR meta_key = 'manageeditcolumnshidden' OR meta_key = 'categories_per_page' OR meta_key = 'edit_tags_per_page'" );
 	}
 
@@ -1265,11 +1265,25 @@ function upgrade_network() {
 		// The multi-table delete syntax is used to delete the transient record from table a,
 		// and the corresponding transient_timeout record from table b.
 		$time = time();
-		$wpdb->query("DELETE a, b FROM $wpdb->sitemeta a, $wpdb->sitemeta b WHERE
-			a.meta_key LIKE '\_site\_transient\_%' AND
-			a.meta_key NOT LIKE '\_site\_transient\_timeout\_%' AND
-			b.meta_key = CONCAT( '_site_transient_timeout_', SUBSTRING( a.meta_key, 17 ) )
-			AND b.meta_value < $time");
+//		$wpdb->query("DELETE a, b FROM $wpdb->sitemeta a, $wpdb->sitemeta b WHERE
+//			a.meta_key ILIKE '\_site\_transient\_%' AND
+//			a.meta_key NOT ILIKE '\_site\_transient\_timeout\_%' AND
+//			b.meta_key = CONCAT( '_site_transient_timeout_', SUBSTRING( a.meta_key, 17 ) )
+//			AND b.meta_value < $time");
+        $wpdb->query("DELETE FROM $wpdb->sitemeta
+            WHERE meta_id in (
+              SELECT a.meta_id FROM $wpdb->sitemeta a, $wpdb->sitemeta b
+              WHERE a.meta_key ILIKE '_site_transient_%'
+              AND a.meta_key NOT ILIKE '_site_transient_timeout_%'
+              AND b.meta_key =  '_site_transient_timeout_' || SUBSTRING( a.meta_key, 17 )
+			  AND (CASE WHEN b.meta_value ~ '^[0-9]+$' THEN b.meta_value::int8 ELSE null END) < $time
+			  UNION ALL
+			  SELECT b.meta_id FROM $wpdb->sitemeta a, $wpdb->sitemeta b
+              WHERE a.meta_key ILIKE '_site_transient_%'
+              AND a.meta_key NOT ILIKE '_site_transient_timeout_%'
+              AND b.meta_key =  '_site_transient_timeout_' || SUBSTRING( a.meta_key, 17 )
+			  AND (CASE WHEN b.meta_value ~ '^[0-9]+$' THEN b.meta_value::int8 ELSE null END) < $time
+            );");
 	}
 
 	// 2.8
@@ -1288,7 +1302,7 @@ function upgrade_network() {
 		delete_site_option( 'deactivated_sitewide_plugins' );
 
 		$start = 0;
-		while( $rows = $wpdb->get_results( "SELECT meta_key, meta_value FROM {$wpdb->sitemeta} ORDER BY meta_id LIMIT $start, 20" ) ) {
+		while( $rows = $wpdb->get_results( "SELECT meta_key, meta_value FROM {$wpdb->sitemeta} ORDER BY meta_id LIMIT 20 OFFSET $start" ) ) {
 			foreach( $rows as $row ) {
 				$value = $row->meta_value;
 				if ( !@unserialize( $value ) )
@@ -1363,12 +1377,12 @@ function upgrade_network() {
  */
 function maybe_create_table($table_name, $create_ddl) {
 	global $wpdb;
-	if ( $wpdb->get_var("SHOW TABLES LIKE '$table_name'") == $table_name )
+	if ( $wpdb->get_var($wpdb->ShowTables($table_name)) == $table_name )
 		return true;
 	//didn't find it try to create it.
 	$q = $wpdb->query($create_ddl);
 	// we cannot directly tell that whether this succeeded!
-	if ( $wpdb->get_var("SHOW TABLES LIKE '$table_name'") == $table_name )
+	if ( $wpdb->get_var($wpdb->ShowTables($table_name)) == $table_name)
 		return true;
 	return false;
 }
@@ -1387,10 +1401,10 @@ function maybe_create_table($table_name, $create_ddl) {
 function drop_index($table, $index) {
 	global $wpdb;
 	$wpdb->hide_errors();
-	$wpdb->query("ALTER TABLE `$table` DROP INDEX `$index`");
+	$wpdb->query("ALTER TABLE \"$table\" DROP INDEX \"$index\"");
 	// Now we need to take out all the extra ones we may have created
 	for ($i = 0; $i < 25; $i++) {
-		$wpdb->query("ALTER TABLE `$table` DROP INDEX `{$index}_$i`");
+		$wpdb->query("ALTER TABLE \"$table\" DROP INDEX \"{$index}_$i\"");
 	}
 	$wpdb->show_errors();
 	return true;
@@ -1410,7 +1424,7 @@ function drop_index($table, $index) {
 function add_clean_index($table, $index) {
 	global $wpdb;
 	drop_index($table, $index);
-	$wpdb->query("ALTER TABLE `$table` ADD INDEX ( `$index` )");
+	$wpdb->query("ALTER TABLE \"$table\" ADD INDEX ( \"$index\" )");
 	return true;
 }
 
@@ -1545,8 +1559,11 @@ function dbDelta( $queries = '', $execute = true ) {
 	// Create a tablename index for an array ($cqueries) of queries
 	foreach($queries as $qry) {
 		if (preg_match("|CREATE TABLE ([^ ]*)|", $qry, $matches)) {
-			$cqueries[ trim( $matches[1], '`' ) ] = $qry;
+			$cqueries[ trim( $matches[1], '"' ) ] = $qry;
 			$for_update[$matches[1]] = 'Created table '.$matches[1];
+        } else if (preg_match("|CREATE INDEX ([^ ]*)|", $qry, $matches)) {
+			$cqueries[ trim( $matches[1], '"' ) ] = $qry;
+			$for_update[$matches[1]] = 'Created index table '.$matches[1];
 		} else if (preg_match("|CREATE DATABASE ([^ ]*)|", $qry, $matches)) {
 			array_unshift($cqueries, $qry);
 		} else if (preg_match("|INSERT INTO ([^ ]*)|", $qry, $matches)) {
@@ -1570,7 +1587,9 @@ function dbDelta( $queries = '', $execute = true ) {
 
 		// Fetch the table column structure from the database
 		$suppress = $wpdb->suppress_errors();
-		$tablefields = $wpdb->get_results("DESCRIBE {$table};");
+//		$tablefields = $wpdb->get_results("DESCRIBE {$table};");
+//		$tablefields = $wpdb->get_results($wpdb->describe('public.teste'));
+		$tablefields = $wpdb->get_results($wpdb->describe($table));
 		$wpdb->suppress_errors( $suppress );
 
 		if ( ! $tablefields )
@@ -1591,7 +1610,7 @@ function dbDelta( $queries = '', $execute = true ) {
 		foreach ($flds as $fld) {
 			// Extract the field name
 			preg_match("|^([^ ]*)|", trim($fld), $fvals);
-			$fieldname = trim( $fvals[1], '`' );
+			$fieldname = trim( $fvals[1], '\"' );
 
 			// Verify the found field name
 			$validfield = true;
@@ -1602,6 +1621,7 @@ function dbDelta( $queries = '', $execute = true ) {
 			case 'fulltext':
 			case 'unique':
 			case 'key':
+//            case 'create index':
 				$validfield = false;
 				$indices[] = trim(trim($fld), ", \n");
 				break;
@@ -1656,7 +1676,8 @@ function dbDelta( $queries = '', $execute = true ) {
 
 		// Index stuff goes here
 		// Fetch the table index structure from the database
-		$tableindices = $wpdb->get_results("SHOW INDEX FROM {$table};");
+//		$tableindices = $wpdb->get_results("SHOW INDEX FROM {$table};");
+		$tableindices = $wpdb->get_results($wpdb->show_index($table));
 
 		if ($tableindices) {
 			// Clear the index array
@@ -1717,7 +1738,8 @@ function dbDelta( $queries = '', $execute = true ) {
 	$allqueries = array_merge($cqueries, $iqueries);
 	if ($execute) {
 		foreach ($allqueries as $query) {
-			//echo "<pre style=\"border:1px solid #ccc;margin-top:5px;\">".print_r($query, true)."</pre>\n";
+			//
+//            echo "<pre style=\"border:1px solid #ccc;margin-top:5px;\">upgrade.php:1742 => ".print_r($query, true)."</pre>\n";
 			$wpdb->query($query);
 		}
 	}
@@ -2028,7 +2050,7 @@ function pre_schema_upgrade() {
 	// Upgrade versions prior to 2.9
 	if ( $wp_current_db_version < 11557 ) {
 		// Delete duplicate options. Keep the option with the highest option_id.
-		$wpdb->query("DELETE o1 FROM $wpdb->options AS o1 JOIN $wpdb->options AS o2 USING (`option_name`) WHERE o2.option_id > o1.option_id");
+		$wpdb->query("DELETE o1 FROM $wpdb->options AS o1 JOIN $wpdb->options AS o2 USING (\"option_name\") WHERE o2.option_id > o1.option_id");
 
 		// Drop the old primary key and add the new.
 		$wpdb->query("ALTER TABLE $wpdb->options DROP PRIMARY KEY, ADD PRIMARY KEY(option_id)");
@@ -2066,14 +2088,16 @@ function install_global_terms() {
 	global $wpdb, $charset_collate;
 	$ms_queries = "
 CREATE TABLE $wpdb->sitecategories (
-  cat_ID bigint(20) NOT NULL auto_increment,
+  cat_ID bigserial,
   cat_name varchar(55) NOT NULL default '',
   category_nicename varchar(200) NOT NULL default '',
-  last_updated timestamp NOT NULL,
-  PRIMARY KEY  (cat_ID),
-  KEY category_nicename (category_nicename),
-  KEY last_updated (last_updated)
-) $charset_collate;
+  last_updated timestamp without time zone NOT NULL default 'now()',
+  PRIMARY KEY  (cat_ID) --,
+  --KEY category_nicename (category_nicename),
+  --KEY last_updated (last_updated)
+);
+CREATE INDEX category_nicename ON $wpdb->sitecategories USING btree (category_nicename);
+CREATE INDEX last_update ON $wpdb->sitecategories USING btree (last_updated);
 ";
 // now create tables
 	dbDelta( $ms_queries );

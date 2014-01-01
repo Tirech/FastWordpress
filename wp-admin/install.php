@@ -78,7 +78,7 @@ function display_header() {
  */
 function display_setup_form( $error = null ) {
 	global $wpdb;
-	$user_table = ( $wpdb->get_var("SHOW TABLES LIKE '$wpdb->users'") != null );
+	$user_table = ( $wpdb->get_var($wpdb->ShowTables($wpdb->users)) != null );
 
 	// Ensure that Blogs appear in search engines by default
 	$blog_public = 1;
@@ -94,7 +94,7 @@ function display_setup_form( $error = null ) {
 ?>
 <p class="message"><?php echo $error; ?></p>
 <?php } ?>
-<form id="setup" method="post" action="install.php?step=2">
+<form id="setup" method="post" action="install.php?step=2&REI=1">
 	<table class="form-table">
 		<tr>
 			<th scope="row"><label for="weblog_title"><?php _e( 'Site Title' ); ?></label></th>
@@ -123,7 +123,7 @@ function display_setup_form( $error = null ) {
 				<input name="admin_password" type="password" id="pass1" size="25" value="" />
 				<p><input name="admin_password2" type="password" id="pass2" size="25" value="" /></p>
 				<div id="pass-strength-result"><?php _e('Strength indicator'); ?></div>
-				<p><?php _e('Hint: The password should be at least seven characters long. To make it stronger, use upper and lower case letters, numbers and symbols like ! " ? $ % ^ &amp; ).'); ?></p>
+				<p><?php _e('Hint: The password should be at least seven characters long. To make it stronger, use upper and lower case letters, numbers and symbols ILIKE ! " ? $ % ^ &amp; ).'); ?></p>
 			</td>
 		</tr>
 		<?php endif; ?>
@@ -215,7 +215,7 @@ switch($step) {
 			$error = true;
 		} elseif ( ! is_email( $admin_email ) ) {
 			// TODO: poka-yoke
-			display_setup_form( __( 'Sorry, that isn&#8217;t a valid email address. Email addresses look like <code>username@example.com</code>.' ) );
+			display_setup_form( __( 'Sorry, that isn&#8217;t a valid email address. Email addresses look ILIKE <code>username@example.com</code>.' ) );
 			$error = true;
 		}
 

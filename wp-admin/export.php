@@ -123,7 +123,7 @@ function export_date_options( $post_type = 'post' ) {
 	global $wpdb, $wp_locale;
 
 	$months = $wpdb->get_results( $wpdb->prepare( "
-		SELECT DISTINCT YEAR( post_date ) AS year, MONTH( post_date ) AS month
+		SELECT DISTINCT extract( YEAR from post_date ) AS year, extract(MONTH from post_date ) AS month
 		FROM $wpdb->posts
 		WHERE post_type = %s AND post_status != 'auto-draft'
 		ORDER BY post_date DESC

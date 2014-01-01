@@ -344,7 +344,7 @@ class WP_Comment_Query {
 
 		if ( !empty($number) ) {
 			if ( $offset )
-				$limits = 'LIMIT ' . $offset . ',' . $number;
+				$limits = 'LIMIT ' . $number . ' OFFSET ' . $offset;
 			else
 				$limits = 'LIMIT ' . $number;
 		} else {
@@ -450,7 +450,7 @@ class WP_Comment_Query {
 
 		$searches = array();
 		foreach ( $cols as $col )
-			$searches[] = "$col LIKE '%$string%'";
+			$searches[] = "$col ILIKE '%$string%'";
 
 		return ' AND (' . implode(' OR ', $searches) . ')';
 	}
@@ -519,7 +519,7 @@ function get_lastcommentmodified($timezone = 'server') {
 /**
  * The amount of comments in a post or total comments.
  *
- * A lot like {@link wp_count_comments()}, in that they both return comment
+ * A lot ILIKE {@link wp_count_comments()}, in that they both return comment
  * stats (albeit with different types). The {@link wp_count_comments()} actual
  * caches, but this function does not.
  *
@@ -843,7 +843,7 @@ function check_comment_flood_db( $ip, $email, $date ) {
 	if ( current_user_can( 'manage_options' ) )
 		return; // don't throttle admins
 	$hour_ago = gmdate( 'Y-m-d H:i:s', time() - HOUR_IN_SECONDS );
-	if ( $lasttime = $wpdb->get_var( $wpdb->prepare( "SELECT `comment_date_gmt` FROM `$wpdb->comments` WHERE `comment_date_gmt` >= %s AND ( `comment_author_IP` = %s OR `comment_author_email` = %s ) ORDER BY `comment_date_gmt` DESC LIMIT 1", $hour_ago, $ip, $email ) ) ) {
+	if ( $lasttime = $wpdb->get_var( $wpdb->prepare( "SELECT \"comment_date_gmt\" FROM \"$wpdb->comments\" WHERE \"comment_date_gmt\" >= %s AND ( \"comment_author_IP\" = %s OR \"comment_author_email\" = %s ) ORDER BY \"comment_date_gmt\" DESC LIMIT 1", $hour_ago, $ip, $email ) ) ) {
 		$time_lastcomment = mysql2date('U', $lasttime, false);
 		$time_newcomment  = mysql2date('U', $date, false);
 		/**

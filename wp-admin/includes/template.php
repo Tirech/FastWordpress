@@ -561,7 +561,7 @@ function meta_form( $post = null ) {
 		SELECT meta_key
 		FROM $wpdb->postmeta
 		GROUP BY meta_key
-		HAVING meta_key NOT LIKE '\_%'
+		HAVING meta_key NOT ILIKE '\_%'
 		ORDER BY meta_key
 		LIMIT $limit" );
 	if ( $keys )
@@ -1280,7 +1280,7 @@ function get_settings_errors( $setting = '', $sanitize = false ) {
  *
  * The $hide_on_update option will cause errors to only show when the settings page is first loaded.
  * if the user has already saved new values it will be hidden to avoid repeating messages already
- * shown in the default error reporting after submission. This is useful to show general errors like missing
+ * shown in the default error reporting after submission. This is useful to show general errors ILIKE missing
  * settings when the user arrives at the settings page.
  *
  * @since 3.0.0

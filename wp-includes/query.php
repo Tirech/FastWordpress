@@ -1263,7 +1263,7 @@ class WP_Query {
 	var $is_post_type_archive = false;
 
 	/**
-	 * Stores the ->query_vars state like md5(serialize( $this->query_vars ) ) so we know
+	 * Stores the ->query_vars state ILIKE md5(serialize( $this->query_vars ) ) so we know
 	 * whether we have to re-parse because something has changed
 	 *
 	 * @since 3.1.0
@@ -1960,9 +1960,9 @@ class WP_Query {
 		foreach ( $q['search_terms'] as $term ) {
 			$term = like_escape( esc_sql( $term ) );
 			if ( $n )
-				$q['search_orderby_title'][] = "$wpdb->posts.post_title LIKE '%$term%'";
+				$q['search_orderby_title'][] = "$wpdb->posts.post_title ILIKE '%$term%'";
 
-			$search .= "{$searchand}(($wpdb->posts.post_title LIKE '{$n}{$term}{$n}') OR ($wpdb->posts.post_content LIKE '{$n}{$term}{$n}'))";
+			$search .= "{$searchand}(($wpdb->posts.post_title ILIKE '{$n}{$term}{$n}') OR ($wpdb->posts.post_content ILIKE '{$n}{$term}{$n}'))";
 			$searchand = ' AND ';
 		}
 
@@ -2025,7 +2025,7 @@ class WP_Query {
 			return $this->stopwords;
 
 		/* translators: This is a comma-separated list of very common words that should be excluded from a search,
-		 * like a, an, and the. These are usually called "stopwords". You should not simply translate these individual
+		 * ILIKE a, an, and the. These are usually called "stopwords". You should not simply translate these individual
 		 * words into your language. Instead, look for and provide commonly accepted stopwords in your language.
 		 */
 		$words = explode( ',', _x( 'about,an,are,as,at,be,by,com,for,from,how,in,is,it,of,on,or,that,the,this,to,was,what,when,where,who,will,with,www',
@@ -2067,7 +2067,7 @@ class WP_Query {
 
 			$search_orderby = '(CASE ';
 			// sentence match in 'post_title'
-			$search_orderby .= "WHEN $wpdb->posts.post_title LIKE '%{$search_orderby_s}%' THEN 1 ";
+			$search_orderby .= "WHEN $wpdb->posts.post_title ILIKE '%{$search_orderby_s}%' THEN 1 ";
 
 			// sanity limit, sort as sentence when more than 6 terms
 			// (few searches are longer than 6 terms and most titles are not)
@@ -2080,7 +2080,7 @@ class WP_Query {
 			}
 
 			// sentence match in 'post_content'
-			$search_orderby .= "WHEN $wpdb->posts.post_content LIKE '%{$search_orderby_s}%' THEN 4 ";
+			$search_orderby .= "WHEN $wpdb->posts.post_content ILIKE '%{$search_orderby_s}%' THEN 4 ";
 			$search_orderby .= 'ELSE 5 END)';
 		} else {
 			// single word or sentence search
@@ -2277,11 +2277,11 @@ class WP_Query {
 
 		// The "m" parameter is meant for months but accepts datetimes of varying specificity
 		if ( $q['m'] ) {
-			$where .= " AND YEAR($wpdb->posts.post_date)=" . substr($q['m'], 0, 4);
+			$where .= " AND extract(YEAR from $wpdb->posts.post_date)=" . substr($q['m'], 0, 4);
 			if ( strlen($q['m']) > 5 )
-				$where .= " AND MONTH($wpdb->posts.post_date)=" . substr($q['m'], 4, 2);
+				$where .= " AND extract(MONTH from $wpdb->posts.post_date)=" . substr($q['m'], 4, 2);
 			if ( strlen($q['m']) > 7 )
-				$where .= " AND DAYOFMONTH($wpdb->posts.post_date)=" . substr($q['m'], 6, 2);
+				$where .= " AND extract(DAYOFMONTH from $wpdb->posts.post_date)=" . substr($q['m'], 6, 2);
 			if ( strlen($q['m']) > 9 )
 				$where .= " AND HOUR($wpdb->posts.post_date)=" . substr($q['m'], 8, 2);
 			if ( strlen($q['m']) > 11 )
@@ -2802,12 +2802,12 @@ class WP_Query {
 				$page = 1;
 
 			if ( empty($q['offset']) ) {
-				$pgstrt = ($page - 1) * $q['posts_per_page'] . ', ';
+				$pgstrt = ($page - 1) * $q['posts_per_page'];
 			} else { // we're ignoring $page and using 'offset'
 				$q['offset'] = absint($q['offset']);
-				$pgstrt = $q['offset'] . ', ';
+				$pgstrt = $q['offset'];
 			}
-			$limits = 'LIMIT ' . $pgstrt . $q['posts_per_page'];
+			$limits = 'LIMIT '  . $q['posts_per_page'].' OFFSET '. $pgstrt;
 		}
 
 		// Comments feeds
@@ -2890,12 +2890,33 @@ class WP_Query {
 			$groupby = 'GROUP BY ' . $groupby;
 		if ( !empty( $orderby ) )
 			$orderby = 'ORDER BY ' . $orderby;
+//			echo "2893:$orderby = 'ORDER BY ' . $orderby;";
 
 		$found_rows = '';
 		if ( !$q['no_found_rows'] && !empty($limits) )
-			$found_rows = 'SQL_CALC_FOUND_ROWS';
+			$found_rows = ''.$fields.'';
+//			$found_rows = 'SQL_CALC_FOUND_ROWS';
 
-		$this->request = $old_request = "SELECT $found_rows $distinct $fields FROM $wpdb->posts $join WHERE 1=1 $where $groupby $orderby $limits";
+        if ( !empty( $orderby ) )
+        {
+            if(!empty($groupby)){
+                $groupby .= ','.str_replace(array('ORDER BY','DESC','ASC'),'',$orderby);
+            }else{
+                $groupby .= ' GROUP BY '.str_replace(array('ORDER BY','DESC','ASC'),'',$orderby);
+            }
+        }
+        $found_rows2 = $found_rows;
+        if(empty($found_rows)){
+            if(!empty($distinct)){
+                $found_rows2 = $distinct;
+            }else {
+                $found_rows2 = $fields;
+            }
+        }
+        //echo "[$found_rows] [$found_rows2] [$distinct] [$fields]";
+
+		$this->request = $old_request = "SELECT count($found_rows2)   FROM $wpdb->posts $join WHERE 1=1 $where $groupby $orderby $limits";
+//		$this->request = $old_request = "SELECT $found_rows $distinct $fields FROM $wpdb->posts $join WHERE 1=1 $where $groupby $orderby $limits";
 
 		if ( !$q['suppress_filters'] ) {
 			$this->request = apply_filters_ref_array( 'posts_request', array( $this->request, &$this ) );
@@ -2927,7 +2948,21 @@ class WP_Query {
 		if ( $split_the_query ) {
 			// First get the IDs and then fill in the objects
 
-			$this->request = "SELECT $found_rows $distinct $wpdb->posts.ID FROM $wpdb->posts $join WHERE 1=1 $where $groupby $orderby $limits";
+            if ( !empty( $orderby ) )
+            {
+                if(!empty($groupby)){
+                    $groupby .= ','.str_replace(array('ORDER BY','DESC','ASC'),'',$orderby);
+                }else{
+                    $groupby .= ' GROUP BY '.str_replace(array('ORDER BY','DESC','ASC'),'',$orderby);
+                }
+            }
+            if($found_rows==""){
+                $found_rows = '*';
+            }
+
+            $this->request = "SELECT count($found_rows) FROM $wpdb->posts $join WHERE 1=1 $where $groupby $orderby $limits";
+//            echo "2951:SELECT count($found_rows) FROM $wpdb->posts $join WHERE 1=1 $where $groupby $orderby $limits";
+//			$this->request = "SELECT $found_rows $distinct $wpdb->posts.ID FROM $wpdb->posts $join WHERE 1=1 $where $groupby $orderby $limits";
 
 			$this->request = apply_filters( 'posts_request_ids', $this->request, $this );
 
@@ -3077,7 +3112,7 @@ class WP_Query {
 			return;
 
 		if ( ! empty( $limits ) )
-			$this->found_posts = $wpdb->get_var( apply_filters_ref_array( 'found_posts_query', array( 'SELECT FOUND_ROWS()', &$this ) ) );
+			$this->found_posts = $wpdb->get_var( apply_filters_ref_array( 'found_posts_query', array( 'SELECT count(*)', &$this ) ) );
 		else
 			$this->found_posts = count( $this->posts );
 
@@ -3893,11 +3928,11 @@ function wp_old_slug_redirect() {
 		// if year, monthnum, or day have been specified, make our query more precise
 		// just in case there are multiple identical _wp_old_slug values
 		if ( '' != $wp_query->query_vars['year'] )
-			$query .= $wpdb->prepare(" AND YEAR(post_date) = %d", $wp_query->query_vars['year']);
+			$query .= $wpdb->prepare(" AND extract(YEAR from post_date) = %d", $wp_query->query_vars['year']);
 		if ( '' != $wp_query->query_vars['monthnum'] )
-			$query .= $wpdb->prepare(" AND MONTH(post_date) = %d", $wp_query->query_vars['monthnum']);
+			$query .= $wpdb->prepare(" AND extract(MONTH from post_date) = %d", $wp_query->query_vars['monthnum']);
 		if ( '' != $wp_query->query_vars['day'] )
-			$query .= $wpdb->prepare(" AND DAYOFMONTH(post_date) = %d", $wp_query->query_vars['day']);
+			$query .= $wpdb->prepare(" AND extract(DAYOFMONTH from post_date) = %d", $wp_query->query_vars['day']);
 
 		$id = (int) $wpdb->get_var($query);
 

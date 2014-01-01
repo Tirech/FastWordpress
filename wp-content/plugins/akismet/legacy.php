@@ -19,11 +19,11 @@ function akismet_spam_comments( $type = false, $page = 1, $per_page = 50 ) {
 			$type = '';
 		else
 			$type = $wpdb->escape( $type );
-		return $wpdb->get_results( "SELECT * FROM $wpdb->comments WHERE comment_approved = 'spam' AND comment_type='$type' ORDER BY comment_date DESC LIMIT $start, $end");
+		return $wpdb->get_results( "SELECT * FROM $wpdb->comments WHERE comment_approved = 'spam' AND comment_type='$type' ORDER BY comment_date DESC LIMIT $end OFFSET $start ");
 	}
 
 	// All
-	return $wpdb->get_results( "SELECT * FROM $wpdb->comments WHERE comment_approved = 'spam' ORDER BY comment_date DESC LIMIT $start, $end");
+	return $wpdb->get_results( "SELECT * FROM $wpdb->comments WHERE comment_approved = 'spam' ORDER BY comment_date DESC LIMIT $end OFFSET $start");
 }
 
 // Totals for each comment type
@@ -181,11 +181,11 @@ if ( 0 == $spam_count ) {
 if ( isset( $_POST['s'] ) ) {
 	$s = $wpdb->escape($_POST['s']);
 	$comments = $wpdb->get_results("SELECT * FROM $wpdb->comments  WHERE
-		(comment_author LIKE '%$s%' OR
-		comment_author_email LIKE '%$s%' OR
-		comment_author_url LIKE ('%$s%') OR
-		comment_author_IP LIKE ('%$s%') OR
-		comment_content LIKE ('%$s%') ) AND
+		(comment_author ILIKE '%$s%' OR
+		comment_author_email ILIKE '%$s%' OR
+		comment_author_url ILIKE ('%$s%') OR
+		comment_author_IP ILIKE ('%$s%') OR
+		comment_content ILIKE ('%$s%') ) AND
 		comment_approved = 'spam'
 		ORDER BY comment_date DESC");
 } else {

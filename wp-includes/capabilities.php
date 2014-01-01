@@ -560,7 +560,7 @@ class WP_User {
 		switch ( $field ) {
 			case 'id':
 				$user_id = $value;
-				$db_field = 'ID';
+				$db_field = '"ID"';
 				break;
 			case 'slug':
 				$user_id = wp_cache_get($value, 'userslugs');

@@ -569,7 +569,7 @@ final class WP_Post {
 	public $menu_order = 0;
 
 	/**
-	 * The post's type, like post or page.
+	 * The post's type, ILIKE post or page.
 	 *
 	 * @var string
 	 */
@@ -610,7 +610,7 @@ final class WP_Post {
 		$_post = wp_cache_get( $post_id, 'posts' );
 
 		if ( ! $_post ) {
-			$_post = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->posts WHERE ID = %d LIMIT 1", $post_id ) );
+			$_post = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->posts WHERE \"ID\" = %d LIMIT 1", $post_id ) );
 
 			if ( ! $_post )
 				return false;
@@ -1363,7 +1363,7 @@ function register_post_type( $post_type, $args = array() ) {
  * - edit_posts - Controls whether objects of this post type can be edited.
  * - edit_others_posts - Controls whether objects of this type owned by other users
  *   can be edited. If the post type does not support an author, then this will
- *   behave like edit_posts.
+ *   behave ILIKE edit_posts.
  * - publish_posts - Controls publishing objects of this post type.
  * - read_private_posts - Controls whether private objects can be read.
  *
@@ -1379,7 +1379,7 @@ function register_post_type( $post_type, $args = array() ) {
  * - delete_published_posts - Controls whether published objects can be deleted.
  * - delete_others_posts - Controls whether objects owned by other users can be
  *   can be deleted. If the post type does not support an author, then this will
- *   behave like delete_posts.
+ *   behave ILIKE delete_posts.
  * - edit_private_posts - Controls whether private objects can be edited.
  * - edit_published_posts - Controls whether published objects can be edited.
  *
@@ -1937,7 +1937,7 @@ function sanitize_post($post, $context = 'display') {
  * Sanitize post field based on context.
  *
  * Possible context values are:  'raw', 'edit', 'db', 'display', 'attribute' and 'js'. The
- * 'display' context is used by default. 'attribute' and 'js' contexts are treated like 'display'
+ * 'display' context is used by default. 'attribute' and 'js' contexts are treated ILIKE 'display'
  * when calling filters.
  *
  * @since 2.3.0
@@ -2263,7 +2263,7 @@ function wp_post_mime_type_where($post_mime_types, $table_alias = '') {
 			return '';
 
 		if ( false !== strpos($mime_pattern, '%') )
-			$wheres[] = empty($table_alias) ? "post_mime_type LIKE '$mime_pattern'" : "$table_alias.post_mime_type LIKE '$mime_pattern'";
+			$wheres[] = empty($table_alias) ? "post_mime_type ILIKE '$mime_pattern'" : "$table_alias.post_mime_type ILIKE '$mime_pattern'";
 		else
 			$wheres[] = empty($table_alias) ? "post_mime_type = '$mime_pattern'" : "$table_alias.post_mime_type = '$mime_pattern'";
 	}
@@ -2813,7 +2813,8 @@ function wp_insert_post( $postarr, $wp_error = false ) {
 		if ( !in_array( $post_status, array( 'draft', 'pending', 'auto-draft' ) ) )
 			$post_date_gmt = get_gmt_from_date($post_date);
 		else
-			$post_date_gmt = '0000-00-00 00:00:00';
+			$post_date_gmt = 'now()';
+//			$post_date_gmt = '0000-00-00 00:00:00';
 	}
 
 	if ( $update || '0000-00-00 00:00:00' == $post_date ) {
@@ -4198,7 +4199,7 @@ function wp_delete_attachment( $post_id, $force_delete = false ) {
 
 	if ( ! empty($meta['thumb']) ) {
 		// Don't delete the thumb if another attachment uses it
-		if (! $wpdb->get_row( $wpdb->prepare( "SELECT meta_id FROM $wpdb->postmeta WHERE meta_key = '_wp_attachment_metadata' AND meta_value LIKE %s AND post_id <> %d", '%' . $meta['thumb'] . '%', $post_id)) ) {
+		if (! $wpdb->get_row( $wpdb->prepare( "SELECT meta_id FROM $wpdb->postmeta WHERE meta_key = '_wp_attachment_metadata' AND meta_value ILIKE %s AND post_id <> %d", '%' . $meta['thumb'] . '%', $post_id)) ) {
 			$thumbfile = str_replace(basename($file), $meta['thumb'], $file);
 			/** This filter is documented in wp-admin/custom-header.php */
 			$thumbfile = apply_filters('wp_delete_file', $thumbfile);
@@ -5031,7 +5032,7 @@ function wp_delete_auto_drafts() {
 	global $wpdb;
 
 	// Cleanup old auto-drafts more than 7 days old
-	$old_posts = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_status = 'auto-draft' AND DATE_SUB( NOW(), INTERVAL 7 DAY ) > post_date" );
+	$old_posts = $wpdb->get_col( "SELECT \"ID\" FROM $wpdb->posts WHERE post_status = 'auto-draft' AND DATE_SUB( NOW(), INTERVAL 7 DAY ) > post_date" );
 	foreach ( (array) $old_posts as $delete )
 		wp_delete_post( $delete, true ); // Force delete
 }
@@ -5069,7 +5070,7 @@ function _prime_post_caches( $ids, $update_term_cache = true, $update_meta_cache
 
 	$non_cached_ids = _get_non_cached_ids( $ids, 'posts' );
 	if ( !empty( $non_cached_ids ) ) {
-		$fresh_posts = $wpdb->get_results( sprintf( "SELECT $wpdb->posts.* FROM $wpdb->posts WHERE ID IN (%s)", join( ",", $non_cached_ids ) ) );
+		$fresh_posts = $wpdb->get_results( sprintf( "SELECT $wpdb->posts.* FROM $wpdb->posts WHERE \"ID\" IN (%s)", join( ",", $non_cached_ids ) ) );
 
 		update_post_caches( $fresh_posts, 'any', $update_term_cache, $update_meta_cache );
 	}

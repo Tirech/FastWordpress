@@ -122,6 +122,8 @@ switch($step) {
 	<li><?php _e( 'Database username' ); ?></li>
 	<li><?php _e( 'Database password' ); ?></li>
 	<li><?php _e( 'Database host' ); ?></li>
+	<li><?php _e( 'Database port' ); ?></li>
+	<li><?php _e( 'Database schema' ); ?></li>
 	<li><?php _e( 'Table prefix (if you want to run more than one WordPress in a single database)' ); ?></li>
 </ol>
 <p><strong><?php _e( "If for any reason this automatic file creation doesn&#8217;t work, don&#8217;t worry. All this does is fill in the database information to a configuration file. You may also simply open <code>wp-config-sample.php</code> in a text editor, fill in your information, and save it as <code>wp-config.php</code>." ); ?></strong></p>
@@ -157,6 +159,16 @@ switch($step) {
 			<td><input name="dbhost" id="dbhost" type="text" size="25" value="localhost" /></td>
 			<td><?php _e( 'You should be able to get this info from your web host, if <code>localhost</code> does not work.' ); ?></td>
 		</tr>
+        <tr>
+			<th scope="row"><label for="dbport"><?php _e( 'Database Port' ); ?></label></th>
+			<td><input name="dbport" id="dbport" type="text" size="25" value="5432" /></td>
+			<td><?php _e( 'You should be able to get this info from your web host, if <code>5432</code> does not work.' ); ?></td>
+		</tr>
+		<tr>
+			<th scope="row"><label for="dbschema"><?php _e( 'Database Schema' ); ?></label></th>
+			<td><input name="dbschema" id="dbschema" type="text" size="25" value="public" /></td>
+			<td><?php _e( 'You should be able to get this info from your web host, if <code>public</code> does not work.' ); ?></td>
+		</tr>
 		<tr>
 			<th scope="row"><label for="prefix"><?php _e( 'Table Prefix' ); ?></label></th>
 			<td><input name="prefix" id="prefix" type="text" value="wp_" size="25" /></td>
@@ -170,7 +182,7 @@ switch($step) {
 	break;
 
 	case 2:
-	foreach ( array( 'dbname', 'uname', 'pwd', 'dbhost', 'prefix' ) as $key )
+	foreach ( array( 'dbname', 'uname', 'pwd', 'dbhost','dbport','dbschema', 'prefix' ) as $key )
 		$$key = trim( wp_unslash( $_POST[ $key ] ) );
 
 	$tryagain_link = '</p><p class="step"><a href="setup-config.php?step=1" onclick="javascript:history.go(-1);return false;" class="button button-large">' . __( 'Try again' ) . '</a>';
@@ -190,6 +202,9 @@ switch($step) {
 	define('DB_USER', $uname);
 	define('DB_PASSWORD', $pwd);
 	define('DB_HOST', $dbhost);
+	define('DB_PORT', $dbport);
+	define('DB_SCHEMA', $dbschema);
+	define('DB_OPTIONS', '--client_encoding=UTF8');
 	/**#@-*/
 
 	// We'll fail here if the values are no good.
@@ -244,6 +259,8 @@ switch($step) {
 			case 'DB_USER'     :
 			case 'DB_PASSWORD' :
 			case 'DB_HOST'     :
+			case 'DB_PORT'     :
+			case 'DB_SCHEMA'     :
 				$config_file[ $line_num ] = "define('" . $constant . "'," . $padding . "'" . addcslashes( constant( $constant ), "\\'" ) . "');\r\n";
 				break;
 			case 'AUTH_KEY'         :

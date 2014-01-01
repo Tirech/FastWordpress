@@ -264,7 +264,7 @@ function get_user_option( $option, $user = 0, $deprecated = '' ) {
 /**
  * Update user option with global blog capability.
  *
- * User options are just like user metadata except that they have support for
+ * User options are just ILIKE user metadata except that they have support for
  * global blog options. If the 'global' parameter is false, which it is by default
  * it will prepend the WordPress table prefix to the option name.
  *
@@ -291,7 +291,7 @@ function update_user_option( $user_id, $option_name, $newvalue, $global = false 
 /**
  * Delete user option with global blog capability.
  *
- * User options are just like user metadata except that they have support for
+ * User options are just ILIKE user metadata except that they have support for
  * global blog options. If the 'global' parameter is false, which it is by default
  * it will prepend the WordPress table prefix to the option name.
  *
@@ -402,18 +402,19 @@ class WP_User_Query {
 
 			$this->query_fields = array();
 			foreach ( $qv['fields'] as $field ) {
-				$field = 'ID' === $field ? 'ID' : sanitize_key( $field );
+				$field = 'ID' === $field ? '"ID"' : sanitize_key( $field );
 				$this->query_fields[] = "$wpdb->users.$field";
 			}
 			$this->query_fields = implode( ',', $this->query_fields );
 		} elseif ( 'all' == $qv['fields'] ) {
 			$this->query_fields = "$wpdb->users.*";
 		} else {
-			$this->query_fields = "$wpdb->users.ID";
+			$this->query_fields = "$wpdb->users.\"ID\"";
 		}
 
 		if ( isset( $qv['count_total'] ) && $qv['count_total'] )
-			$this->query_fields = 'SQL_CALC_FOUND_ROWS ' . $this->query_fields;
+			$this->query_fields = 'count(' . $this->query_fields.')';
+//			$this->query_fields = 'SQL_CALC_FOUND_ROWS ' . $this->query_fields;
 
 		$this->query_from = "FROM $wpdb->users";
 		$this->query_where = "WHERE 1=1";
@@ -434,11 +435,11 @@ class WP_User_Query {
 					FROM $wpdb->posts
 					$where
 					GROUP BY post_author
-				) p ON ({$wpdb->users}.ID = p.post_author)
+				) p ON ({$wpdb->users}.\"ID\" = p.post_author)
 				";
 				$orderby = 'post_count';
 			} elseif ( 'ID' == $qv['orderby'] || 'id' == $qv['orderby'] ) {
-				$orderby = 'ID';
+				$orderby = '\"ID\"';
 			} elseif ( 'meta_value' == $qv['orderby'] ) {
 				$orderby = "$wpdb->usermeta.meta_value";
 			} else {
@@ -459,7 +460,7 @@ class WP_User_Query {
 		// limit
 		if ( isset( $qv['number'] ) && $qv['number'] ) {
 			if ( $qv['offset'] )
-				$this->query_limit = $wpdb->prepare("LIMIT %d, %d", $qv['offset'], $qv['number']);
+				$this->query_limit = $wpdb->prepare("LIMIT %d OFFSET %d", $qv['number'], $qv['offset']);
 			else
 				$this->query_limit = $wpdb->prepare("LIMIT %d", $qv['number']);
 		}
@@ -484,12 +485,12 @@ class WP_User_Query {
 
 			$search_columns = array();
 			if ( $qv['search_columns'] )
-				$search_columns = array_intersect( $qv['search_columns'], array( 'ID', 'user_login', 'user_email', 'user_url', 'user_nicename' ) );
+				$search_columns = array_intersect( $qv['search_columns'], array( '"ID"', 'user_login', 'user_email', 'user_url', 'user_nicename' ) );
 			if ( ! $search_columns ) {
 				if ( false !== strpos( $search, '@') )
 					$search_columns = array('user_email');
 				elseif ( is_numeric($search) )
-					$search_columns = array('user_login', 'ID');
+					$search_columns = array('user_login', '"ID"');
 				elseif ( preg_match('|^https?://|', $search) && ! ( is_multisite() && wp_is_large_network( 'users' ) ) )
 					$search_columns = array('user_url');
 				else
@@ -532,7 +533,7 @@ class WP_User_Query {
 		$meta_query->parse_query_vars( $qv );
 
 		if ( !empty( $meta_query->queries ) ) {
-			$clauses = $meta_query->get_sql( 'user', $wpdb->users, 'ID', $this );
+			$clauses = $meta_query->get_sql( 'user', $wpdb->users, '"ID"', $this );
 			$this->query_from .= $clauses['join'];
 			$this->query_where .= $clauses['where'];
 
@@ -542,10 +543,10 @@ class WP_User_Query {
 
 		if ( ! empty( $qv['include'] ) ) {
 			$ids = implode( ',', wp_parse_id_list( $qv['include'] ) );
-			$this->query_where .= " AND $wpdb->users.ID IN ($ids)";
+			$this->query_where .= " AND $wpdb->users.\"ID\" IN ($ids)";
 		} elseif ( ! empty( $qv['exclude'] ) ) {
 			$ids = implode( ',', wp_parse_id_list( $qv['exclude'] ) );
-			$this->query_where .= " AND $wpdb->users.ID NOT IN ($ids)";
+			$this->query_where .= " AND $wpdb->users.\"ID\" NOT IN ($ids)";
 		}
 
 		do_action_ref_array( 'pre_user_query', array( &$this ) );
@@ -640,7 +641,7 @@ class WP_User_Query {
 			if ( 'ID' == $col )
 				$searches[] = "$col = '$string'";
 			else
-				$searches[] = "$col LIKE '$leading_wild" . like_escape($string) . "$trailing_wild'";
+				$searches[] = "$col ILIKE '$leading_wild" . like_escape($string) . "$trailing_wild'";
 		}
 
 		return ' AND (' . implode(' OR ', $searches) . ')';
@@ -912,7 +913,7 @@ function count_users($strategy = 'time') {
 		// Build a CPU-intensive query that will return concise information.
 		$select_count = array();
 		foreach ( $avail_roles as $this_role => $name ) {
-			$select_count[] = "COUNT(NULLIF(`meta_value` LIKE '%\"" . like_escape( $this_role ) . "\"%', false))";
+			$select_count[] = "COUNT(NULLIF(\"meta_value\" ILIKE '%\"" . like_escape( $this_role ) . "\"%', false))";
 		}
 		$select_count = implode(', ', $select_count);
 
@@ -1107,7 +1108,7 @@ function wp_dropdown_users( $args = '' ) {
  * Sanitize user field based on context.
  *
  * Possible context values are:  'raw', 'edit', 'db', 'display', 'attribute' and 'js'. The
- * 'display' context is used by default. 'attribute' and 'js' contexts are treated like 'display'
+ * 'display' context is used by default. 'attribute' and 'js' contexts are treated ILIKE 'display'
  * when calling filters.
  *
  * @since 2.3.0
@@ -1393,13 +1394,13 @@ function wp_insert_user( $userdata ) {
 	if ( empty($show_admin_bar_front) )
 		$show_admin_bar_front = 'true';
 
-	$user_nicename_check = $wpdb->get_var( $wpdb->prepare("SELECT ID FROM $wpdb->users WHERE user_nicename = %s AND user_login != %s LIMIT 1" , $user_nicename, $user_login));
+	$user_nicename_check = $wpdb->get_var( $wpdb->prepare("SELECT \"ID\" FROM $wpdb->users WHERE user_nicename = %s AND user_login != %s LIMIT 1" , $user_nicename, $user_login));
 
 	if ( $user_nicename_check ) {
 		$suffix = 2;
 		while ($user_nicename_check) {
 			$alt_user_nicename = $user_nicename . "-$suffix";
-			$user_nicename_check = $wpdb->get_var( $wpdb->prepare("SELECT ID FROM $wpdb->users WHERE user_nicename = %s AND user_login != %s LIMIT 1" , $alt_user_nicename, $user_login));
+			$user_nicename_check = $wpdb->get_var( $wpdb->prepare("SELECT \"ID\" FROM $wpdb->users WHERE user_nicename = %s AND user_login != %s LIMIT 1" , $alt_user_nicename, $user_login));
 			$suffix++;
 		}
 		$user_nicename = $alt_user_nicename;
@@ -1604,7 +1605,7 @@ function check_password_reset_key($key, $login) {
 	if ( empty($login) || !is_string($login) )
 		return new WP_Error('invalid_key', __('Invalid key'));
 
-	$row = $wpdb->get_row( $wpdb->prepare( "SELECT ID, user_activation_key FROM $wpdb->users WHERE user_login = %s", $login ) );
+	$row = $wpdb->get_row( $wpdb->prepare( "SELECT \"ID\", user_activation_key FROM $wpdb->users WHERE user_login = %s", $login ) );
 	if ( ! $row )
 		return new WP_Error('invalid_key', __('Invalid key'));
 

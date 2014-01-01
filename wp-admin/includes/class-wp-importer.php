@@ -27,7 +27,7 @@ class WP_Importer {
 		// Grab all posts in chunks
 		do {
 			$meta_key = $importer_name . '_' . $bid . '_permalink';
-			$sql = $wpdb->prepare( "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = '%s' LIMIT %d,%d", $meta_key, $offset, $limit );
+			$sql = $wpdb->prepare( "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = '%s' LIMIT %d OFFSET %d", $meta_key, $limit, $offset );
 			$results = $wpdb->get_results( $sql );
 
 			// Increment offset
@@ -89,7 +89,7 @@ class WP_Importer {
 
 		// Grab all comments in chunks
 		do {
-			$sql = $wpdb->prepare( "SELECT comment_ID, comment_agent FROM $wpdb->comments LIMIT %d,%d", $offset, $limit );
+			$sql = $wpdb->prepare( "SELECT comment_ID, comment_agent FROM $wpdb->comments LIMIT %d OFFSET %d", $limit, $offset );
 			$results = $wpdb->get_results( $sql );
 
 			// Increment offset

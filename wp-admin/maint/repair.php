@@ -36,7 +36,7 @@ if ( ! defined( 'WP_ALLOW_REPAIR' ) ) {
 	$tables = $wpdb->tables();
 
 	// Sitecategories may not exist if global terms are disabled.
-	if ( is_multisite() && ! $wpdb->get_var( "SHOW TABLES LIKE '$wpdb->sitecategories'" ) )
+	if ( is_multisite() && ! $wpdb->get_var( "SHOW TABLES ILIKE '$wpdb->sitecategories'" ) )
 		unset( $tables['sitecategories'] );
 
 	/**
@@ -75,14 +75,14 @@ if ( ! defined( 'WP_ALLOW_REPAIR' ) ) {
 		}
 
 		if ( $okay && $optimize ) {
-			$check = $wpdb->get_row( "ANALYZE TABLE $table" );
+			$check = $wpdb->get_row( "VACUUM ANALYZE  $table" );
 
 			echo '<br />&nbsp;&nbsp;&nbsp;&nbsp;';
 			if ( 'Table is already up to date' == $check->Msg_text )  {
 				/* translators: %s: table name */
 				printf( __( 'The %s table is already optimized.' ), "<code>$table</code>" );
 			} else {
-				$check = $wpdb->get_row( "OPTIMIZE TABLE $table" );
+				$check = $wpdb->get_row( "VACUUM $table" );
 
 				echo '<br />&nbsp;&nbsp;&nbsp;&nbsp;';
 				if ( 'OK' == $check->Msg_text || 'Table is already up to date' == $check->Msg_text ) {

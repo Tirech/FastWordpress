@@ -107,7 +107,7 @@ function wp_check_php_mysql_versions() {
 		die( sprintf( __( 'Your server is running PHP version %1$s but WordPress %2$s requires at least %3$s.' ), $php_version, $wp_version, $required_php_version ) );
 	}
 
-	if ( ! extension_loaded( 'mysql' ) && ! file_exists( WP_CONTENT_DIR . '/db.php' ) ) {
+	if ( ! extension_loaded( 'pgsql' ) && ! file_exists( WP_CONTENT_DIR . '/db.php' ) ) {
 		wp_load_translations_early();
 		die( __( 'Your PHP installation appears to be missing the MySQL extension which is required by WordPress.' ) );
 	}
@@ -331,7 +331,7 @@ function require_wp_db() {
 	if ( isset( $wpdb ) )
 		return;
 
-	$wpdb = new wpdb( DB_USER, DB_PASSWORD, DB_NAME, DB_HOST );
+	$wpdb = new wpdb( DB_USER, DB_PASSWORD, DB_NAME, DB_HOST,DB_PORT,DB_OPTIONS,DB_SCHEMA );
 }
 
 /**
@@ -361,7 +361,7 @@ function wp_set_wpdb_vars() {
 		'active' => '%d', 'cat_id' => '%d', 'deleted' => '%d', 'lang_id' => '%d', 'mature' => '%d', 'public' => '%d', 'site_id' => '%d', 'spam' => '%d',
 	);
 
-	$prefix = $wpdb->set_prefix( $table_prefix );
+	$prefix = $wpdb->set_prefix(DB_SCHEMA, $table_prefix );
 
 	if ( is_wp_error( $prefix ) ) {
 		wp_load_translations_early();

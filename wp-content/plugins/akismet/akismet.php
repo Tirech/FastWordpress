@@ -456,7 +456,7 @@ function akismet_delete_old_metadata() {
 	// akismet_as_submitted meta values are large, so expire them 
 	// after $interval days regardless of the comment status 
 	while ( TRUE ) {
-		$comment_ids = $wpdb->get_col( "SELECT $wpdb->comments.comment_id FROM $wpdb->commentmeta INNER JOIN $wpdb->comments USING(comment_id) WHERE meta_key = 'akismet_as_submitted' AND DATE_SUB('$now_gmt', INTERVAL {$interval} DAY) > comment_date_gmt LIMIT 10000" ); 
+		$comment_ids = $wpdb->get_col( "SELECT $wpdb->comments.comment_id FROM $wpdb->commentmeta INNER JOIN $wpdb->comments USING(comment_id) WHERE meta_key = 'akismet_as_submitted' AND DATE_SUB('$now_gmt', INTERVAL {$interval} DAY) > comment_date_gmt LIMIT 10000 OFFSET 0" );
 
 		if ( empty( $comment_ids ) ) {
 			return; 

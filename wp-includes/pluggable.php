@@ -163,7 +163,7 @@ function cache_users( $user_ids ) {
 
 	$list = implode( ',', $clean );
 
-	$users = $wpdb->get_results( "SELECT * FROM $wpdb->users WHERE ID IN ($list)" );
+	$users = $wpdb->get_results( "SELECT * FROM $wpdb->users WHERE \"ID\" IN ($list)" );
 
 	$ids = array();
 	foreach ( $users as $user ) {

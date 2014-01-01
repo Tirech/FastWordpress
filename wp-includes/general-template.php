@@ -990,7 +990,7 @@ function wp_get_archives($args = '') {
 	}
 
 	if ( 'monthly' == $type ) {
-		$query = "SELECT YEAR(post_date) AS `year`, MONTH(post_date) AS `month`, count(ID) as posts FROM $wpdb->posts $join $where GROUP BY YEAR(post_date), MONTH(post_date) ORDER BY post_date $order $limit";
+		$query = "SELECT extract(YEAR from post_date) AS \"year\", extract(MONTH from post_date) AS \"month\", count(ID) as posts FROM $wpdb->posts $join $where GROUP BY extract(YEAR from post_date), extract(MONTH from post_date),post_date ORDER BY post_date $order $limit";
 		$key = md5( $query );
 		$key = "wp_get_archives:$key:$last_changed";
 		if ( ! $results = wp_cache_get( $key, 'posts' ) ) {
@@ -1009,7 +1009,7 @@ function wp_get_archives($args = '') {
 			}
 		}
 	} elseif ('yearly' == $type) {
-		$query = "SELECT YEAR(post_date) AS `year`, count(ID) as posts FROM $wpdb->posts $join $where GROUP BY YEAR(post_date) ORDER BY post_date $order $limit";
+		$query = "SELECT extract(YEAR from post_date) AS \"year\", count(ID) as posts FROM $wpdb->posts $join $where GROUP BY extract(YEAR from post_date),post_date ORDER BY post_date $order $limit";
 		$key = md5( $query );
 		$key = "wp_get_archives:$key:$last_changed";
 		if ( ! $results = wp_cache_get( $key, 'posts' ) ) {
@@ -1027,7 +1027,7 @@ function wp_get_archives($args = '') {
 			}
 		}
 	} elseif ( 'daily' == $type ) {
-		$query = "SELECT YEAR(post_date) AS `year`, MONTH(post_date) AS `month`, DAYOFMONTH(post_date) AS `dayofmonth`, count(ID) as posts FROM $wpdb->posts $join $where GROUP BY YEAR(post_date), MONTH(post_date), DAYOFMONTH(post_date) ORDER BY post_date $order $limit";
+		$query = "SELECT extract(YEAR from post_date) AS \"year\", extract(MONTH from post_date) AS \"month\", extract(DAYOFMONTH from post_date) AS \"dayofmonth\", count(ID) as posts FROM $wpdb->posts $join $where GROUP BY extract(YEAR from post_date), extract(MONTH from post_date), extract(DAYOFMONTH from post_date),post_date ORDER BY post_date $order $limit";
 		$key = md5( $query );
 		$key = "wp_get_archives:$key:$last_changed";
 		if ( ! $results = wp_cache_get( $key, 'posts' ) ) {
@@ -1047,8 +1047,8 @@ function wp_get_archives($args = '') {
 			}
 		}
 	} elseif ( 'weekly' == $type ) {
-		$week = _wp_mysql_week( '`post_date`' );
-		$query = "SELECT DISTINCT $week AS `week`, YEAR( `post_date` ) AS `yr`, DATE_FORMAT( `post_date`, '%Y-%m-%d' ) AS `yyyymmdd`, count( `ID` ) AS `posts` FROM `$wpdb->posts` $join $where GROUP BY $week, YEAR( `post_date` ) ORDER BY `post_date` $order $limit";
+		$week = _wp_mysql_week( '\"post_date\"' );
+		$query = "SELECT DISTINCT $week AS \"week\", extract(YEAR from post_date ) AS \"yr\", DATE_FORMAT( \"post_date\", '%Y-%m-%d' ) AS \"yyyymmdd\", count( \"ID\" ) AS \"posts\" FROM \"$wpdb->posts\" $join $where GROUP BY $week, extract(YEAR from post_date ),post_date ORDER BY \"post_date\" $order $limit";
 		$key = md5( $query );
 		$key = "wp_get_archives:$key:$last_changed";
 		if ( ! $results = wp_cache_get( $key, 'posts' ) ) {
@@ -1267,7 +1267,7 @@ function get_calendar($initial = true, $echo = true) {
 		$ak_title_separator = ', ';
 
 	$ak_titles_for_day = array();
-	$ak_post_titles = $wpdb->get_results("SELECT ID, post_title, DAYOFMONTH(post_date) as dom "
+	$ak_post_titles = $wpdb->get_results("SELECT ID, post_title, extract(DAYOFMONTH from post_date) as dom "
 		."FROM $wpdb->posts "
 		."WHERE post_date >= '{$thisyear}-{$thismonth}-01 00:00:00' "
 		."AND post_date <= '{$thisyear}-{$thismonth}-{$last_day} 23:59:59' "

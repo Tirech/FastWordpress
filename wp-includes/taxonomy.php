@@ -306,7 +306,7 @@ function is_taxonomy_hierarchical($taxonomy) {
  * - query_var - Sets the query_var key for this taxonomy. Defaults to $taxonomy key
  *     * If false, a taxonomy cannot be loaded at ?{query_var}={term_slug}
  *     * If specified as a string, the query ?{query_var_string}={term_slug} will be valid.
- * - update_count_callback - Works much like a hook, in that it will be called when the count is updated.
+ * - update_count_callback - Works much ILIKE a hook, in that it will be called when the count is updated.
  *     * Defaults to _update_post_term_count() for taxonomies attached to post types, which then confirms
  *       that the objects are published before counting them.
  *     * Defaults to _update_generic_term_count() for taxonomies attached to other object types, such as links.
@@ -544,7 +544,7 @@ function unregister_taxonomy_for_object_type( $taxonomy, $object_type ) {
  *
  * The strings of $taxonomies must exist before this function will continue. On
  * failure of finding a valid taxonomy, it will return an WP_Error class, kind
- * of like Exceptions in PHP 5, except you can't catch them. Even so, you can
+ * of ILIKE Exceptions in PHP 5, except you can't catch them. Even so, you can
  * still test for the WP_Error class and get the error message.
  *
  * The $terms aren't checked the same as $taxonomies, but still need to exist
@@ -1397,12 +1397,12 @@ function get_terms($taxonomies, $args = '') {
 
 	if ( !empty($name__like) ) {
 		$name__like = like_escape( $name__like );
-		$where .= $wpdb->prepare( " AND t.name LIKE %s", '%' . $name__like . '%' );
+		$where .= $wpdb->prepare( " AND t.name ILIKE %s", '%' . $name__like . '%' );
 	}
 
 	if ( ! empty( $description__like ) ) {
 		$description__like = like_escape( $description__like );
-		$where .= $wpdb->prepare( " AND tt.description LIKE %s", '%' . $description__like . '%' );
+		$where .= $wpdb->prepare( " AND tt.description ILIKE %s", '%' . $description__like . '%' );
 	}
 
 	if ( '' !== $parent ) {
@@ -1428,7 +1428,7 @@ function get_terms($taxonomies, $args = '') {
 
 	if ( ! empty( $search ) ) {
 		$search = like_escape( $search );
-		$where .= $wpdb->prepare( ' AND ((t.name LIKE %s) OR (t.slug LIKE %s))', '%' . $search . '%', '%' . $search . '%' );
+		$where .= $wpdb->prepare( ' AND ((t.name ILIKE %s) OR (t.slug ILIKE %s))', '%' . $search . '%', '%' . $search . '%' );
 	}
 
 	$selects = array();
@@ -1870,7 +1870,7 @@ function wp_delete_term( $term, $taxonomy, $args = array() ) {
 			return $term_obj;
 		$parent = $term_obj->parent;
 
-		$edit_tt_ids = $wpdb->get_col( "SELECT `term_taxonomy_id` FROM $wpdb->term_taxonomy WHERE `parent` = " . (int)$term_obj->term_id );
+		$edit_tt_ids = $wpdb->get_col( "SELECT \"term_taxonomy_id\" FROM $wpdb->term_taxonomy WHERE \"parent\" = " . (int)$term_obj->term_id );
 		do_action( 'edit_term_taxonomies', $edit_tt_ids );
 		$wpdb->update( $wpdb->term_taxonomy, compact( 'parent' ), array( 'parent' => $term_obj->term_id) + compact( 'taxonomy' ) );
 		do_action( 'edited_term_taxonomies', $edit_tt_ids );
@@ -2322,7 +2322,8 @@ function wp_set_object_terms($object_id, $terms, $taxonomy, $append = false) {
 			if ( in_array($tt_id, $final_tt_ids) )
 				$values[] = $wpdb->prepare( "(%d, %d, %d)", $object_id, $tt_id, ++$term_order);
 		if ( $values )
-			if ( false === $wpdb->query( "INSERT INTO $wpdb->term_relationships (object_id, term_taxonomy_id, term_order) VALUES " . join( ',', $values ) . " ON DUPLICATE KEY UPDATE term_order = VALUES(term_order)" ) )
+//			$wpdb->query("DELETE FROM $wpdb->term_relationships WHERE object_id = ");
+            if ( false === $wpdb->query( "INSERT INTO $wpdb->term_relationships (object_id, term_taxonomy_id, term_order) VALUES " . join( ',', $values ) . " ON DUPLICATE KEY UPDATE term_order = VALUES(term_order)" ) )
 				return new WP_Error( 'db_insert_error', __( 'Could not insert term relationship into the database' ), $wpdb->last_error );
 	}
 
@@ -3021,7 +3022,7 @@ function _get_term_children($term_id, $terms, $taxonomy) {
 function _pad_term_counts(&$terms, $taxonomy) {
 	global $wpdb;
 
-	// This function only works for hierarchical taxonomies like post categories.
+	// This function only works for hierarchical taxonomies ILIKE post categories.
 	if ( !is_taxonomy_hierarchical( $taxonomy ) )
 		return;
 

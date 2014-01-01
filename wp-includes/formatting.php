@@ -3050,12 +3050,12 @@ function tag_escape($tag_name) {
 }
 
 /**
- * Escapes text for SQL LIKE special characters % and _.
+ * Escapes text for SQL ILIKE special characters % and _.
  *
  * @since 2.5.0
  *
  * @param string $text The text to be escaped.
- * @return string text, safe for inclusion in LIKE query.
+ * @return string text, safe for inclusion in ILIKE query.
  */
 function like_escape($text) {
 	return str_replace(array("%", "_"), array("\\%", "\\_"), $text);
@@ -3134,7 +3134,7 @@ function sanitize_option($option, $value) {
 
 		case 'default_ping_status':
 		case 'default_comment_status':
-			// Options that if not there have 0 value but need to be something like "closed"
+			// Options that if not there have 0 value but need to be something ILIKE "closed"
 			if ( $value == '0' || $value == '')
 				$value = 'closed';
 			break;
@@ -3656,14 +3656,14 @@ function capital_P_dangit( $text ) {
 	// Simple replacement for titles
 	$current_filter = current_filter();
 	if ( 'the_title' === $current_filter || 'wp_title' === $current_filter )
-		return str_replace( 'Wordpress', 'WordPress', $text );
+		return str_replace( 'Wordpress', 'FastWordPress', $text );
 	// Still here? Use the more judicious replacement
 	static $dblq = false;
 	if ( false === $dblq )
 		$dblq = _x( '&#8220;', 'opening curly double quote' );
 	return str_replace(
 		array( ' Wordpress', '&#8216;Wordpress', $dblq . 'Wordpress', '>Wordpress', '(Wordpress' ),
-		array( ' WordPress', '&#8216;WordPress', $dblq . 'WordPress', '>WordPress', '(WordPress' ),
+		array( ' FastWordPress', '&#8216;FastWordPress', $dblq . 'FastWordPress', '>FastWordPress', '(FastWordPress' ),
 	$text );
 
 }
