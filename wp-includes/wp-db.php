@@ -1412,6 +1412,7 @@ where pg_indexes.schemaname ilike '%s' AND pg_indexes.tablename ilike '%s'", $tb
         $this->result = @pg_query($this->dbh, $query);
         $this->num_queries++;
 //        }
+
         file_put_contents('/var/www/wordpress/sql-'.$typesql.'.sql', "-- " . $this->get_caller() . "\n" . $query . "\n-- last error:".pg_last_error($this->dbh)."\n", FILE_APPEND);
 
         if (defined('SAVEQUERIES') && SAVEQUERIES)
